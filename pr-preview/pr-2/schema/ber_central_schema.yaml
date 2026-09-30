@@ -1974,7 +1974,7 @@ classes:
     class_uri: bridge:MeasurementCollection
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-09-30T17:25:59'
+source_file_date: '2026-09-30T17:26:36'
 source_file_size: 2846
-generation_date: '2026-09-30T17:26:09'
+generation_date: '2026-09-30T17:26:47'
 
