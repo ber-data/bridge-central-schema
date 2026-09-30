@@ -292,8 +292,8 @@
 <pre class="mermaid"><code> classDiagram
     class QuantityValue
     click QuantityValue href "../QuantityValue/"
-      AttributeValue &lt;|-- QuantityValue
-        click AttributeValue href "../AttributeValue/"
+      MeasurementValue &lt;|-- QuantityValue
+        click MeasurementValue href "../MeasurementValue/"
 
       QuantityValue : numeric_value
 
@@ -305,7 +305,10 @@
 <h2 id="inheritance">Inheritance</h2>
 <ul>
 <li><a href="../AttributeValue/">AttributeValue</a><ul>
+<li><a href="../MeasurementValue/">MeasurementValue</a><ul>
 <li><strong>QuantityValue</strong></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -396,7 +399,7 @@
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
 <span class="nt">exact_mappings</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:QuantityValue</span>
-<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AttributeValue</span>
+<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementValue</span>
 <span class="nt">slots</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">numeric_value</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unit</span>
@@ -409,7 +412,7 @@
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
 <span class="nt">exact_mappings</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:QuantityValue</span>
-<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AttributeValue</span>
+<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementValue</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">numeric_value</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">numeric_value</span>

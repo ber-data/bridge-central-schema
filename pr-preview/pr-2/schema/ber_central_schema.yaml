@@ -359,7 +359,7 @@ slots:
     owner: Observation
     domain_of:
     - Observation
-    range: AttributeValue
+    range: MeasurementValue
     inlined: true
     inlined_as_list: true
   raw_value:
@@ -432,6 +432,17 @@ classes:
     slots:
     - raw_value
     class_uri: bridge:AttributeValue
+  MeasurementValue:
+    name: MeasurementValue
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/MeasurementValue
+    description: The polymorphic result of an observation or measurement; root of
+      the result-value family.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    is_a: AttributeValue
+    abstract: true
+    slots:
+    - raw_value
+    class_uri: bridge:MeasurementValue
   QuantityValue:
     name: QuantityValue
     definition_uri: https://w3id.org/ber-data/bridge-measurements/QuantityValue
@@ -439,7 +450,7 @@ classes:
     from_schema: https://w3id.org/ber-data/bridge-measurements
     exact_mappings:
     - nmdc:QuantityValue
-    is_a: AttributeValue
+    is_a: MeasurementValue
     slots:
     - raw_value
     - numeric_value
@@ -475,7 +486,7 @@ classes:
     class_uri: bridge:Measurement
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-09-30T17:35:48'
+source_file_date: '2026-09-30T17:37:25'
 source_file_size: 1176
-generation_date: '2026-09-30T17:35:58'
+generation_date: '2026-09-30T17:37:36'
 
