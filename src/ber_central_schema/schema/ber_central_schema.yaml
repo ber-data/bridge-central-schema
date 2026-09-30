@@ -1,98 +1,86 @@
 ---
-id: https://w3id.org/sierra-moxon/ber-central-schema
+id: https://w3id.org/ber-data/bridge-central-schema
 name: ber-central-schema
-title: ber-central-schema
+title: BRIDGE Central Schema
 description: |-
-  This is the project description.
+  The central BRIDGE schema for harmonized cross-BER data access. This root
+  schema defines the shared base elements and composes domain modules; each
+  module corresponds to one or more rows of the BER harmonization-targets
+  matrix (see the lakehouse-registry repo).
+
+  Modules:
+  - measurements.yaml: the unified Measurement / ObservedProperty model
+    (harmonization rows: Measurement/observation, Observed property,
+    QuantityValue). Designed at the 2026-09-30 BER hackathon against NMDC,
+    BASALT, and BASIN-3D as reference schemas, with BERVO as the primary
+    observed-property vocabulary.
+
+  Planned modules (not yet designed):
+  - feature-of-interest (Sample / Site / ObservationTarget role class)
+  - agents (Person / Organization / Contribution)
+  - datasets (Dataset / DataObject / Study)
 license: Apache-2.0
 see_also:
-  - https://sierra-moxon.github.io/ber-central-schema
+  - https://github.com/ber-data/bridge-central-schema
+  - https://github.com/ber-data/lakehouse-registry
 
 prefixes:
-  ber_central_schema: https://w3id.org/sierra-moxon/ber-central-schema/
+  ber_central_schema: https://w3id.org/ber-data/bridge-central-schema/
+  bridge: https://w3id.org/ber-data/bridge-measurements/
   linkml: https://w3id.org/linkml/
-  biolink: https://w3id.org/biolink/vocab/
   schema: http://schema.org/
-  PATO: http://purl.obolibrary.org/obo/PATO_
-  example: http://www.example.org/rdf#
 default_prefix: ber_central_schema
 default_range: string
 
 imports:
   - linkml:types
+  - measurements
 
 classes:
 
   NamedThing:
+    class_uri: schema:Thing
     description: >-
-      A generic grouping for any identifiable entity
+      Generic base for any identifiable BRIDGE entity. Aligns with the
+      id/name/description root shared by twelve BER schemas (harmonization
+      row: "Base / named entity"). Domain classes in future modules
+      (samples, sites, datasets) should derive from this; the measurements
+      module keeps its classes thin and points at NamedThing-derived
+      entities via uriorcurie slots.
     slots:
       - id
+      - type
       - name
       - description
-    class_uri: schema:Thing
 
-  Person:
-    is_a: NamedThing
-    description: >-
-      Represents a Person
-    slots:
-      - primary_email
-      - birth_date
-      - age_in_years
-      - vital_status
-    slot_usage:
-      primary_email:
-        pattern: "^\\S+@[\\S+\\.]+\\S+"
-
-  PersonCollection:
+  BridgeDatabase:
     tree_root: true
     description: >-
-      A holder for Person objects
+      Top-level container for a BRIDGE data exchange document: holds the
+      vocabulary (observed properties, source-term crosswalk) alongside the
+      measurement rows and their run-level groupings.
     attributes:
-      people:
-        range: Person
+      observed_properties:
+        range: ObservedProperty
+        multivalued: true
+        inlined_as_list: true
+      source_term_mappings:
+        range: SourceTermMapping
+        multivalued: true
+        inlined_as_list: true
+      measurement_collections:
+        range: MeasurementCollection
+        multivalued: true
+        inlined_as_list: true
+      measurements:
+        range: Measurement
         multivalued: true
         inlined_as_list: true
 
 slots:
-  id:
-    identifier: true
-    slot_uri: schema:identifier
-    range: uriorcurie
-    description: A unique identifier for a thing
   name:
     slot_uri: schema:name
     description: A human-readable name for a thing
   description:
     slot_uri: schema:description
     description: A human-readable description for a thing
-  primary_email:
-    slot_uri: schema:email
-    description: The main email address of a person
-  birth_date:
-    slot_uri: schema:birthDate
-    range: date
-    description: Date on which a person is born
-  age_in_years:
-    range: integer
-    description: Number of years since birth
-  vital_status:
-    range: PersonStatus
-    description: living or dead status
-
-enums:
-  PersonStatus:
-    description:
-      The vital status of a person
-    permissible_values:
-      ALIVE:
-        description: the person is living
-        meaning: PATO:0001421
-      DEAD:
-        description: the person is deceased
-        meaning: PATO:0001422
-      UNKNOWN:
-        description: the vital status is not known
-        todos:
-          - map this to an ontology

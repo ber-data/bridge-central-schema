@@ -1,0 +1,30 @@
+# BASIN-3D MeasurementTimeseriesTVPObservation for USGS parameter 00010
+# ("Temperature, water"). The compound SourceTermMapping row
+#   datasource=usgs, source_term=00010 -> observed_property=WT, sampling_medium=WATER
+# fills both mapped slots from the one source code.
+id: bridge:usgs.09110000.00010.2021
+type: bridge:TimeSeriesMeasurement
+observed_property: bridge:WT     # water temperature; BERVO term when minted
+observed_property_source_term: "00010"
+feature_of_interest: bridge:usgs.09110000
+feature_of_interest_type: MONITORING_FEATURE
+sampling_medium: WATER
+statistic: MEAN
+aggregation_duration: DAY
+time_reference_position: START
+phenomenon_time: "2021-01-01/2021-01-03"
+utc_offset: -7
+quality_status: VALIDATED
+source_quality_label: A
+result:
+  type: bridge:TimeSeriesValue
+  unit: Cel
+  values:
+    - timestamp: "2021-01-01"
+      value: 4.2
+    - timestamp: "2021-01-02"
+      value: 4.6
+      point_quality: ESTIMATED
+    - timestamp: "2021-01-03"
+      value: 4.1
+datasource: usgs

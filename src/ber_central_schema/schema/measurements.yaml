@@ -1,0 +1,560 @@
+id: https://w3id.org/ber-data/bridge-measurements
+name: measurements
+title: BRIDGE Measurements Module
+description: >-
+  A unified Measurement model for the central BRIDGE schema, designed at the
+  2026-09-30 BER hackathon. Provides a single row-per-measurement "union"
+  representation that NMDC slot-per-property data, BASALT column-per-analyte
+  product tables, and BASIN-3D OGC O&M observations can all be projected into
+  for unified search and access across BER lakehouses.
+
+  Design anchors:
+  - Observation shape: OGC O&M / SOSA via BASIN-3D (observed_property,
+    feature_of_interest, phenomenon_time, result).
+  - Property-as-data: NMDC PropertyAssertion (the one place NMDC carries the
+    measured property as data rather than a slot name).
+  - QC flags, replicate semantics, and run grouping: BASALT/MONet.
+  - Observed-property vocabulary: BERVO where terms exist; open
+    ObservedProperty descriptors plus SourceTermMapping where they do not.
+license: BSD-3
+version: 0.1.0
+
+prefixes:
+  bridge: https://w3id.org/ber-data/bridge-measurements/
+  linkml: https://w3id.org/linkml/
+  bervo: https://w3id.org/bervo/
+  nmdc: https://w3id.org/nmdc/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  MIXS: https://w3id.org/mixs/
+  qudt: http://qudt.org/schema/qudt/
+  schema: http://schema.org/
+  sosa: http://www.w3.org/ns/sosa/
+  OBI: http://purl.obolibrary.org/obo/OBI_
+  PATO: http://purl.obolibrary.org/obo/PATO_
+  ENVO: http://purl.obolibrary.org/obo/ENVO_
+  CHEBI: http://purl.obolibrary.org/obo/CHEBI_
+  UO: http://purl.obolibrary.org/obo/UO_
+  wgs84: http://www.w3.org/2003/01/geo/wgs84_pos#
+
+default_prefix: bridge
+default_range: string
+
+imports:
+  - linkml:types
+
+#=====================================================================
+# CLASSES
+#=====================================================================
+classes:
+
+  #-------------------------------------------------------------------
+  # Observed-property layer (the vocabulary side of the union model)
+  #-------------------------------------------------------------------
+  ObservedProperty:
+    class_uri: sosa:ObservableProperty
+    description: >-
+      A measurable/observable property descriptor: the "what was measured".
+      When a BERVO Variable term exists, id SHOULD be the BERVO CURIE and the
+      descriptor slots (measurement_of, measured_in, canonical_unit,
+      value_type) SHOULD agree with BERVO's pre-coordinated annotations
+      (bervo:BERVO_measurement_of, bervo:BERVO_measured_in,
+      bervo:BERVO_has_unit, bervo:BERVO_has_value_type). When no BERVO term
+      exists yet, an ObservedProperty may be minted with a source-native or
+      bridge-local id and the same descriptor slots; these are the candidate
+      terms to push upstream into BERVO.
+    exact_mappings:
+      - bervo:BERVO_0000000  # Variable
+    attributes:
+      id:
+        identifier: true
+        range: uriorcurie
+        description: BERVO CURIE preferred; else source vocabulary CURIE or bridge-minted id.
+      label:
+        required: true
+        description: Human-readable name, e.g. "Nitrate", "Soil respiration".
+      description:
+        range: string
+      categories:
+        multivalued: true
+        description: >-
+          Classification path in priority order (BASIN-3D style), e.g.
+          ["Biogeochemistry", "Anions"]. Use BERVO upper-level variable
+          branches (e.g. "Soil biogeochemistry variable") when possible.
+      measurement_of:
+        range: uriorcurie
+        description: >-
+          The entity or quality quantified, e.g. a CHEBI analyte or PATO
+          quality. Mirrors bervo:BERVO_measurement_of.
+      measured_in:
+        range: uriorcurie
+        description: >-
+          The medium/compartment the property is characteristically measured
+          in (e.g. ENVO or BERVO context term). Mirrors bervo:BERVO_measured_in.
+      canonical_unit:
+        description: Preferred reporting unit as a UCUM code, e.g. "mg/L", "Cel", "umol/L".
+        exact_mappings:
+          - qudt:unit
+      value_type:
+        range: ValueTypeEnum
+        description: Whether values are quantitative or qualitative. Mirrors bervo:BERVO_has_value_type.
+      source_vocabulary:
+        description: The vocabulary this term originates from, e.g. "BERVO", "MIxS", "USGS-PCode", "BASALT-column".
+      mappings:
+        multivalued: true
+        range: uriorcurie
+        description: Cross-vocabulary equivalents, e.g. MIXS:0000425, USGS parameter codes as CURIEs.
+
+  SourceTermMapping:
+    description: >-
+      A crosswalk row binding one data source's native term to BRIDGE
+      vocabulary, generalizing BASIN-3D's AttributeMapping. One source code
+      may set several BRIDGE attributes at once (compound mapping): USGS
+      parameter 00010 ("Temperature, water") maps to observed_property=water
+      temperature AND sampling_medium=WATER. Maintained per data source as
+      mapping tables; many-to-one is expected (e.g. ESS-DIVE Gage_Height and
+      Water_Depth both map to one water-level property).
+    attributes:
+      datasource:
+        required: true
+        description: Identifier of the contributing source, e.g. "nmdc", "basalt", "usgs", "essdive".
+      source_term:
+        required: true
+        description: >-
+          The source's native code exactly as it appears in the data: a USGS
+          parameter code ("00010"), an NMDC slot_uri (MIXS:0000425), a BASALT
+          column name ("total_carbon"), a FLUXNET variable ("FC").
+      source_term_description:
+        description: The source's own description of the term.
+      observed_property:
+        range: ObservedProperty
+        inlined: false
+        description: The BRIDGE observed property this source term maps to.
+      sampling_medium:
+        range: SamplingMediumEnum
+      statistic:
+        range: StatisticEnum
+      aggregation_duration:
+        range: AggregationDurationEnum
+      quality_status:
+        range: ResultQualityStatusEnum
+      unit:
+        description: UCUM unit implied by the source term when the source encodes units in the term/column name.
+
+  #-------------------------------------------------------------------
+  # Value layer (harmonized AttributeValue family)
+  #-------------------------------------------------------------------
+  MeasurementValue:
+    abstract: true
+    description: >-
+      Polymorphic result holder. Harmonizes the two BER naming families for
+      value objects: plain (lambda/aims-leaf/BERtron/CDM: value, unit) and
+      NMDC/BASALT has_* (has_numeric_value, has_unit). This schema uses the
+      plain family and declares exact_mappings to the NMDC slots so the
+      crosswalk is mechanical.
+    slots:
+      - type
+      - raw_value
+
+  QuantityValue:
+    is_a: MeasurementValue
+    exact_mappings:
+      - schema:QuantityValue
+      - nmdc:QuantityValue
+    description: A scalar or range numeric result with a unit.
+    attributes:
+      numeric_value:
+        range: double
+        description: The value; for ranges, use minimum/maximum instead or additionally (midpoint).
+        exact_mappings:
+          - nmdc:has_numeric_value
+          - qudt:quantityValue
+          - schema:value
+      minimum_numeric_value:
+        range: double
+        exact_mappings:
+          - nmdc:has_minimum_numeric_value
+      maximum_numeric_value:
+        range: double
+        exact_mappings:
+          - nmdc:has_maximum_numeric_value
+      unit:
+        description: >-
+          UCUM code strongly preferred (seed the future BRIDGE UnitEnum from
+          NMDC UnitEnum's ~109 UCUM codes). BASALT free-string units and
+          column-name unit suffixes normalize into this slot.
+        exact_mappings:
+          - nmdc:has_unit
+          - qudt:unit
+          - schema:unitCode
+
+  ControlledTermValue:
+    is_a: MeasurementValue
+    description: A categorical result drawn from an ontology or controlled vocabulary.
+    attributes:
+      term_id:
+        range: uriorcurie
+        description: e.g. a PATO, ENVO, or CHEBI CURIE.
+        exact_mappings:
+          - nmdc:has_value_term_id
+      term_label:
+        range: string
+
+  TextValue:
+    is_a: MeasurementValue
+    description: A free-text result; the fallback when nothing more structured applies.
+    attributes:
+      text_value:
+        range: string
+      language:
+        range: string
+
+  BooleanValue:
+    is_a: MeasurementValue
+    attributes:
+      boolean_value:
+        range: boolean
+
+  TimestampValue:
+    is_a: MeasurementValue
+    description: A date/time result, ISO-8601 in raw_value.
+    attributes:
+      datetime_value:
+        range: string
+        exact_mappings:
+          - nmdc:has_datetime_value
+
+  TimeValuePair:
+    description: One point in a time series (BASIN-3D TVP).
+    attributes:
+      timestamp:
+        required: true
+        description: ISO-8601.
+      value:
+        range: double
+      point_quality:
+        range: ResultQualityStatusEnum
+        description: Per-point quality, as in BASIN-3D ResultListTVP.result_quality.
+
+  TimeSeriesValue:
+    is_a: MeasurementValue
+    description: >-
+      A timeseries result (BASIN-3D MeasurementTimeseriesTVPResultMixin).
+      Series-level unit lives on the owning Measurement's slots via a
+      QuantityValue-free convention: put the unit in `unit` here.
+    attributes:
+      values:
+        range: TimeValuePair
+        multivalued: true
+        inlined_as_list: true
+        required: true
+      unit:
+        description: UCUM code for all points in the series.
+
+  #-------------------------------------------------------------------
+  # The Measurement itself
+  #-------------------------------------------------------------------
+  Measurement:
+    exact_mappings:
+      - sosa:Observation
+    description: >-
+      A single act/record of measuring one observed property of one feature
+      of interest, yielding one result. This is the union row: NMDC
+      Biosample.<mixs_slot> values, BASALT product columns, and BASIN-3D
+      observations all project into it. Deliberately EAV-shaped so that
+      lakehouse-wide search ("all nitrate measurements across NMDC, MONet,
+      and watershed timeseries") is a single-table query.
+    close_mappings:
+      - nmdc:PropertyAssertion
+    slots:
+      - id
+      - type
+      - result
+    attributes:
+      # -- what --
+      observed_property:
+        range: ObservedProperty
+        required: true
+        inlined: false
+        description: The BRIDGE/BERVO term for what was measured.
+        exact_mappings:
+          - sosa:observedProperty
+          - nmdc:has_attribute_id
+      observed_property_source_term:
+        description: >-
+          The verbatim source-native property code (NMDC slot name / MIxS
+          CURIE, BASALT column name, USGS parameter code), preserved for
+          round-tripping. Resolved to observed_property via SourceTermMapping.
+      # -- of what --
+      feature_of_interest:
+        range: uriorcurie
+        description: >-
+          Id of the entity the property was measured on: an NMDC biosample
+          (nmdc:bsm-...), a BASALT ProcessedSample, a BASIN-3D
+          MonitoringFeature, a plate well's parent culture, an organism.
+          Kept as a loose pointer so this module doesn't import every
+          sample/site class; the central BRIDGE FeatureOfInterest role class
+          (harmonization row 3) is the eventual range.
+        exact_mappings:
+          - sosa:hasFeatureOfInterest
+      feature_of_interest_type:
+        range: FeatureOfInterestTypeEnum
+      feature_position:
+        description: >-
+          Sub-feature locator when the feature is measured at a position:
+          plate well ("A01"), core section ("TOP"/"MID"/"BTM"), depth
+          interval, timepoint label.
+      sampling_medium:
+        range: SamplingMediumEnum
+      # -- when --
+      phenomenon_time:
+        description: >-
+          ISO-8601 instant or interval when the property applied to the
+          feature (collection/observation time, not lab-analysis time).
+        exact_mappings:
+          - sosa:phenomenonTime
+      result_time:
+        description: ISO-8601 time the result was produced (e.g. lab analysis date).
+        exact_mappings:
+          - sosa:resultTime
+      utc_offset:
+        range: integer
+      # -- statistics / aggregation --
+      statistic:
+        range: StatisticEnum
+        description: Statistical summary the value represents (MEAN, MAX, ...).
+      aggregation_duration:
+        range: AggregationDurationEnum
+        description: Time period over which the statistic applies; NONE for instantaneous.
+      replicate_role:
+        range: ReplicateRoleEnum
+        description: BASALT measure_type - whether this is a single reading, one replicate, or the average.
+      replicate_number:
+        range: integer
+      summary_of:
+        range: Measurement
+        multivalued: true
+        inlined: false
+        description: For AVERAGE (or other summary) rows - the member replicate measurements.
+      # -- quality --
+      quality_status:
+        range: ResultQualityStatusEnum
+        description: Coarse validation status (BASIN-3D ResultQualityEnum).
+      quality_flags:
+        range: QualityFlagEnum
+        multivalued: true
+        description: Fine-grained QC flags (BASALT ProcessedDataFlag family); per-measurement, not per-run.
+      source_quality_label:
+        description: Verbatim source QC code (USGS "A"/"P", BASALT flag, well flag), for round-tripping.
+      # -- provenance --
+      method:
+        range: uriorcurie
+        description: Pointer to a Method/Protocol (BASALT *Method classes, NMDC Protocol, MIAPPE Method).
+      protocol_url:
+        range: uriorcurie
+      instrument:
+        range: uriorcurie
+        description: Pointer to an Instrument record (harmonization row 28 core - vendor+model).
+      part_of_collection:
+        range: MeasurementCollection
+        inlined: false
+        description: The assay run / product / dataset this measurement belongs to.
+      was_generated_by:
+        range: uriorcurie
+        description: >-
+          Pointer to the generating activity: NMDC DataGeneration /
+          WorkflowExecution, BASALT DataGenerationActivity /
+          DataProcessingActivity. Distinguishes direct readings from derived/
+          model-fitted quantities (e.g. van Genuchten parameters, XCT pore
+          metrics), whose generator is a processing activity.
+      datasource:
+        description: The contributing source system, e.g. "nmdc", "basalt", "usgs" (BASIN-3D DataSource analog); supports faceting the union table by source.
+
+  TimeSeriesMeasurement:
+    is_a: Measurement
+    description: >-
+      Structural subclass for timeseries results (BASIN-3D
+      MeasurementTimeseriesTVPObservation). phenomenon_time holds the series
+      start/end interval.
+    slot_usage:
+      result:
+        range: TimeSeriesValue
+    attributes:
+      time_reference_position:
+        range: TimeReferencePositionEnum
+        description: Whether timestamps mark the START, MIDDLE, or END of each aggregation interval.
+
+  MeasurementCollection:
+    description: >-
+      A grouping of measurements produced together: a BASALT *Product row
+      (one assay run over one sample), an NMDC DataObject's parsed contents,
+      a BASIN-3D synthesis response, a plate read. Carries what is shared by
+      the group - method, instrument, activity, source data file - so
+      Measurement rows stay thin.
+    slots:
+      - id
+      - type
+    attributes:
+      name: {}
+      description: {}
+      method:
+        range: uriorcurie
+      instrument:
+        range: uriorcurie
+      was_generated_by:
+        range: uriorcurie
+      data_object:
+        range: uriorcurie
+        multivalued: true
+        description: Pointer(s) to the source data file(s) (checksum+size+format+URL core, harmonization row 7).
+      summary_metrics:
+        description: Run-level summary key-values (BASALT summary_metrics; plate blank_mean, cv_percent).
+      datasource: {}
+
+#=====================================================================
+# SLOTS (shared)
+#=====================================================================
+slots:
+  id:
+    identifier: true
+    range: uriorcurie
+    required: true
+    description: >-
+      Unique id. For lakehouse-materialized measurement rows a UUID or
+      source-derived deterministic id (e.g. "{datasource}:{source_record}:{source_term}").
+  type:
+    range: uriorcurie
+    designates_type: true
+    slot_uri: rdf:type
+    description: Class designator (NMDC convention) so polymorphic rows/documents resolve to their class.
+  result:
+    range: MeasurementValue
+    required: true
+    inlined: true
+    description: Polymorphic result; type designator on the value picks the subclass.
+    exact_mappings:
+      - sosa:hasResult
+  raw_value:
+    description: >-
+      The value exactly as it appeared at the source ("65 umol/L", "2-4 cm",
+      "Fair"), preserved verbatim for provenance and re-parsing.
+    exact_mappings:
+      - nmdc:has_raw_value
+
+#=====================================================================
+# ENUMS
+#=====================================================================
+enums:
+
+  ValueTypeEnum:
+    permissible_values:
+      QUANTITATIVE:
+        meaning: bervo:BERVO_8000244
+      QUALITATIVE: {}
+
+  FeatureOfInterestTypeEnum:
+    description: >-
+      Coarse type of the thing measured. Members are categorially disjoint
+      (material sample vs site vs experimental unit) - this enum is the
+      role-based discriminator from harmonization row 3.
+    permissible_values:
+      SAMPLE:
+        description: A material specimen (NMDC Biosample, BASALT Sample, lambda Sample).
+      PROCESSED_SAMPLE:
+        description: A derived/processed specimen (extract, core section, filtrate).
+      SITE:
+        description: An in-situ location (NMDC FieldResearchSite, BASALT Site).
+      MONITORING_FEATURE:
+        description: A BASIN-3D monitoring/sampling feature (point, plot, watershed...).
+      PLATE_WELL:
+        description: A well in a plate assay (BASALT WellReading position).
+      ORGANISM:
+        description: An organism or culture (MIAPPE ObservationUnit, strain).
+      ECOSYSTEM:
+        description: An ecosystem/landscape unit (EcoSIM/BERVO ecosystem-context variables, flux towers).
+      OTHER: {}
+
+  SamplingMediumEnum:
+    description: BASIN-3D SamplingMediumEnum extended for lab matrices.
+    permissible_values:
+      WATER: {}
+      GAS: {}
+      SOLID_PHASE:
+        description: Soil, sediment, rock.
+      SEDIMENT: {}
+      TISSUE:
+        description: Plant or other biological tissue.
+      CULTURE_MEDIUM: {}
+      OTHER: {}
+      NOT_APPLICABLE: {}
+
+  StatisticEnum:
+    description: BASIN-3D StatisticEnum plus summary statistics needed by BASALT averages and plate reads.
+    permissible_values:
+      INSTANT: {}
+      MEAN: {}
+      MIN: {}
+      MAX: {}
+      TOTAL: {}
+      MEDIAN: {}
+      STANDARD_DEVIATION: {}
+      COEFFICIENT_OF_VARIATION:
+        description: e.g. plate cv_percent.
+      OTHER: {}
+
+  AggregationDurationEnum:
+    description: BASIN-3D AggregationDurationEnum (OGC TM_PeriodDuration).
+    permissible_values:
+      YEAR: {}
+      MONTH: {}
+      DAY: {}
+      HOUR: {}
+      MINUTE: {}
+      SECOND: {}
+      NONE:
+        description: Instantaneous.
+
+  TimeReferencePositionEnum:
+    permissible_values:
+      START: {}
+      MIDDLE: {}
+      END: {}
+
+  ReplicateRoleEnum:
+    description: BASALT ProductMeasureType.
+    permissible_values:
+      SINGLE: {}
+      REPLICATE: {}
+      AVERAGE: {}
+
+  ResultQualityStatusEnum:
+    description: >-
+      Coarse validation status (BASIN-3D ResultQualityEnum). Source synonyms
+      documented per value; map source codes here via SourceTermMapping.
+    permissible_values:
+      VALIDATED:
+        description: Checked / Accepted / Pass / OK / Good / USGS "A" (Approved).
+      UNVALIDATED:
+        description: Unchecked / Preliminary / No QC / USGS "P" (Provisional).
+      SUSPECT:
+        description: Questionable / Doubtful / Spike-Noise / Flagged.
+      REJECTED:
+        description: Poor / Bad / Unaccepted / Failed QC.
+      ESTIMATED:
+        description: Interpolated / Modeled / Gap-filled.
+
+  QualityFlagEnum:
+    description: >-
+      Fine-grained QC flags: union of BASALT ProcessedDataFlag and plate-well
+      flags. A measurement may carry several.
+    permissible_values:
+      BELOW_DETECTION_LIMIT: {}
+      BELOW_REPORTING_LIMIT: {}
+      OUT_OF_RANGE: {}
+      OUTLIER: {}
+      HIGH_BACKGROUND: {}
+      FAILED_QC: {}
+      INSUFFICIENT_MATERIAL: {}
+      DATA_NOT_AVAILABLE: {}
+      BLANK:
+        description: Blank/control reading (plate assays).
+      CONTAMINATED: {}
