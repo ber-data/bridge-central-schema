@@ -1,0 +1,7 @@
+# Counter-example: observed_property is not a BERVO CURIE, violating the
+# example pattern constraint on Measurement.
+observed_property: bridge:WT
+feature_of_interest: bridge:usgs.09110000
+result:
+  numeric_value: 4.2
+  unit: Cel
