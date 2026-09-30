@@ -1,18 +1,7 @@
-# NMDC Biosample.nitrate (range QuantityValue, slot_uri MIXS:0000425) projected
-# into the union model. Source object was:
-#   {type: nmdc:QuantityValue, has_raw_value: "65 umol/L", has_numeric_value: 65, has_unit: umol/L}
-id: bridge:nmdc.bsm-11-abc123.nitrate
-type: bridge:Measurement
-observed_property: bervo:BERVO_EXAMPLE_NITRATE  # BERVO nitrate-concentration variable; MIXS:0000425 in its mappings
-observed_property_source_term: MIXS:0000425
+# NMDC Biosample.nitrate projected into the stub Measurement
+observed_property: bervo:BERVO_0000001
 feature_of_interest: nmdc:bsm-11-abc123
-feature_of_interest_type: SAMPLE
-sampling_medium: WATER
 result:
-  type: bridge:QuantityValue
   raw_value: 65 umol/L
   numeric_value: 65
   unit: umol/L
-phenomenon_time: "2021-06-14"
-statistic: INSTANT
-datasource: nmdc

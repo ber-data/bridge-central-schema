@@ -2,19 +2,10 @@
 id: https://w3id.org/ber-data/bridge-central-schema
 name: ber-central-schema
 title: BRIDGE Central Schema
-description: |-
-  The central BRIDGE schema for harmonized cross-BER data access. This root
-  schema defines the shared base elements and composes domain modules; each
-  module corresponds to one or more rows of the BER harmonization-targets
-  matrix (see the lakehouse-registry repo).
-
-  Modules:
-  - measurements.yaml: the unified Measurement / ObservedProperty model
-    (harmonization rows: Measurement/observation, Observed property,
-    QuantityValue). Designed at the 2026-09-30 BER hackathon against NMDC,
-    BASALT, and BASIN-3D as reference schemas, with BERVO as the primary
-    observed-property vocabulary.
-
+description: >-
+  The central BRIDGE schema for harmonized cross-BER data access. Defines
+  shared base elements and composes domain modules (currently:
+  measurements.yaml).
 license: Apache-2.0
 see_also:
   - https://github.com/ber-data/bridge-central-schema
@@ -24,7 +15,7 @@ prefixes:
   bridge_central_schema: https://w3id.org/ber-data/bridge-central-schema/
   linkml: https://w3id.org/linkml/
   schema: http://schema.org/
-default_prefix: ber_central_schema
+default_prefix: bridge_central_schema
 default_range: string
 
 imports:
@@ -35,44 +26,18 @@ classes:
 
   NamedThing:
     class_uri: schema:Thing
-    description: >-
-      Generic base for any identifiable BRIDGE entity. Aligns with the
-      id/name/description root shared by twelve BER schemas (harmonization
-      row: "Base / named entity"). Domain classes in future modules
-      (samples, sites, datasets) should derive from this; the measurements
-      module keeps its classes thin and points at NamedThing-derived
-      entities via uriorcurie slots.
+    description: Generic base for any identifiable BRIDGE entity.
     slots:
       - id
-      - type
       - name
       - description
 
-  BridgeDatabase:
-    tree_root: true
-    description: >-
-      Top-level container for a BRIDGE data exchange document: holds the
-      vocabulary (observed properties, source-term crosswalk) alongside the
-      measurement rows and their run-level groupings.
-    attributes:
-      observed_properties:
-        range: ObservedProperty
-        multivalued: true
-        inlined_as_list: true
-      source_term_mappings:
-        range: SourceTermMapping
-        multivalued: true
-        inlined_as_list: true
-      measurement_collections:
-        range: MeasurementCollection
-        multivalued: true
-        inlined_as_list: true
-      measurements:
-        range: Measurement
-        multivalued: true
-        inlined_as_list: true
-
 slots:
+  id:
+    identifier: true
+    slot_uri: schema:identifier
+    range: uriorcurie
+    description: A unique identifier for a thing
   name:
     slot_uri: schema:name
     description: A human-readable name for a thing
