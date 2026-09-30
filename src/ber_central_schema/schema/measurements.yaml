@@ -20,20 +20,15 @@ imports:
 
 classes:
 
-  AttributeValue:
-    abstract: true
-    description: The value of an attribute.
-    exact_mappings:
-      - nmdc:AttributeValue
-    slots:
-      - raw_value
-
   MeasurementValue:
-    is_a: AttributeValue
     abstract: true
     description: >-
       The polymorphic result of an observation or measurement; root of the
       result-value family.
+    exact_mappings:
+      - nmdc:AttributeValue
+    slots:
+      - raw_value
 
   QuantityValue:
     is_a: MeasurementValue
