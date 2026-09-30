@@ -486,7 +486,7 @@ classes:
     class_uri: bridge:Measurement
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-09-30T17:37:25'
+source_file_date: '2026-09-30T17:38:52'
 source_file_size: 1176
-generation_date: '2026-09-30T17:37:36'
+generation_date: '2026-09-30T17:39:02'
 
