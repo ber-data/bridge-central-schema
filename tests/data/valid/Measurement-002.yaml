@@ -2,7 +2,7 @@
 # stub Measurement: the wide product row becomes one Measurement per analyte
 # column; the column name identifies the observed property.
 observed_property: bervo:BERVO_0000915
-feature_of_interest: bridge:basalt.procsample-7
+# feature_of_interest: bridge:basalt.procsample-7   # deferred with the slot (sample TODO)
 result:
   raw_value: "2.41 %"
   numeric_value: 2.41

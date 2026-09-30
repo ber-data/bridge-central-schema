@@ -47,7 +47,9 @@ classes:
       - sosa:Observation
     slots:
       - observed_property
-      - feature_of_interest
+      # - feature_of_interest   # TODO: deferred - gets into (Bio)sample
+      #   territory; restore once the shared BRIDGE Sample/FeatureOfInterest
+      #   role class is designed (harmonization row 3).
       - result
 
   Measurement:
@@ -71,9 +73,11 @@ slots:
     range: uriorcurie
     description: The property observed; a BERVO Variable CURIE when one exists.
 
-  feature_of_interest:
-    range: uriorcurie
-    description: The entity the property was observed on.
+  # TODO (sample): feature_of_interest deferred for now - overlaps with
+  # Biosample/Sample modeling. Reinstate when the sample module exists.
+  # feature_of_interest:
+  #   range: uriorcurie
+  #   description: The entity the property was observed on.
 
   result:
     range: MeasurementValue
