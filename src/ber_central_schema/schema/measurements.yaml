@@ -2,20 +2,7 @@ id: https://w3id.org/ber-data/bridge-measurements
 name: measurements
 title: BRIDGE Measurements Module
 description: >-
-  A unified Measurement model for the central BRIDGE schema, designed at the
-  2026-09-30 BER hackathon. Provides a single row-per-measurement "union"
-  representation that NMDC slot-per-property data, BASALT column-per-analyte
-  product tables, and BASIN-3D OGC O&M observations can all be projected into
-  for unified search and access across BER lakehouses.
-
-  Design anchors:
-  - Observation shape: OGC O&M / SOSA via BASIN-3D (observed_property,
-    feature_of_interest, phenomenon_time, result).
-  - Property-as-data: NMDC PropertyAssertion (the one place NMDC carries the
-    measured property as data rather than a slot name).
-  - QC flags, replicate semantics, and run grouping: BASALT/MONet.
-  - Observed-property vocabulary: BERVO where terms exist; open
-    ObservedProperty descriptors plus SourceTermMapping where they do not.
+  A unified Measurement model for the central BRIDGE schema.
 license: BSD-3
 version: 0.1.0
 
@@ -104,59 +91,14 @@ classes:
         range: uriorcurie
         description: Cross-vocabulary equivalents, e.g. MIXS:0000425, USGS parameter codes as CURIEs.
 
-  SourceTermMapping:
-    description: >-
-      A crosswalk row binding one data source's native term to BRIDGE
-      vocabulary, generalizing BASIN-3D's AttributeMapping. One source code
-      may set several BRIDGE attributes at once (compound mapping): USGS
-      parameter 00010 ("Temperature, water") maps to observed_property=water
-      temperature AND sampling_medium=WATER. Maintained per data source as
-      mapping tables; many-to-one is expected (e.g. ESS-DIVE Gage_Height and
-      Water_Depth both map to one water-level property).
-    attributes:
-      datasource:
-        required: true
-        description: Identifier of the contributing source, e.g. "nmdc", "basalt", "usgs", "essdive".
-      source_term:
-        required: true
-        description: >-
-          The source's native code exactly as it appears in the data: a USGS
-          parameter code ("00010"), an NMDC slot_uri (MIXS:0000425), a BASALT
-          column name ("total_carbon"), a FLUXNET variable ("FC").
-      source_term_description:
-        description: The source's own description of the term.
-      observed_property:
-        range: ObservedProperty
-        inlined: false
-        description: The BRIDGE observed property this source term maps to.
-      sampling_medium:
-        range: SamplingMediumEnum
-      statistic:
-        range: StatisticEnum
-      aggregation_duration:
-        range: AggregationDurationEnum
-      quality_status:
-        range: ResultQualityStatusEnum
-      unit:
-        description: UCUM unit implied by the source term when the source encodes units in the term/column name.
-
-  #-------------------------------------------------------------------
-  # Value layer (harmonized AttributeValue family)
-  #-------------------------------------------------------------------
-  MeasurementValue:
+  AttributeValue:
     abstract: true
-    description: >-
-      Polymorphic result holder. Harmonizes the two BER naming families for
-      value objects: plain (lambda/aims-leaf/BERtron/CDM: value, unit) and
-      NMDC/BASALT has_* (has_numeric_value, has_unit). This schema uses the
-      plain family and declares exact_mappings to the NMDC slots so the
-      crosswalk is mechanical.
     slots:
       - type
       - raw_value
 
   QuantityValue:
-    is_a: MeasurementValue
+    is_a: AttributeValue
     exact_mappings:
       - schema:QuantityValue
       - nmdc:QuantityValue
@@ -188,7 +130,7 @@ classes:
           - schema:unitCode
 
   ControlledTermValue:
-    is_a: MeasurementValue
+    is_a: AttributeValue
     description: A categorical result drawn from an ontology or controlled vocabulary.
     attributes:
       term_id:
@@ -200,7 +142,7 @@ classes:
         range: string
 
   TextValue:
-    is_a: MeasurementValue
+    is_a: AttributeValue
     description: A free-text result; the fallback when nothing more structured applies.
     attributes:
       text_value:
@@ -208,47 +150,6 @@ classes:
       language:
         range: string
 
-  BooleanValue:
-    is_a: MeasurementValue
-    attributes:
-      boolean_value:
-        range: boolean
-
-  TimestampValue:
-    is_a: MeasurementValue
-    description: A date/time result, ISO-8601 in raw_value.
-    attributes:
-      datetime_value:
-        range: string
-        exact_mappings:
-          - nmdc:has_datetime_value
-
-  TimeValuePair:
-    description: One point in a time series (BASIN-3D TVP).
-    attributes:
-      timestamp:
-        required: true
-        description: ISO-8601.
-      value:
-        range: double
-      point_quality:
-        range: ResultQualityStatusEnum
-        description: Per-point quality, as in BASIN-3D ResultListTVP.result_quality.
-
-  TimeSeriesValue:
-    is_a: MeasurementValue
-    description: >-
-      A timeseries result (BASIN-3D MeasurementTimeseriesTVPResultMixin).
-      Series-level unit lives on the owning Measurement's slots via a
-      QuantityValue-free convention: put the unit in `unit` here.
-    attributes:
-      values:
-        range: TimeValuePair
-        multivalued: true
-        inlined_as_list: true
-        required: true
-      unit:
-        description: UCUM code for all points in the series.
 
   #-------------------------------------------------------------------
   # The Measurement itself
@@ -258,11 +159,7 @@ classes:
       - sosa:Observation
     description: >-
       A single act/record of measuring one observed property of one feature
-      of interest, yielding one result. This is the union row: NMDC
-      Biosample.<mixs_slot> values, BASALT product columns, and BASIN-3D
-      observations all project into it. Deliberately EAV-shaped so that
-      lakehouse-wide search ("all nitrate measurements across NMDC, MONet,
-      and watershed timeseries") is a single-table query.
+      of interest, yielding one result. 
     close_mappings:
       - nmdc:PropertyAssertion
     slots:
@@ -282,9 +179,7 @@ classes:
       observed_property_source_term:
         description: >-
           The verbatim source-native property code (NMDC slot name / MIxS
-          CURIE, BASALT column name, USGS parameter code), preserved for
-          round-tripping. Resolved to observed_property via SourceTermMapping.
-      # -- of what --
+          CURIE, BASALT column name, USGS parameter code).
       feature_of_interest:
         range: uriorcurie
         description: >-
