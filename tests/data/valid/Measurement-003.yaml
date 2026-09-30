@@ -1,0 +1,10 @@
+# BASIN-3D observation for USGS parameter 00010 ("Temperature, water") at
+# monitoring feature USGS-09110000, projected into the stub Measurement as a
+# single (daily mean) value; timeseries results return when TimeSeriesValue
+# is restored to the module.
+observed_property: bridge:WT
+feature_of_interest: bridge:usgs.09110000
+result:
+  raw_value: "4.2 Cel"
+  numeric_value: 4.2
+  unit: Cel
