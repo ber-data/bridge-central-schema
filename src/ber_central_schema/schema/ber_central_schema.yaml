@@ -15,10 +15,6 @@ description: |-
     BASALT, and BASIN-3D as reference schemas, with BERVO as the primary
     observed-property vocabulary.
 
-  Planned modules (not yet designed):
-  - feature-of-interest (Sample / Site / ObservationTarget role class)
-  - agents (Person / Organization / Contribution)
-  - datasets (Dataset / DataObject / Study)
 license: Apache-2.0
 see_also:
   - https://github.com/ber-data/bridge-central-schema
