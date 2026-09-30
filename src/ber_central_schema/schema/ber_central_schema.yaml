@@ -1,59 +1,36 @@
 ---
-id: https://w3id.org/sierra-moxon/ber-central-schema
+id: https://w3id.org/ber-data/bridge-central-schema
 name: ber-central-schema
-title: ber-central-schema
-description: |-
-  This is the project description.
+title: BRIDGE Central Schema
+description: >-
+  The central BRIDGE schema for harmonized cross-BER data access. Defines
+  shared base elements and composes domain modules (currently:
+  measurements.yaml).
 license: Apache-2.0
 see_also:
-  - https://sierra-moxon.github.io/ber-central-schema
+  - https://github.com/ber-data/bridge-central-schema
+  - https://github.com/ber-data/lakehouse-registry
 
 prefixes:
-  ber_central_schema: https://w3id.org/sierra-moxon/ber-central-schema/
+  bridge_central_schema: https://w3id.org/ber-data/bridge-central-schema/
   linkml: https://w3id.org/linkml/
-  biolink: https://w3id.org/biolink/vocab/
   schema: http://schema.org/
-  PATO: http://purl.obolibrary.org/obo/PATO_
-  example: http://www.example.org/rdf#
-default_prefix: ber_central_schema
+default_prefix: bridge_central_schema
 default_range: string
 
 imports:
   - linkml:types
+  - measurements
 
 classes:
 
   NamedThing:
-    description: >-
-      A generic grouping for any identifiable entity
+    class_uri: schema:Thing
+    description: Generic base for any identifiable BRIDGE entity.
     slots:
       - id
       - name
       - description
-    class_uri: schema:Thing
-
-  Person:
-    is_a: NamedThing
-    description: >-
-      Represents a Person
-    slots:
-      - primary_email
-      - birth_date
-      - age_in_years
-      - vital_status
-    slot_usage:
-      primary_email:
-        pattern: "^\\S+@[\\S+\\.]+\\S+"
-
-  PersonCollection:
-    tree_root: true
-    description: >-
-      A holder for Person objects
-    attributes:
-      people:
-        range: Person
-        multivalued: true
-        inlined_as_list: true
 
 slots:
   id:
@@ -67,32 +44,3 @@ slots:
   description:
     slot_uri: schema:description
     description: A human-readable description for a thing
-  primary_email:
-    slot_uri: schema:email
-    description: The main email address of a person
-  birth_date:
-    slot_uri: schema:birthDate
-    range: date
-    description: Date on which a person is born
-  age_in_years:
-    range: integer
-    description: Number of years since birth
-  vital_status:
-    range: PersonStatus
-    description: living or dead status
-
-enums:
-  PersonStatus:
-    description:
-      The vital status of a person
-    permissible_values:
-      ALIVE:
-        description: the person is living
-        meaning: PATO:0001421
-      DEAD:
-        description: the person is deceased
-        meaning: PATO:0001422
-      UNKNOWN:
-        description: the vital status is not known
-        todos:
-          - map this to an ontology

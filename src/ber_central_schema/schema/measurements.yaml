@@ -1,0 +1,94 @@
+id: https://w3id.org/ber-data/bridge-measurements
+name: measurements
+title: BRIDGE Measurements Module
+description: Stub classes for the unified BRIDGE measurement model.
+license: BSD-3
+version: 0.2.0
+
+prefixes:
+  bridge: https://w3id.org/ber-data/bridge-measurements/
+  linkml: https://w3id.org/linkml/
+  bervo: https://w3id.org/bervo/
+  nmdc: https://w3id.org/nmdc/
+  sosa: http://www.w3.org/ns/sosa/
+
+default_prefix: bridge
+default_range: string
+
+imports:
+  - linkml:types
+
+classes:
+
+  MeasurementValue:
+    abstract: true
+    description: >-
+      The polymorphic result of an observation or measurement; root of the
+      result-value family.
+    exact_mappings:
+      - nmdc:AttributeValue
+    slots:
+      - raw_value
+
+  QuantityValue:
+    is_a: MeasurementValue
+    description: A numeric value with a unit.
+    exact_mappings:
+      - nmdc:QuantityValue
+    slots:
+      - numeric_value
+      - unit
+
+  Observation:
+    description: >-
+      An act of observing a property of a feature of interest, yielding a
+      result (OGC O&M / SOSA shape).
+    exact_mappings:
+      - sosa:Observation
+    slots:
+      - observed_property
+      # - feature_of_interest   # TODO: deferred - gets into (Bio)sample
+      #   territory; restore once the shared BRIDGE Sample/FeatureOfInterest
+      #   role class is designed (harmonization row 3).
+      - result
+
+  Measurement:
+    is_a: Observation
+    description: An observation whose result is a quantity.
+    slot_usage:
+      result:
+        range: QuantityValue
+      observed_property:
+        pattern: "^bervo:BERVO_\\d{7}$"
+        comments:
+          - >-
+            Example constraint: narrows observed_property to BERVO Variable
+            CURIEs (e.g. bervo:BERVO_0000001). Sources whose properties are
+            not yet in BERVO would use Observation, or this pattern widens
+            to alternate vocabularies as they are admitted.
+
+slots:
+
+  observed_property:
+    range: uriorcurie
+    description: The property observed; a BERVO Variable CURIE when one exists.
+
+  # TODO (sample): feature_of_interest deferred for now - overlaps with
+  # Biosample/Sample modeling. Reinstate when the sample module exists.
+  # feature_of_interest:
+  #   range: uriorcurie
+  #   description: The entity the property was observed on.
+
+  result:
+    range: MeasurementValue
+    inlined: true
+    description: The result of the observation.
+
+  raw_value:
+    description: The value exactly as it appeared at the source.
+
+  numeric_value:
+    range: double
+
+  unit:
+    description: UCUM code preferred.
