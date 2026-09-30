@@ -28,8 +28,15 @@ classes:
     slots:
       - raw_value
 
-  QuantityValue:
+  MeasurementValue:
     is_a: AttributeValue
+    abstract: true
+    description: >-
+      The polymorphic result of an observation or measurement; root of the
+      result-value family.
+
+  QuantityValue:
+    is_a: MeasurementValue
     description: A numeric value with a unit.
     exact_mappings:
       - nmdc:QuantityValue
@@ -66,7 +73,7 @@ slots:
     description: The entity the property was observed on.
 
   result:
-    range: AttributeValue
+    range: MeasurementValue
     inlined: true
     description: The result of the observation.
 
