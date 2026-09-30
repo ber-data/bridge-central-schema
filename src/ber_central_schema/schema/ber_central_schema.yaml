@@ -21,8 +21,7 @@ see_also:
   - https://github.com/ber-data/lakehouse-registry
 
 prefixes:
-  ber_central_schema: https://w3id.org/ber-data/bridge-central-schema/
-  bridge: https://w3id.org/ber-data/bridge-measurements/
+  bridge_central_schema: https://w3id.org/ber-data/bridge-central-schema/
   linkml: https://w3id.org/linkml/
   schema: http://schema.org/
 default_prefix: ber_central_schema
