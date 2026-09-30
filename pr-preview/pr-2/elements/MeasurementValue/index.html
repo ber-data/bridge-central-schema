@@ -295,24 +295,16 @@
 <pre class="mermaid"><code> classDiagram
     class MeasurementValue
     click MeasurementValue href "../MeasurementValue/"
-      AttributeValue &lt;|-- MeasurementValue
-        click AttributeValue href "../AttributeValue/"
-
-
       MeasurementValue &lt;|-- QuantityValue
         click QuantityValue href "../QuantityValue/"
-
 
       MeasurementValue : raw_value
 
 </code></pre>
 <h2 id="inheritance">Inheritance</h2>
 <ul>
-<li><a href="../AttributeValue/">AttributeValue</a><ul>
 <li><strong>MeasurementValue</strong><ul>
 <li><a href="../QuantityValue/">QuantityValue</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -331,7 +323,7 @@
 <td><a href="../raw_value/">raw_value</a></td>
 <td>0..1 <br/> <a href="../String/">String</a></td>
 <td>The value exactly as it appeared at the source</td>
-<td><a href="../AttributeValue/">AttributeValue</a></td>
+<td>direct</td>
 </tr>
 </tbody>
 </table>
@@ -376,6 +368,10 @@
 <td>native</td>
 <td>bridge_central_schema:MeasurementValue</td>
 </tr>
+<tr>
+<td>exact</td>
+<td>nmdc:AttributeValue</td>
+</tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
@@ -386,8 +382,11 @@
 <span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The polymorphic result of an observation or measurement; root of the</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">result-value family.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
-<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AttributeValue</span>
+<span class="nt">exact_mappings</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:AttributeValue</span>
 <span class="nt">abstract</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">slots</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">raw_value</span>
 </code></pre></div>
 </details>
 <h3 id="induced">Induced</h3>
@@ -396,7 +395,8 @@
 <span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The polymorphic result of an observation or measurement; root of the</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">result-value family.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
-<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AttributeValue</span>
+<span class="nt">exact_mappings</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:AttributeValue</span>
 <span class="nt">abstract</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">raw_value</span><span class="p">:</span>
@@ -406,7 +406,7 @@
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementValue</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AttributeValue</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementValue</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 </code></pre></div>
 </details>

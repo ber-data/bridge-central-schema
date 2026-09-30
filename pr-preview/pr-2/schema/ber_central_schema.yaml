@@ -368,9 +368,9 @@ slots:
     description: The value exactly as it appeared at the source.
     from_schema: https://w3id.org/ber-data/bridge-measurements
     slot_uri: bridge:raw_value
-    owner: AttributeValue
+    owner: MeasurementValue
     domain_of:
-    - AttributeValue
+    - MeasurementValue
     range: string
   numeric_value:
     name: numeric_value
@@ -421,24 +421,14 @@ classes:
     - name
     - description
     class_uri: schema:Thing
-  AttributeValue:
-    name: AttributeValue
-    definition_uri: https://w3id.org/ber-data/bridge-measurements/AttributeValue
-    description: The value of an attribute.
-    from_schema: https://w3id.org/ber-data/bridge-measurements
-    exact_mappings:
-    - nmdc:AttributeValue
-    abstract: true
-    slots:
-    - raw_value
-    class_uri: bridge:AttributeValue
   MeasurementValue:
     name: MeasurementValue
     definition_uri: https://w3id.org/ber-data/bridge-measurements/MeasurementValue
     description: The polymorphic result of an observation or measurement; root of
       the result-value family.
     from_schema: https://w3id.org/ber-data/bridge-measurements
-    is_a: AttributeValue
+    exact_mappings:
+    - nmdc:AttributeValue
     abstract: true
     slots:
     - raw_value
@@ -486,7 +476,7 @@ classes:
     class_uri: bridge:Measurement
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-09-30T17:38:52'
+source_file_date: '2026-09-30T17:39:25'
 source_file_size: 1176
-generation_date: '2026-09-30T17:39:02'
+generation_date: '2026-09-30T17:39:35'
 
