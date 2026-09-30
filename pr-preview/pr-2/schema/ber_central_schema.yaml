@@ -340,16 +340,6 @@ slots:
     domain_of:
     - Observation
     range: uriorcurie
-  feature_of_interest:
-    name: feature_of_interest
-    definition_uri: https://w3id.org/ber-data/bridge-measurements/feature_of_interest
-    description: The entity the property was observed on.
-    from_schema: https://w3id.org/ber-data/bridge-measurements
-    slot_uri: bridge:feature_of_interest
-    owner: Observation
-    domain_of:
-    - Observation
-    range: uriorcurie
   result:
     name: result
     definition_uri: https://w3id.org/ber-data/bridge-measurements/result
@@ -476,7 +466,6 @@ classes:
     - sosa:Observation
     slots:
     - observed_property
-    - feature_of_interest
     - result
     class_uri: bridge:Observation
   Measurement:
@@ -486,7 +475,6 @@ classes:
     from_schema: https://w3id.org/ber-data/bridge-measurements
     is_a: Observation
     slots:
-    - feature_of_interest
     - Measurement_result
     - Measurement_observed_property
     slot_usage:
@@ -504,7 +492,7 @@ classes:
     class_uri: bridge:Measurement
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-09-30T17:40:38'
+source_file_date: '2026-09-30T17:42:44'
 source_file_size: 1176
-generation_date: '2026-09-30T17:40:47'
+generation_date: '2026-09-30T17:42:51'
 
