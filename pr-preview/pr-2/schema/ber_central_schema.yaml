@@ -1,0 +1,1980 @@
+name: ber-central-schema
+description: "The central BRIDGE schema for harmonized cross-BER data access. This\
+  \ root\nschema defines the shared base elements and composes domain modules; each\n\
+  module corresponds to one or more rows of the BER harmonization-targets\nmatrix\
+  \ (see the lakehouse-registry repo).\n\nModules:\n- measurements.yaml: the unified\
+  \ Measurement / ObservedProperty model\n  (harmonization rows: Measurement/observation,\
+  \ Observed property,\n  QuantityValue). Designed at the 2026-09-30 BER hackathon\
+  \ against NMDC,\n  BASALT, and BASIN-3D as reference schemas, with BERVO as the\
+  \ primary\n  observed-property vocabulary.\n\nPlanned modules (not yet designed):\n\
+  - feature-of-interest (Sample / Site / ObservationTarget role class)\n- agents (Person\
+  \ / Organization / Contribution)\n- datasets (Dataset / DataObject / Study)"
+title: BRIDGE Central Schema
+see_also:
+- https://github.com/ber-data/bridge-central-schema
+- https://github.com/ber-data/lakehouse-registry
+id: https://w3id.org/ber-data/bridge-central-schema
+imports:
+- linkml:types
+- measurements
+license: Apache-2.0
+prefixes:
+  ber_central_schema:
+    prefix_prefix: ber_central_schema
+    prefix_reference: https://w3id.org/ber-data/bridge-central-schema/
+  bridge:
+    prefix_prefix: bridge
+    prefix_reference: https://w3id.org/ber-data/bridge-measurements/
+  linkml:
+    prefix_prefix: linkml
+    prefix_reference: https://w3id.org/linkml/
+  schema:
+    prefix_prefix: schema
+    prefix_reference: http://schema.org/
+default_prefix: ber_central_schema
+default_range: string
+types:
+  string:
+    name: string
+    definition_uri: https://w3id.org/linkml/String
+    description: A character string
+    notes:
+    - In RDF serializations, a slot with range of string is treated as a literal or
+      type xsd:string. If you are authoring schemas in LinkML YAML, the type is referenced
+      with the lower case "string".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Text
+    base: str
+    uri: xsd:string
+  integer:
+    name: integer
+    definition_uri: https://w3id.org/linkml/Integer
+    description: An integer
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "integer".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Integer
+    base: int
+    uri: xsd:integer
+  boolean:
+    name: boolean
+    definition_uri: https://w3id.org/linkml/Boolean
+    description: A binary (true or false) value
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "boolean".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Boolean
+    base: Bool
+    uri: xsd:boolean
+    repr: bool
+  float:
+    name: float
+    definition_uri: https://w3id.org/linkml/Float
+    description: A real number that conforms to the xsd:float specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "float".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Float
+    base: float
+    uri: xsd:float
+  double:
+    name: double
+    definition_uri: https://w3id.org/linkml/Double
+    description: A real number that conforms to the xsd:double specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "double".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    close_mappings:
+    - schema:Float
+    base: float
+    uri: xsd:double
+  decimal:
+    name: decimal
+    definition_uri: https://w3id.org/linkml/Decimal
+    description: A real number with arbitrary precision that conforms to the xsd:decimal
+      specification
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "decimal".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    broad_mappings:
+    - schema:Number
+    base: Decimal
+    uri: xsd:decimal
+  time:
+    name: time
+    definition_uri: https://w3id.org/linkml/Time
+    description: A time object represents a (local) time of day, independent of any
+      particular day
+    notes:
+    - URI is dateTime because OWL reasoners do not work with straight date or time
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "time".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Time
+    base: XSDTime
+    uri: xsd:time
+    repr: str
+  date:
+    name: date
+    definition_uri: https://w3id.org/linkml/Date
+    description: a date (year, month and day) in an idealized calendar
+    notes:
+    - URI is dateTime because OWL reasoners don't work with straight date or time
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "date".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:Date
+    base: XSDDate
+    uri: xsd:date
+    repr: str
+  datetime:
+    name: datetime
+    definition_uri: https://w3id.org/linkml/Datetime
+    description: The combination of a date and time
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "datetime".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    exact_mappings:
+    - schema:DateTime
+    base: XSDDateTime
+    uri: xsd:dateTime
+    repr: str
+  date_or_datetime:
+    name: date_or_datetime
+    definition_uri: https://w3id.org/linkml/DateOrDatetime
+    description: Either a date or a datetime
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "date_or_datetime".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: linkml:DateOrDatetime
+    repr: str
+  uriorcurie:
+    name: uriorcurie
+    definition_uri: https://w3id.org/linkml/Uriorcurie
+    description: a URI or a CURIE
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "uriorcurie".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: URIorCURIE
+    uri: xsd:anyURI
+    repr: str
+  curie:
+    name: curie
+    definition_uri: https://w3id.org/linkml/Curie
+    conforms_to: https://www.w3.org/TR/curie/
+    description: a compact URI
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "curie".
+    comments:
+    - in RDF serializations this MUST be expanded to a URI
+    - in non-RDF serializations MAY be serialized as the compact representation
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: Curie
+    uri: xsd:string
+    repr: str
+  uri:
+    name: uri
+    definition_uri: https://w3id.org/linkml/Uri
+    conforms_to: https://www.ietf.org/rfc/rfc3987.txt
+    description: a complete URI
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "uri".
+    comments:
+    - in RDF serializations a slot with range of uri is treated as a literal or type
+      xsd:anyURI unless it is an identifier or a reference to an identifier, in which
+      case it is translated directly to a node
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    close_mappings:
+    - schema:URL
+    base: URI
+    uri: xsd:anyURI
+    repr: str
+  ncname:
+    name: ncname
+    definition_uri: https://w3id.org/linkml/Ncname
+    description: Prefix part of CURIE
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "ncname".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: NCName
+    uri: xsd:string
+    repr: str
+  objectidentifier:
+    name: objectidentifier
+    definition_uri: https://w3id.org/linkml/Objectidentifier
+    description: A URI or CURIE that represents an object in the model.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "objectidentifier".
+    comments:
+    - Used for inheritance and type checking
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: ElementIdentifier
+    uri: shex:iri
+    repr: str
+  nodeidentifier:
+    name: nodeidentifier
+    definition_uri: https://w3id.org/linkml/Nodeidentifier
+    description: A URI, CURIE or BNODE that represents a node in a model.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "nodeidentifier".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: NodeIdentifier
+    uri: shex:nonLiteral
+    repr: str
+  jsonpointer:
+    name: jsonpointer
+    definition_uri: https://w3id.org/linkml/Jsonpointer
+    conforms_to: https://datatracker.ietf.org/doc/html/rfc6901
+    description: A string encoding a JSON Pointer. The value of the string MUST conform
+      to JSON Point syntax and SHOULD dereference to a valid object within the current
+      instance document when encoded in tree form.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "jsonpointer".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: xsd:string
+    repr: str
+  jsonpath:
+    name: jsonpath
+    definition_uri: https://w3id.org/linkml/Jsonpath
+    conforms_to: https://www.ietf.org/archive/id/draft-goessner-dispatch-jsonpath-00.html
+    description: A string encoding a JSON Path. The value of the string MUST conform
+      to JSON Point syntax and SHOULD dereference to zero or more valid objects within
+      the current instance document when encoded in tree form.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "jsonpath".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: xsd:string
+    repr: str
+  sparqlpath:
+    name: sparqlpath
+    definition_uri: https://w3id.org/linkml/Sparqlpath
+    conforms_to: https://www.w3.org/TR/sparql11-query/#propertypaths
+    description: A string encoding a SPARQL Property Path. The value of the string
+      MUST conform to SPARQL syntax and SHOULD dereference to zero or more valid objects
+      within the current instance document when encoded as RDF.
+    notes:
+    - If you are authoring schemas in LinkML YAML, the type is referenced with the
+      lower case "sparqlpath".
+    from_schema: https://w3id.org/linkml/types
+    imported_from: linkml:types
+    base: str
+    uri: xsd:string
+    repr: str
+enums:
+  ValueTypeEnum:
+    name: ValueTypeEnum
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/ValueTypeEnum
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    permissible_values:
+      QUANTITATIVE:
+        text: QUANTITATIVE
+        meaning: bervo:BERVO_8000244
+      QUALITATIVE:
+        text: QUALITATIVE
+  FeatureOfInterestTypeEnum:
+    name: FeatureOfInterestTypeEnum
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/FeatureOfInterestTypeEnum
+    description: Coarse type of the thing measured. Members are categorially disjoint
+      (material sample vs site vs experimental unit) - this enum is the role-based
+      discriminator from harmonization row 3.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    permissible_values:
+      SAMPLE:
+        text: SAMPLE
+        description: A material specimen (NMDC Biosample, BASALT Sample, lambda Sample).
+      PROCESSED_SAMPLE:
+        text: PROCESSED_SAMPLE
+        description: A derived/processed specimen (extract, core section, filtrate).
+      SITE:
+        text: SITE
+        description: An in-situ location (NMDC FieldResearchSite, BASALT Site).
+      MONITORING_FEATURE:
+        text: MONITORING_FEATURE
+        description: A BASIN-3D monitoring/sampling feature (point, plot, watershed...).
+      PLATE_WELL:
+        text: PLATE_WELL
+        description: A well in a plate assay (BASALT WellReading position).
+      ORGANISM:
+        text: ORGANISM
+        description: An organism or culture (MIAPPE ObservationUnit, strain).
+      ECOSYSTEM:
+        text: ECOSYSTEM
+        description: An ecosystem/landscape unit (EcoSIM/BERVO ecosystem-context variables,
+          flux towers).
+      OTHER:
+        text: OTHER
+  SamplingMediumEnum:
+    name: SamplingMediumEnum
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/SamplingMediumEnum
+    description: BASIN-3D SamplingMediumEnum extended for lab matrices.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    permissible_values:
+      WATER:
+        text: WATER
+      GAS:
+        text: GAS
+      SOLID_PHASE:
+        text: SOLID_PHASE
+        description: Soil, sediment, rock.
+      SEDIMENT:
+        text: SEDIMENT
+      TISSUE:
+        text: TISSUE
+        description: Plant or other biological tissue.
+      CULTURE_MEDIUM:
+        text: CULTURE_MEDIUM
+      OTHER:
+        text: OTHER
+      NOT_APPLICABLE:
+        text: NOT_APPLICABLE
+  StatisticEnum:
+    name: StatisticEnum
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/StatisticEnum
+    description: BASIN-3D StatisticEnum plus summary statistics needed by BASALT averages
+      and plate reads.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    permissible_values:
+      INSTANT:
+        text: INSTANT
+      MEAN:
+        text: MEAN
+      MIN:
+        text: MIN
+      MAX:
+        text: MAX
+      TOTAL:
+        text: TOTAL
+      MEDIAN:
+        text: MEDIAN
+      STANDARD_DEVIATION:
+        text: STANDARD_DEVIATION
+      COEFFICIENT_OF_VARIATION:
+        text: COEFFICIENT_OF_VARIATION
+        description: e.g. plate cv_percent.
+      OTHER:
+        text: OTHER
+  AggregationDurationEnum:
+    name: AggregationDurationEnum
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/AggregationDurationEnum
+    description: BASIN-3D AggregationDurationEnum (OGC TM_PeriodDuration).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    permissible_values:
+      YEAR:
+        text: YEAR
+      MONTH:
+        text: MONTH
+      DAY:
+        text: DAY
+      HOUR:
+        text: HOUR
+      MINUTE:
+        text: MINUTE
+      SECOND:
+        text: SECOND
+      NONE:
+        text: NONE
+        description: Instantaneous.
+  TimeReferencePositionEnum:
+    name: TimeReferencePositionEnum
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/TimeReferencePositionEnum
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    permissible_values:
+      START:
+        text: START
+      MIDDLE:
+        text: MIDDLE
+      END:
+        text: END
+  ReplicateRoleEnum:
+    name: ReplicateRoleEnum
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/ReplicateRoleEnum
+    description: BASALT ProductMeasureType.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    permissible_values:
+      SINGLE:
+        text: SINGLE
+      REPLICATE:
+        text: REPLICATE
+      AVERAGE:
+        text: AVERAGE
+  ResultQualityStatusEnum:
+    name: ResultQualityStatusEnum
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/ResultQualityStatusEnum
+    description: Coarse validation status (BASIN-3D ResultQualityEnum). Source synonyms
+      documented per value; map source codes here via SourceTermMapping.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    permissible_values:
+      VALIDATED:
+        text: VALIDATED
+        description: Checked / Accepted / Pass / OK / Good / USGS "A" (Approved).
+      UNVALIDATED:
+        text: UNVALIDATED
+        description: Unchecked / Preliminary / No QC / USGS "P" (Provisional).
+      SUSPECT:
+        text: SUSPECT
+        description: Questionable / Doubtful / Spike-Noise / Flagged.
+      REJECTED:
+        text: REJECTED
+        description: Poor / Bad / Unaccepted / Failed QC.
+      ESTIMATED:
+        text: ESTIMATED
+        description: Interpolated / Modeled / Gap-filled.
+  QualityFlagEnum:
+    name: QualityFlagEnum
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/QualityFlagEnum
+    description: 'Fine-grained QC flags: union of BASALT ProcessedDataFlag and plate-well
+      flags. A measurement may carry several.'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    permissible_values:
+      BELOW_DETECTION_LIMIT:
+        text: BELOW_DETECTION_LIMIT
+      BELOW_REPORTING_LIMIT:
+        text: BELOW_REPORTING_LIMIT
+      OUT_OF_RANGE:
+        text: OUT_OF_RANGE
+      OUTLIER:
+        text: OUTLIER
+      HIGH_BACKGROUND:
+        text: HIGH_BACKGROUND
+      FAILED_QC:
+        text: FAILED_QC
+      INSUFFICIENT_MATERIAL:
+        text: INSUFFICIENT_MATERIAL
+      DATA_NOT_AVAILABLE:
+        text: DATA_NOT_AVAILABLE
+      BLANK:
+        text: BLANK
+        description: Blank/control reading (plate assays).
+      CONTAMINATED:
+        text: CONTAMINATED
+slots:
+  name:
+    name: name
+    definition_uri: https://w3id.org/ber-data/bridge-central-schema/name
+    description: A human-readable name for a thing
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
+    mappings:
+    - schema:name
+    slot_uri: schema:name
+    owner: NamedThing
+    domain_of:
+    - NamedThing
+    range: string
+  description:
+    name: description
+    definition_uri: https://w3id.org/ber-data/bridge-central-schema/description
+    description: A human-readable description for a thing
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
+    mappings:
+    - schema:description
+    slot_uri: schema:description
+    owner: NamedThing
+    domain_of:
+    - NamedThing
+    range: string
+  id:
+    name: id
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/id
+    description: Unique id. For lakehouse-materialized measurement rows a UUID or
+      source-derived deterministic id (e.g. "{datasource}:{source_record}:{source_term}").
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:id
+    identifier: true
+    owner: MeasurementCollection
+    domain_of:
+    - NamedThing
+    - Measurement
+    - MeasurementCollection
+    range: uriorcurie
+    required: true
+  type:
+    name: type
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/type
+    description: Class designator (NMDC convention) so polymorphic rows/documents
+      resolve to their class.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    mappings:
+    - rdf:type
+    slot_uri: rdf:type
+    designates_type: true
+    owner: MeasurementCollection
+    domain_of:
+    - NamedThing
+    - MeasurementValue
+    - Measurement
+    - MeasurementCollection
+    range: uriorcurie
+  result:
+    name: result
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/result
+    description: Polymorphic result; type designator on the value picks the subclass.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - sosa:hasResult
+    slot_uri: bridge:result
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: MeasurementValue
+    required: true
+    inlined: true
+    inlined_as_list: true
+  raw_value:
+    name: raw_value
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/raw_value
+    description: The value exactly as it appeared at the source ("65 umol/L", "2-4
+      cm", "Fair"), preserved verbatim for provenance and re-parsing.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - nmdc:has_raw_value
+    slot_uri: bridge:raw_value
+    owner: MeasurementValue
+    domain_of:
+    - MeasurementValue
+    range: string
+  bridgeDatabase__observed_properties:
+    name: bridgeDatabase__observed_properties
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
+    slot_uri: ber_central_schema:observed_properties
+    alias: observed_properties
+    owner: BridgeDatabase
+    domain_of:
+    - BridgeDatabase
+    range: ObservedProperty
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  bridgeDatabase__source_term_mappings:
+    name: bridgeDatabase__source_term_mappings
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
+    slot_uri: ber_central_schema:source_term_mappings
+    alias: source_term_mappings
+    owner: BridgeDatabase
+    domain_of:
+    - BridgeDatabase
+    range: SourceTermMapping
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  bridgeDatabase__measurement_collections:
+    name: bridgeDatabase__measurement_collections
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
+    slot_uri: ber_central_schema:measurement_collections
+    alias: measurement_collections
+    owner: BridgeDatabase
+    domain_of:
+    - BridgeDatabase
+    range: MeasurementCollection
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  bridgeDatabase__measurements:
+    name: bridgeDatabase__measurements
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
+    slot_uri: ber_central_schema:measurements
+    alias: measurements
+    owner: BridgeDatabase
+    domain_of:
+    - BridgeDatabase
+    range: Measurement
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  observedProperty__id:
+    name: observedProperty__id
+    description: BERVO CURIE preferred; else source vocabulary CURIE or bridge-minted
+      id.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:id
+    identifier: true
+    alias: id
+    owner: ObservedProperty
+    domain_of:
+    - ObservedProperty
+    range: uriorcurie
+    required: true
+  observedProperty__label:
+    name: observedProperty__label
+    description: Human-readable name, e.g. "Nitrate", "Soil respiration".
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:label
+    alias: label
+    owner: ObservedProperty
+    domain_of:
+    - ObservedProperty
+    range: string
+    required: true
+  observedProperty__description:
+    name: observedProperty__description
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:description
+    alias: description
+    owner: ObservedProperty
+    domain_of:
+    - ObservedProperty
+    range: string
+  observedProperty__categories:
+    name: observedProperty__categories
+    description: Classification path in priority order (BASIN-3D style), e.g. ["Biogeochemistry",
+      "Anions"]. Use BERVO upper-level variable branches (e.g. "Soil biogeochemistry
+      variable") when possible.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:categories
+    alias: categories
+    owner: ObservedProperty
+    domain_of:
+    - ObservedProperty
+    range: string
+    multivalued: true
+  observedProperty__measurement_of:
+    name: observedProperty__measurement_of
+    description: The entity or quality quantified, e.g. a CHEBI analyte or PATO quality.
+      Mirrors bervo:BERVO_measurement_of.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:measurement_of
+    alias: measurement_of
+    owner: ObservedProperty
+    domain_of:
+    - ObservedProperty
+    range: uriorcurie
+  observedProperty__measured_in:
+    name: observedProperty__measured_in
+    description: The medium/compartment the property is characteristically measured
+      in (e.g. ENVO or BERVO context term). Mirrors bervo:BERVO_measured_in.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:measured_in
+    alias: measured_in
+    owner: ObservedProperty
+    domain_of:
+    - ObservedProperty
+    range: uriorcurie
+  observedProperty__canonical_unit:
+    name: observedProperty__canonical_unit
+    description: Preferred reporting unit as a UCUM code, e.g. "mg/L", "Cel", "umol/L".
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - qudt:unit
+    slot_uri: bridge:canonical_unit
+    alias: canonical_unit
+    owner: ObservedProperty
+    domain_of:
+    - ObservedProperty
+    range: string
+  observedProperty__value_type:
+    name: observedProperty__value_type
+    description: Whether values are quantitative or qualitative. Mirrors bervo:BERVO_has_value_type.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:value_type
+    alias: value_type
+    owner: ObservedProperty
+    domain_of:
+    - ObservedProperty
+    range: ValueTypeEnum
+  observedProperty__source_vocabulary:
+    name: observedProperty__source_vocabulary
+    description: The vocabulary this term originates from, e.g. "BERVO", "MIxS", "USGS-PCode",
+      "BASALT-column".
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:source_vocabulary
+    alias: source_vocabulary
+    owner: ObservedProperty
+    domain_of:
+    - ObservedProperty
+    range: string
+  observedProperty__mappings:
+    name: observedProperty__mappings
+    description: Cross-vocabulary equivalents, e.g. MIXS:0000425, USGS parameter codes
+      as CURIEs.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:mappings
+    alias: mappings
+    owner: ObservedProperty
+    domain_of:
+    - ObservedProperty
+    range: uriorcurie
+    multivalued: true
+  sourceTermMapping__datasource:
+    name: sourceTermMapping__datasource
+    description: Identifier of the contributing source, e.g. "nmdc", "basalt", "usgs",
+      "essdive".
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:datasource
+    alias: datasource
+    owner: SourceTermMapping
+    domain_of:
+    - SourceTermMapping
+    range: string
+    required: true
+  sourceTermMapping__source_term:
+    name: sourceTermMapping__source_term
+    description: 'The source''s native code exactly as it appears in the data: a USGS
+      parameter code ("00010"), an NMDC slot_uri (MIXS:0000425), a BASALT column name
+      ("total_carbon"), a FLUXNET variable ("FC").'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:source_term
+    alias: source_term
+    owner: SourceTermMapping
+    domain_of:
+    - SourceTermMapping
+    range: string
+    required: true
+  sourceTermMapping__source_term_description:
+    name: sourceTermMapping__source_term_description
+    description: The source's own description of the term.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:source_term_description
+    alias: source_term_description
+    owner: SourceTermMapping
+    domain_of:
+    - SourceTermMapping
+    range: string
+  sourceTermMapping__observed_property:
+    name: sourceTermMapping__observed_property
+    description: The BRIDGE observed property this source term maps to.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:observed_property
+    alias: observed_property
+    owner: SourceTermMapping
+    domain_of:
+    - SourceTermMapping
+    range: ObservedProperty
+    inlined: false
+  sourceTermMapping__sampling_medium:
+    name: sourceTermMapping__sampling_medium
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:sampling_medium
+    alias: sampling_medium
+    owner: SourceTermMapping
+    domain_of:
+    - SourceTermMapping
+    range: SamplingMediumEnum
+  sourceTermMapping__statistic:
+    name: sourceTermMapping__statistic
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:statistic
+    alias: statistic
+    owner: SourceTermMapping
+    domain_of:
+    - SourceTermMapping
+    range: StatisticEnum
+  sourceTermMapping__aggregation_duration:
+    name: sourceTermMapping__aggregation_duration
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:aggregation_duration
+    alias: aggregation_duration
+    owner: SourceTermMapping
+    domain_of:
+    - SourceTermMapping
+    range: AggregationDurationEnum
+  sourceTermMapping__quality_status:
+    name: sourceTermMapping__quality_status
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:quality_status
+    alias: quality_status
+    owner: SourceTermMapping
+    domain_of:
+    - SourceTermMapping
+    range: ResultQualityStatusEnum
+  sourceTermMapping__unit:
+    name: sourceTermMapping__unit
+    description: UCUM unit implied by the source term when the source encodes units
+      in the term/column name.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:unit
+    alias: unit
+    owner: SourceTermMapping
+    domain_of:
+    - SourceTermMapping
+    range: string
+  quantityValue__numeric_value:
+    name: quantityValue__numeric_value
+    description: The value; for ranges, use minimum/maximum instead or additionally
+      (midpoint).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - nmdc:has_numeric_value
+    - qudt:quantityValue
+    - schema:value
+    slot_uri: bridge:numeric_value
+    alias: numeric_value
+    owner: QuantityValue
+    domain_of:
+    - QuantityValue
+    range: double
+  quantityValue__minimum_numeric_value:
+    name: quantityValue__minimum_numeric_value
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - nmdc:has_minimum_numeric_value
+    slot_uri: bridge:minimum_numeric_value
+    alias: minimum_numeric_value
+    owner: QuantityValue
+    domain_of:
+    - QuantityValue
+    range: double
+  quantityValue__maximum_numeric_value:
+    name: quantityValue__maximum_numeric_value
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - nmdc:has_maximum_numeric_value
+    slot_uri: bridge:maximum_numeric_value
+    alias: maximum_numeric_value
+    owner: QuantityValue
+    domain_of:
+    - QuantityValue
+    range: double
+  quantityValue__unit:
+    name: quantityValue__unit
+    description: UCUM code strongly preferred (seed the future BRIDGE UnitEnum from
+      NMDC UnitEnum's ~109 UCUM codes). BASALT free-string units and column-name unit
+      suffixes normalize into this slot.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - nmdc:has_unit
+    - qudt:unit
+    - schema:unitCode
+    slot_uri: bridge:unit
+    alias: unit
+    owner: QuantityValue
+    domain_of:
+    - QuantityValue
+    range: string
+  controlledTermValue__term_id:
+    name: controlledTermValue__term_id
+    description: e.g. a PATO, ENVO, or CHEBI CURIE.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - nmdc:has_value_term_id
+    slot_uri: bridge:term_id
+    alias: term_id
+    owner: ControlledTermValue
+    domain_of:
+    - ControlledTermValue
+    range: uriorcurie
+  controlledTermValue__term_label:
+    name: controlledTermValue__term_label
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:term_label
+    alias: term_label
+    owner: ControlledTermValue
+    domain_of:
+    - ControlledTermValue
+    range: string
+  textValue__text_value:
+    name: textValue__text_value
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:text_value
+    alias: text_value
+    owner: TextValue
+    domain_of:
+    - TextValue
+    range: string
+  textValue__language:
+    name: textValue__language
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:language
+    alias: language
+    owner: TextValue
+    domain_of:
+    - TextValue
+    range: string
+  booleanValue__boolean_value:
+    name: booleanValue__boolean_value
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:boolean_value
+    alias: boolean_value
+    owner: BooleanValue
+    domain_of:
+    - BooleanValue
+    range: boolean
+  timestampValue__datetime_value:
+    name: timestampValue__datetime_value
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - nmdc:has_datetime_value
+    slot_uri: bridge:datetime_value
+    alias: datetime_value
+    owner: TimestampValue
+    domain_of:
+    - TimestampValue
+    range: string
+  timeValuePair__timestamp:
+    name: timeValuePair__timestamp
+    description: ISO-8601.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:timestamp
+    alias: timestamp
+    owner: TimeValuePair
+    domain_of:
+    - TimeValuePair
+    range: string
+    required: true
+  timeValuePair__value:
+    name: timeValuePair__value
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:value
+    alias: value
+    owner: TimeValuePair
+    domain_of:
+    - TimeValuePair
+    range: double
+  timeValuePair__point_quality:
+    name: timeValuePair__point_quality
+    description: Per-point quality, as in BASIN-3D ResultListTVP.result_quality.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:point_quality
+    alias: point_quality
+    owner: TimeValuePair
+    domain_of:
+    - TimeValuePair
+    range: ResultQualityStatusEnum
+  timeSeriesValue__values:
+    name: timeSeriesValue__values
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:values
+    alias: values
+    owner: TimeSeriesValue
+    domain_of:
+    - TimeSeriesValue
+    range: TimeValuePair
+    required: true
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  timeSeriesValue__unit:
+    name: timeSeriesValue__unit
+    description: UCUM code for all points in the series.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:unit
+    alias: unit
+    owner: TimeSeriesValue
+    domain_of:
+    - TimeSeriesValue
+    range: string
+  measurement__observed_property:
+    name: measurement__observed_property
+    description: The BRIDGE/BERVO term for what was measured.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - sosa:observedProperty
+    - nmdc:has_attribute_id
+    slot_uri: bridge:observed_property
+    alias: observed_property
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: ObservedProperty
+    required: true
+    inlined: false
+  measurement__observed_property_source_term:
+    name: measurement__observed_property_source_term
+    description: The verbatim source-native property code (NMDC slot name / MIxS CURIE,
+      BASALT column name, USGS parameter code), preserved for round-tripping. Resolved
+      to observed_property via SourceTermMapping.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:observed_property_source_term
+    alias: observed_property_source_term
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: string
+  measurement__feature_of_interest:
+    name: measurement__feature_of_interest
+    description: 'Id of the entity the property was measured on: an NMDC biosample
+      (nmdc:bsm-...), a BASALT ProcessedSample, a BASIN-3D MonitoringFeature, a plate
+      well''s parent culture, an organism. Kept as a loose pointer so this module
+      doesn''t import every sample/site class; the central BRIDGE FeatureOfInterest
+      role class (harmonization row 3) is the eventual range.'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - sosa:hasFeatureOfInterest
+    slot_uri: bridge:feature_of_interest
+    alias: feature_of_interest
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: uriorcurie
+  measurement__feature_of_interest_type:
+    name: measurement__feature_of_interest_type
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:feature_of_interest_type
+    alias: feature_of_interest_type
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: FeatureOfInterestTypeEnum
+  measurement__feature_position:
+    name: measurement__feature_position
+    description: 'Sub-feature locator when the feature is measured at a position:
+      plate well ("A01"), core section ("TOP"/"MID"/"BTM"), depth interval, timepoint
+      label.'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:feature_position
+    alias: feature_position
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: string
+  measurement__sampling_medium:
+    name: measurement__sampling_medium
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:sampling_medium
+    alias: sampling_medium
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: SamplingMediumEnum
+  measurement__phenomenon_time:
+    name: measurement__phenomenon_time
+    description: ISO-8601 instant or interval when the property applied to the feature
+      (collection/observation time, not lab-analysis time).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - sosa:phenomenonTime
+    slot_uri: bridge:phenomenon_time
+    alias: phenomenon_time
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: string
+  measurement__result_time:
+    name: measurement__result_time
+    description: ISO-8601 time the result was produced (e.g. lab analysis date).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - sosa:resultTime
+    slot_uri: bridge:result_time
+    alias: result_time
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: string
+  measurement__utc_offset:
+    name: measurement__utc_offset
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:utc_offset
+    alias: utc_offset
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: integer
+  measurement__statistic:
+    name: measurement__statistic
+    description: Statistical summary the value represents (MEAN, MAX, ...).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:statistic
+    alias: statistic
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: StatisticEnum
+  measurement__aggregation_duration:
+    name: measurement__aggregation_duration
+    description: Time period over which the statistic applies; NONE for instantaneous.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:aggregation_duration
+    alias: aggregation_duration
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: AggregationDurationEnum
+  measurement__replicate_role:
+    name: measurement__replicate_role
+    description: BASALT measure_type - whether this is a single reading, one replicate,
+      or the average.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:replicate_role
+    alias: replicate_role
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: ReplicateRoleEnum
+  measurement__replicate_number:
+    name: measurement__replicate_number
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:replicate_number
+    alias: replicate_number
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: integer
+  measurement__summary_of:
+    name: measurement__summary_of
+    description: For AVERAGE (or other summary) rows - the member replicate measurements.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:summary_of
+    alias: summary_of
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: Measurement
+    multivalued: true
+    inlined: false
+  measurement__quality_status:
+    name: measurement__quality_status
+    description: Coarse validation status (BASIN-3D ResultQualityEnum).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:quality_status
+    alias: quality_status
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: ResultQualityStatusEnum
+  measurement__quality_flags:
+    name: measurement__quality_flags
+    description: Fine-grained QC flags (BASALT ProcessedDataFlag family); per-measurement,
+      not per-run.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:quality_flags
+    alias: quality_flags
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: QualityFlagEnum
+    multivalued: true
+  measurement__source_quality_label:
+    name: measurement__source_quality_label
+    description: Verbatim source QC code (USGS "A"/"P", BASALT flag, well flag), for
+      round-tripping.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:source_quality_label
+    alias: source_quality_label
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: string
+  measurement__method:
+    name: measurement__method
+    description: Pointer to a Method/Protocol (BASALT *Method classes, NMDC Protocol,
+      MIAPPE Method).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:method
+    alias: method
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: uriorcurie
+  measurement__protocol_url:
+    name: measurement__protocol_url
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:protocol_url
+    alias: protocol_url
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: uriorcurie
+  measurement__instrument:
+    name: measurement__instrument
+    description: Pointer to an Instrument record (harmonization row 28 core - vendor+model).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:instrument
+    alias: instrument
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: uriorcurie
+  measurement__part_of_collection:
+    name: measurement__part_of_collection
+    description: The assay run / product / dataset this measurement belongs to.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:part_of_collection
+    alias: part_of_collection
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: MeasurementCollection
+    inlined: false
+  measurement__was_generated_by:
+    name: measurement__was_generated_by
+    description: 'Pointer to the generating activity: NMDC DataGeneration / WorkflowExecution,
+      BASALT DataGenerationActivity / DataProcessingActivity. Distinguishes direct
+      readings from derived/ model-fitted quantities (e.g. van Genuchten parameters,
+      XCT pore metrics), whose generator is a processing activity.'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:was_generated_by
+    alias: was_generated_by
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: uriorcurie
+  measurement__datasource:
+    name: measurement__datasource
+    description: The contributing source system, e.g. "nmdc", "basalt", "usgs" (BASIN-3D
+      DataSource analog); supports faceting the union table by source.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:datasource
+    alias: datasource
+    owner: Measurement
+    domain_of:
+    - Measurement
+    range: string
+  timeSeriesMeasurement__time_reference_position:
+    name: timeSeriesMeasurement__time_reference_position
+    description: Whether timestamps mark the START, MIDDLE, or END of each aggregation
+      interval.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:time_reference_position
+    alias: time_reference_position
+    owner: TimeSeriesMeasurement
+    domain_of:
+    - TimeSeriesMeasurement
+    range: TimeReferencePositionEnum
+  measurementCollection__name:
+    name: measurementCollection__name
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:name
+    alias: name
+    owner: MeasurementCollection
+    domain_of:
+    - MeasurementCollection
+    range: string
+  measurementCollection__description:
+    name: measurementCollection__description
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:description
+    alias: description
+    owner: MeasurementCollection
+    domain_of:
+    - MeasurementCollection
+    range: string
+  measurementCollection__method:
+    name: measurementCollection__method
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:method
+    alias: method
+    owner: MeasurementCollection
+    domain_of:
+    - MeasurementCollection
+    range: uriorcurie
+  measurementCollection__instrument:
+    name: measurementCollection__instrument
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:instrument
+    alias: instrument
+    owner: MeasurementCollection
+    domain_of:
+    - MeasurementCollection
+    range: uriorcurie
+  measurementCollection__was_generated_by:
+    name: measurementCollection__was_generated_by
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:was_generated_by
+    alias: was_generated_by
+    owner: MeasurementCollection
+    domain_of:
+    - MeasurementCollection
+    range: uriorcurie
+  measurementCollection__data_object:
+    name: measurementCollection__data_object
+    description: Pointer(s) to the source data file(s) (checksum+size+format+URL core,
+      harmonization row 7).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:data_object
+    alias: data_object
+    owner: MeasurementCollection
+    domain_of:
+    - MeasurementCollection
+    range: uriorcurie
+    multivalued: true
+  measurementCollection__summary_metrics:
+    name: measurementCollection__summary_metrics
+    description: Run-level summary key-values (BASALT summary_metrics; plate blank_mean,
+      cv_percent).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:summary_metrics
+    alias: summary_metrics
+    owner: MeasurementCollection
+    domain_of:
+    - MeasurementCollection
+    range: string
+  measurementCollection__datasource:
+    name: measurementCollection__datasource
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:datasource
+    alias: datasource
+    owner: MeasurementCollection
+    domain_of:
+    - MeasurementCollection
+    range: string
+  TimeSeriesMeasurement_result:
+    name: TimeSeriesMeasurement_result
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/result
+    description: Polymorphic result; type designator on the value picks the subclass.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - sosa:hasResult
+    is_a: result
+    domain: TimeSeriesMeasurement
+    slot_uri: bridge:result
+    alias: result
+    owner: TimeSeriesMeasurement
+    domain_of:
+    - TimeSeriesMeasurement
+    is_usage_slot: true
+    usage_slot_name: result
+    range: TimeSeriesValue
+    required: true
+    inlined: true
+    inlined_as_list: true
+classes:
+  NamedThing:
+    name: NamedThing
+    definition_uri: https://w3id.org/ber-data/bridge-central-schema/NamedThing
+    description: 'Generic base for any identifiable BRIDGE entity. Aligns with the
+      id/name/description root shared by twelve BER schemas (harmonization row: "Base
+      / named entity"). Domain classes in future modules (samples, sites, datasets)
+      should derive from this; the measurements module keeps its classes thin and
+      points at NamedThing-derived entities via uriorcurie slots.'
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
+    mappings:
+    - schema:Thing
+    slots:
+    - id
+    - type
+    - name
+    - description
+    class_uri: schema:Thing
+  BridgeDatabase:
+    name: BridgeDatabase
+    definition_uri: https://w3id.org/ber-data/bridge-central-schema/BridgeDatabase
+    description: 'Top-level container for a BRIDGE data exchange document: holds the
+      vocabulary (observed properties, source-term crosswalk) alongside the measurement
+      rows and their run-level groupings.'
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
+    slots:
+    - bridgeDatabase__observed_properties
+    - bridgeDatabase__source_term_mappings
+    - bridgeDatabase__measurement_collections
+    - bridgeDatabase__measurements
+    attributes:
+      observed_properties:
+        name: observed_properties
+        range: ObservedProperty
+        multivalued: true
+        inlined_as_list: true
+      source_term_mappings:
+        name: source_term_mappings
+        range: SourceTermMapping
+        multivalued: true
+        inlined_as_list: true
+      measurement_collections:
+        name: measurement_collections
+        range: MeasurementCollection
+        multivalued: true
+        inlined_as_list: true
+      measurements:
+        name: measurements
+        range: Measurement
+        multivalued: true
+        inlined_as_list: true
+    class_uri: ber_central_schema:BridgeDatabase
+    tree_root: true
+  ObservedProperty:
+    name: ObservedProperty
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/ObservedProperty
+    description: 'A measurable/observable property descriptor: the "what was measured".
+      When a BERVO Variable term exists, id SHOULD be the BERVO CURIE and the descriptor
+      slots (measurement_of, measured_in, canonical_unit, value_type) SHOULD agree
+      with BERVO''s pre-coordinated annotations (bervo:BERVO_measurement_of, bervo:BERVO_measured_in,
+      bervo:BERVO_has_unit, bervo:BERVO_has_value_type). When no BERVO term exists
+      yet, an ObservedProperty may be minted with a source-native or bridge-local
+      id and the same descriptor slots; these are the candidate terms to push upstream
+      into BERVO.'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    mappings:
+    - sosa:ObservableProperty
+    exact_mappings:
+    - bervo:BERVO_0000000
+    slots:
+    - observedProperty__id
+    - observedProperty__label
+    - observedProperty__description
+    - observedProperty__categories
+    - observedProperty__measurement_of
+    - observedProperty__measured_in
+    - observedProperty__canonical_unit
+    - observedProperty__value_type
+    - observedProperty__source_vocabulary
+    - observedProperty__mappings
+    attributes:
+      id:
+        name: id
+        description: BERVO CURIE preferred; else source vocabulary CURIE or bridge-minted
+          id.
+        identifier: true
+        range: uriorcurie
+      label:
+        name: label
+        description: Human-readable name, e.g. "Nitrate", "Soil respiration".
+        required: true
+      description:
+        name: description
+        range: string
+      categories:
+        name: categories
+        description: Classification path in priority order (BASIN-3D style), e.g.
+          ["Biogeochemistry", "Anions"]. Use BERVO upper-level variable branches (e.g.
+          "Soil biogeochemistry variable") when possible.
+        multivalued: true
+      measurement_of:
+        name: measurement_of
+        description: The entity or quality quantified, e.g. a CHEBI analyte or PATO
+          quality. Mirrors bervo:BERVO_measurement_of.
+        range: uriorcurie
+      measured_in:
+        name: measured_in
+        description: The medium/compartment the property is characteristically measured
+          in (e.g. ENVO or BERVO context term). Mirrors bervo:BERVO_measured_in.
+        range: uriorcurie
+      canonical_unit:
+        name: canonical_unit
+        description: Preferred reporting unit as a UCUM code, e.g. "mg/L", "Cel",
+          "umol/L".
+        exact_mappings:
+        - qudt:unit
+      value_type:
+        name: value_type
+        description: Whether values are quantitative or qualitative. Mirrors bervo:BERVO_has_value_type.
+        range: ValueTypeEnum
+      source_vocabulary:
+        name: source_vocabulary
+        description: The vocabulary this term originates from, e.g. "BERVO", "MIxS",
+          "USGS-PCode", "BASALT-column".
+      mappings:
+        name: mappings
+        description: Cross-vocabulary equivalents, e.g. MIXS:0000425, USGS parameter
+          codes as CURIEs.
+        range: uriorcurie
+        multivalued: true
+    class_uri: sosa:ObservableProperty
+  SourceTermMapping:
+    name: SourceTermMapping
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/SourceTermMapping
+    description: 'A crosswalk row binding one data source''s native term to BRIDGE
+      vocabulary, generalizing BASIN-3D''s AttributeMapping. One source code may set
+      several BRIDGE attributes at once (compound mapping): USGS parameter 00010 ("Temperature,
+      water") maps to observed_property=water temperature AND sampling_medium=WATER.
+      Maintained per data source as mapping tables; many-to-one is expected (e.g.
+      ESS-DIVE Gage_Height and Water_Depth both map to one water-level property).'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slots:
+    - sourceTermMapping__datasource
+    - sourceTermMapping__source_term
+    - sourceTermMapping__source_term_description
+    - sourceTermMapping__observed_property
+    - sourceTermMapping__sampling_medium
+    - sourceTermMapping__statistic
+    - sourceTermMapping__aggregation_duration
+    - sourceTermMapping__quality_status
+    - sourceTermMapping__unit
+    attributes:
+      datasource:
+        name: datasource
+        description: Identifier of the contributing source, e.g. "nmdc", "basalt",
+          "usgs", "essdive".
+        required: true
+      source_term:
+        name: source_term
+        description: 'The source''s native code exactly as it appears in the data:
+          a USGS parameter code ("00010"), an NMDC slot_uri (MIXS:0000425), a BASALT
+          column name ("total_carbon"), a FLUXNET variable ("FC").'
+        required: true
+      source_term_description:
+        name: source_term_description
+        description: The source's own description of the term.
+      observed_property:
+        name: observed_property
+        description: The BRIDGE observed property this source term maps to.
+        range: ObservedProperty
+        inlined: false
+      sampling_medium:
+        name: sampling_medium
+        range: SamplingMediumEnum
+      statistic:
+        name: statistic
+        range: StatisticEnum
+      aggregation_duration:
+        name: aggregation_duration
+        range: AggregationDurationEnum
+      quality_status:
+        name: quality_status
+        range: ResultQualityStatusEnum
+      unit:
+        name: unit
+        description: UCUM unit implied by the source term when the source encodes
+          units in the term/column name.
+    class_uri: bridge:SourceTermMapping
+  MeasurementValue:
+    name: MeasurementValue
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/MeasurementValue
+    description: 'Polymorphic result holder. Harmonizes the two BER naming families
+      for value objects: plain (lambda/aims-leaf/BERtron/CDM: value, unit) and NMDC/BASALT
+      has_* (has_numeric_value, has_unit). This schema uses the plain family and declares
+      exact_mappings to the NMDC slots so the crosswalk is mechanical.'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    abstract: true
+    slots:
+    - type
+    - raw_value
+    class_uri: bridge:MeasurementValue
+  QuantityValue:
+    name: QuantityValue
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/QuantityValue
+    description: A scalar or range numeric result with a unit.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - schema:QuantityValue
+    - nmdc:QuantityValue
+    is_a: MeasurementValue
+    slots:
+    - type
+    - raw_value
+    - quantityValue__numeric_value
+    - quantityValue__minimum_numeric_value
+    - quantityValue__maximum_numeric_value
+    - quantityValue__unit
+    attributes:
+      numeric_value:
+        name: numeric_value
+        description: The value; for ranges, use minimum/maximum instead or additionally
+          (midpoint).
+        exact_mappings:
+        - nmdc:has_numeric_value
+        - qudt:quantityValue
+        - schema:value
+        range: double
+      minimum_numeric_value:
+        name: minimum_numeric_value
+        exact_mappings:
+        - nmdc:has_minimum_numeric_value
+        range: double
+      maximum_numeric_value:
+        name: maximum_numeric_value
+        exact_mappings:
+        - nmdc:has_maximum_numeric_value
+        range: double
+      unit:
+        name: unit
+        description: UCUM code strongly preferred (seed the future BRIDGE UnitEnum
+          from NMDC UnitEnum's ~109 UCUM codes). BASALT free-string units and column-name
+          unit suffixes normalize into this slot.
+        exact_mappings:
+        - nmdc:has_unit
+        - qudt:unit
+        - schema:unitCode
+    class_uri: bridge:QuantityValue
+  ControlledTermValue:
+    name: ControlledTermValue
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/ControlledTermValue
+    description: A categorical result drawn from an ontology or controlled vocabulary.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    is_a: MeasurementValue
+    slots:
+    - type
+    - raw_value
+    - controlledTermValue__term_id
+    - controlledTermValue__term_label
+    attributes:
+      term_id:
+        name: term_id
+        description: e.g. a PATO, ENVO, or CHEBI CURIE.
+        exact_mappings:
+        - nmdc:has_value_term_id
+        range: uriorcurie
+      term_label:
+        name: term_label
+        range: string
+    class_uri: bridge:ControlledTermValue
+  TextValue:
+    name: TextValue
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/TextValue
+    description: A free-text result; the fallback when nothing more structured applies.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    is_a: MeasurementValue
+    slots:
+    - type
+    - raw_value
+    - textValue__text_value
+    - textValue__language
+    attributes:
+      text_value:
+        name: text_value
+        range: string
+      language:
+        name: language
+        range: string
+    class_uri: bridge:TextValue
+  BooleanValue:
+    name: BooleanValue
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/BooleanValue
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    is_a: MeasurementValue
+    slots:
+    - type
+    - raw_value
+    - booleanValue__boolean_value
+    attributes:
+      boolean_value:
+        name: boolean_value
+        range: boolean
+    class_uri: bridge:BooleanValue
+  TimestampValue:
+    name: TimestampValue
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/TimestampValue
+    description: A date/time result, ISO-8601 in raw_value.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    is_a: MeasurementValue
+    slots:
+    - type
+    - raw_value
+    - timestampValue__datetime_value
+    attributes:
+      datetime_value:
+        name: datetime_value
+        exact_mappings:
+        - nmdc:has_datetime_value
+        range: string
+    class_uri: bridge:TimestampValue
+  TimeValuePair:
+    name: TimeValuePair
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/TimeValuePair
+    description: One point in a time series (BASIN-3D TVP).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slots:
+    - timeValuePair__timestamp
+    - timeValuePair__value
+    - timeValuePair__point_quality
+    attributes:
+      timestamp:
+        name: timestamp
+        description: ISO-8601.
+        required: true
+      value:
+        name: value
+        range: double
+      point_quality:
+        name: point_quality
+        description: Per-point quality, as in BASIN-3D ResultListTVP.result_quality.
+        range: ResultQualityStatusEnum
+    class_uri: bridge:TimeValuePair
+  TimeSeriesValue:
+    name: TimeSeriesValue
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/TimeSeriesValue
+    description: 'A timeseries result (BASIN-3D MeasurementTimeseriesTVPResultMixin).
+      Series-level unit lives on the owning Measurement''s slots via a QuantityValue-free
+      convention: put the unit in `unit` here.'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    is_a: MeasurementValue
+    slots:
+    - type
+    - raw_value
+    - timeSeriesValue__values
+    - timeSeriesValue__unit
+    attributes:
+      values:
+        name: values
+        range: TimeValuePair
+        required: true
+        multivalued: true
+        inlined_as_list: true
+      unit:
+        name: unit
+        description: UCUM code for all points in the series.
+    class_uri: bridge:TimeSeriesValue
+  Measurement:
+    name: Measurement
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/Measurement
+    description: 'A single act/record of measuring one observed property of one feature
+      of interest, yielding one result. This is the union row: NMDC Biosample.<mixs_slot>
+      values, BASALT product columns, and BASIN-3D observations all project into it.
+      Deliberately EAV-shaped so that lakehouse-wide search ("all nitrate measurements
+      across NMDC, MONet, and watershed timeseries") is a single-table query.'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - sosa:Observation
+    close_mappings:
+    - nmdc:PropertyAssertion
+    slots:
+    - id
+    - type
+    - result
+    - measurement__observed_property
+    - measurement__observed_property_source_term
+    - measurement__feature_of_interest
+    - measurement__feature_of_interest_type
+    - measurement__feature_position
+    - measurement__sampling_medium
+    - measurement__phenomenon_time
+    - measurement__result_time
+    - measurement__utc_offset
+    - measurement__statistic
+    - measurement__aggregation_duration
+    - measurement__replicate_role
+    - measurement__replicate_number
+    - measurement__summary_of
+    - measurement__quality_status
+    - measurement__quality_flags
+    - measurement__source_quality_label
+    - measurement__method
+    - measurement__protocol_url
+    - measurement__instrument
+    - measurement__part_of_collection
+    - measurement__was_generated_by
+    - measurement__datasource
+    attributes:
+      observed_property:
+        name: observed_property
+        description: The BRIDGE/BERVO term for what was measured.
+        exact_mappings:
+        - sosa:observedProperty
+        - nmdc:has_attribute_id
+        range: ObservedProperty
+        required: true
+        inlined: false
+      observed_property_source_term:
+        name: observed_property_source_term
+        description: The verbatim source-native property code (NMDC slot name / MIxS
+          CURIE, BASALT column name, USGS parameter code), preserved for round-tripping.
+          Resolved to observed_property via SourceTermMapping.
+      feature_of_interest:
+        name: feature_of_interest
+        description: 'Id of the entity the property was measured on: an NMDC biosample
+          (nmdc:bsm-...), a BASALT ProcessedSample, a BASIN-3D MonitoringFeature,
+          a plate well''s parent culture, an organism. Kept as a loose pointer so
+          this module doesn''t import every sample/site class; the central BRIDGE
+          FeatureOfInterest role class (harmonization row 3) is the eventual range.'
+        exact_mappings:
+        - sosa:hasFeatureOfInterest
+        range: uriorcurie
+      feature_of_interest_type:
+        name: feature_of_interest_type
+        range: FeatureOfInterestTypeEnum
+      feature_position:
+        name: feature_position
+        description: 'Sub-feature locator when the feature is measured at a position:
+          plate well ("A01"), core section ("TOP"/"MID"/"BTM"), depth interval, timepoint
+          label.'
+      sampling_medium:
+        name: sampling_medium
+        range: SamplingMediumEnum
+      phenomenon_time:
+        name: phenomenon_time
+        description: ISO-8601 instant or interval when the property applied to the
+          feature (collection/observation time, not lab-analysis time).
+        exact_mappings:
+        - sosa:phenomenonTime
+      result_time:
+        name: result_time
+        description: ISO-8601 time the result was produced (e.g. lab analysis date).
+        exact_mappings:
+        - sosa:resultTime
+      utc_offset:
+        name: utc_offset
+        range: integer
+      statistic:
+        name: statistic
+        description: Statistical summary the value represents (MEAN, MAX, ...).
+        range: StatisticEnum
+      aggregation_duration:
+        name: aggregation_duration
+        description: Time period over which the statistic applies; NONE for instantaneous.
+        range: AggregationDurationEnum
+      replicate_role:
+        name: replicate_role
+        description: BASALT measure_type - whether this is a single reading, one replicate,
+          or the average.
+        range: ReplicateRoleEnum
+      replicate_number:
+        name: replicate_number
+        range: integer
+      summary_of:
+        name: summary_of
+        description: For AVERAGE (or other summary) rows - the member replicate measurements.
+        range: Measurement
+        multivalued: true
+        inlined: false
+      quality_status:
+        name: quality_status
+        description: Coarse validation status (BASIN-3D ResultQualityEnum).
+        range: ResultQualityStatusEnum
+      quality_flags:
+        name: quality_flags
+        description: Fine-grained QC flags (BASALT ProcessedDataFlag family); per-measurement,
+          not per-run.
+        range: QualityFlagEnum
+        multivalued: true
+      source_quality_label:
+        name: source_quality_label
+        description: Verbatim source QC code (USGS "A"/"P", BASALT flag, well flag),
+          for round-tripping.
+      method:
+        name: method
+        description: Pointer to a Method/Protocol (BASALT *Method classes, NMDC Protocol,
+          MIAPPE Method).
+        range: uriorcurie
+      protocol_url:
+        name: protocol_url
+        range: uriorcurie
+      instrument:
+        name: instrument
+        description: Pointer to an Instrument record (harmonization row 28 core -
+          vendor+model).
+        range: uriorcurie
+      part_of_collection:
+        name: part_of_collection
+        description: The assay run / product / dataset this measurement belongs to.
+        range: MeasurementCollection
+        inlined: false
+      was_generated_by:
+        name: was_generated_by
+        description: 'Pointer to the generating activity: NMDC DataGeneration / WorkflowExecution,
+          BASALT DataGenerationActivity / DataProcessingActivity. Distinguishes direct
+          readings from derived/ model-fitted quantities (e.g. van Genuchten parameters,
+          XCT pore metrics), whose generator is a processing activity.'
+        range: uriorcurie
+      datasource:
+        name: datasource
+        description: The contributing source system, e.g. "nmdc", "basalt", "usgs"
+          (BASIN-3D DataSource analog); supports faceting the union table by source.
+    class_uri: bridge:Measurement
+  TimeSeriesMeasurement:
+    name: TimeSeriesMeasurement
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/TimeSeriesMeasurement
+    description: Structural subclass for timeseries results (BASIN-3D MeasurementTimeseriesTVPObservation).
+      phenomenon_time holds the series start/end interval.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    is_a: Measurement
+    slots:
+    - id
+    - type
+    - measurement__observed_property
+    - measurement__observed_property_source_term
+    - measurement__feature_of_interest
+    - measurement__feature_of_interest_type
+    - measurement__feature_position
+    - measurement__sampling_medium
+    - measurement__phenomenon_time
+    - measurement__result_time
+    - measurement__utc_offset
+    - measurement__statistic
+    - measurement__aggregation_duration
+    - measurement__replicate_role
+    - measurement__replicate_number
+    - measurement__summary_of
+    - measurement__quality_status
+    - measurement__quality_flags
+    - measurement__source_quality_label
+    - measurement__method
+    - measurement__protocol_url
+    - measurement__instrument
+    - measurement__part_of_collection
+    - measurement__was_generated_by
+    - measurement__datasource
+    - timeSeriesMeasurement__time_reference_position
+    - TimeSeriesMeasurement_result
+    slot_usage:
+      result:
+        name: result
+        range: TimeSeriesValue
+    attributes:
+      time_reference_position:
+        name: time_reference_position
+        description: Whether timestamps mark the START, MIDDLE, or END of each aggregation
+          interval.
+        range: TimeReferencePositionEnum
+    class_uri: bridge:TimeSeriesMeasurement
+  MeasurementCollection:
+    name: MeasurementCollection
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/MeasurementCollection
+    description: 'A grouping of measurements produced together: a BASALT *Product
+      row (one assay run over one sample), an NMDC DataObject''s parsed contents,
+      a BASIN-3D synthesis response, a plate read. Carries what is shared by the group
+      - method, instrument, activity, source data file - so Measurement rows stay
+      thin.'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slots:
+    - id
+    - type
+    - measurementCollection__name
+    - measurementCollection__description
+    - measurementCollection__method
+    - measurementCollection__instrument
+    - measurementCollection__was_generated_by
+    - measurementCollection__data_object
+    - measurementCollection__summary_metrics
+    - measurementCollection__datasource
+    attributes:
+      name:
+        name: name
+      description:
+        name: description
+      method:
+        name: method
+        range: uriorcurie
+      instrument:
+        name: instrument
+        range: uriorcurie
+      was_generated_by:
+        name: was_generated_by
+        range: uriorcurie
+      data_object:
+        name: data_object
+        description: Pointer(s) to the source data file(s) (checksum+size+format+URL
+          core, harmonization row 7).
+        range: uriorcurie
+        multivalued: true
+      summary_metrics:
+        name: summary_metrics
+        description: Run-level summary key-values (BASALT summary_metrics; plate blank_mean,
+          cv_percent).
+      datasource:
+        name: datasource
+    class_uri: bridge:MeasurementCollection
+metamodel_version: 1.11.0
+source_file: ber_central_schema.yaml
+source_file_date: '2026-09-30T17:25:59'
+source_file_size: 2846
+generation_date: '2026-09-30T17:26:09'
+
