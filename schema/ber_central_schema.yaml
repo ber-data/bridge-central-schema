@@ -1,32 +1,26 @@
 name: ber-central-schema
-description: This is the project description.
-title: ber-central-schema
+description: 'The central BRIDGE schema for harmonized cross-BER data access. Defines
+  shared base elements and composes domain modules (currently: measurements.yaml).'
+title: BRIDGE Central Schema
 see_also:
-- https://sierra-moxon.github.io/ber-central-schema
-id: https://w3id.org/sierra-moxon/ber-central-schema
+- https://github.com/ber-data/bridge-central-schema
+- https://github.com/ber-data/lakehouse-registry
+id: https://w3id.org/ber-data/bridge-central-schema
 imports:
 - linkml:types
+- measurements
 license: Apache-2.0
 prefixes:
-  ber_central_schema:
-    prefix_prefix: ber_central_schema
-    prefix_reference: https://w3id.org/sierra-moxon/ber-central-schema/
+  bridge_central_schema:
+    prefix_prefix: bridge_central_schema
+    prefix_reference: https://w3id.org/ber-data/bridge-central-schema/
   linkml:
     prefix_prefix: linkml
     prefix_reference: https://w3id.org/linkml/
-  biolink:
-    prefix_prefix: biolink
-    prefix_reference: https://w3id.org/biolink/vocab/
   schema:
     prefix_prefix: schema
     prefix_reference: http://schema.org/
-  PATO:
-    prefix_prefix: PATO
-    prefix_reference: http://purl.obolibrary.org/obo/PATO_
-  example:
-    prefix_prefix: example
-    prefix_reference: http://www.example.org/rdf#
-default_prefix: ber_central_schema
+default_prefix: bridge_central_schema
 default_range: string
 types:
   string:
@@ -297,32 +291,12 @@ types:
     base: str
     uri: xsd:string
     repr: str
-enums:
-  PersonStatus:
-    name: PersonStatus
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/PersonStatus
-    description: The vital status of a person
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
-    permissible_values:
-      ALIVE:
-        text: ALIVE
-        description: the person is living
-        meaning: PATO:0001421
-      DEAD:
-        text: DEAD
-        description: the person is deceased
-        meaning: PATO:0001422
-      UNKNOWN:
-        text: UNKNOWN
-        description: the vital status is not known
-        todos:
-        - map this to an ontology
 slots:
   id:
     name: id
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/id
+    definition_uri: https://w3id.org/ber-data/bridge-central-schema/id
     description: A unique identifier for a thing
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
     mappings:
     - schema:identifier
     slot_uri: schema:identifier
@@ -334,9 +308,9 @@ slots:
     required: true
   name:
     name: name
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/name
+    definition_uri: https://w3id.org/ber-data/bridge-central-schema/name
     description: A human-readable name for a thing
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
     mappings:
     - schema:name
     slot_uri: schema:name
@@ -346,9 +320,9 @@ slots:
     range: string
   description:
     name: description
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/description
+    definition_uri: https://w3id.org/ber-data/bridge-central-schema/description
     description: A human-readable description for a thing
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
     mappings:
     - schema:description
     slot_uri: schema:description
@@ -356,86 +330,100 @@ slots:
     domain_of:
     - NamedThing
     range: string
-  primary_email:
-    name: primary_email
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/primary_email
-    description: The main email address of a person
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
-    mappings:
-    - schema:email
-    slot_uri: schema:email
-    owner: Person
+  observed_property:
+    name: observed_property
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/observed_property
+    description: The property observed; a BERVO Variable CURIE when one exists.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:observed_property
+    owner: Observation
     domain_of:
-    - Person
-    range: string
-  birth_date:
-    name: birth_date
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/birth_date
-    description: Date on which a person is born
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
-    mappings:
-    - schema:birthDate
-    slot_uri: schema:birthDate
-    owner: Person
+    - Observation
+    range: uriorcurie
+  result:
+    name: result
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/result
+    description: The result of the observation.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:result
+    owner: Observation
     domain_of:
-    - Person
-    range: date
-  age_in_years:
-    name: age_in_years
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/age_in_years
-    description: Number of years since birth
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
-    slot_uri: ber_central_schema:age_in_years
-    owner: Person
-    domain_of:
-    - Person
-    range: integer
-  vital_status:
-    name: vital_status
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/vital_status
-    description: living or dead status
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
-    slot_uri: ber_central_schema:vital_status
-    owner: Person
-    domain_of:
-    - Person
-    range: PersonStatus
-  personCollection__people:
-    name: personCollection__people
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
-    slot_uri: ber_central_schema:people
-    alias: people
-    owner: PersonCollection
-    domain_of:
-    - PersonCollection
-    range: Person
-    multivalued: true
+    - Observation
+    range: MeasurementValue
     inlined: true
     inlined_as_list: true
-  Person_primary_email:
-    name: Person_primary_email
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/primary_email
-    description: The main email address of a person
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
-    mappings:
-    - schema:email
-    is_a: primary_email
-    domain: Person
-    slot_uri: schema:email
-    alias: primary_email
-    owner: Person
+  raw_value:
+    name: raw_value
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/raw_value
+    description: The value exactly as it appeared at the source.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:raw_value
+    owner: MeasurementValue
     domain_of:
-    - Person
-    is_usage_slot: true
-    usage_slot_name: primary_email
+    - MeasurementValue
     range: string
-    pattern: ^\S+@[\S+\.]+\S+
+  numeric_value:
+    name: numeric_value
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/numeric_value
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:numeric_value
+    owner: QuantityValue
+    domain_of:
+    - QuantityValue
+    range: double
+  unit:
+    name: unit
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/unit
+    description: UCUM code preferred.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    slot_uri: bridge:unit
+    owner: QuantityValue
+    domain_of:
+    - QuantityValue
+    range: string
+  Measurement_result:
+    name: Measurement_result
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/result
+    description: The result of the observation.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    is_a: result
+    domain: Measurement
+    slot_uri: bridge:result
+    alias: result
+    owner: Measurement
+    domain_of:
+    - Measurement
+    is_usage_slot: true
+    usage_slot_name: result
+    range: QuantityValue
+    inlined: true
+    inlined_as_list: true
+  Measurement_observed_property:
+    name: Measurement_observed_property
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/observed_property
+    description: The property observed; a BERVO Variable CURIE when one exists.
+    comments:
+    - 'Example constraint: narrows observed_property to BERVO Variable CURIEs (e.g.
+      bervo:BERVO_0000001). Sources whose properties are not yet in BERVO would use
+      Observation, or this pattern widens to alternate vocabularies as they are admitted.'
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    is_a: observed_property
+    domain: Measurement
+    slot_uri: bridge:observed_property
+    alias: observed_property
+    owner: Measurement
+    domain_of:
+    - Measurement
+    is_usage_slot: true
+    usage_slot_name: observed_property
+    range: uriorcurie
+    pattern: ^bervo:BERVO_\d{7}$
 classes:
   NamedThing:
     name: NamedThing
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/NamedThing
-    description: A generic grouping for any identifiable entity
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
+    definition_uri: https://w3id.org/ber-data/bridge-central-schema/NamedThing
+    description: Generic base for any identifiable BRIDGE entity.
+    from_schema: https://w3id.org/ber-data/bridge-central-schema
     mappings:
     - schema:Thing
     slots:
@@ -443,43 +431,68 @@ classes:
     - name
     - description
     class_uri: schema:Thing
-  Person:
-    name: Person
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/Person
-    description: Represents a Person
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
-    is_a: NamedThing
+  MeasurementValue:
+    name: MeasurementValue
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/MeasurementValue
+    description: The polymorphic result of an observation or measurement; root of
+      the result-value family.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - nmdc:AttributeValue
+    abstract: true
     slots:
-    - id
-    - name
-    - description
-    - Person_primary_email
-    - birth_date
-    - age_in_years
-    - vital_status
+    - raw_value
+    class_uri: bridge:MeasurementValue
+  QuantityValue:
+    name: QuantityValue
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/QuantityValue
+    description: A numeric value with a unit.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - nmdc:QuantityValue
+    is_a: MeasurementValue
+    slots:
+    - raw_value
+    - numeric_value
+    - unit
+    class_uri: bridge:QuantityValue
+  Observation:
+    name: Observation
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/Observation
+    description: An act of observing a property of a feature of interest, yielding
+      a result (OGC O&M / SOSA shape).
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    exact_mappings:
+    - sosa:Observation
+    slots:
+    - observed_property
+    - result
+    class_uri: bridge:Observation
+  Measurement:
+    name: Measurement
+    definition_uri: https://w3id.org/ber-data/bridge-measurements/Measurement
+    description: An observation whose result is a quantity.
+    from_schema: https://w3id.org/ber-data/bridge-measurements
+    is_a: Observation
+    slots:
+    - Measurement_result
+    - Measurement_observed_property
     slot_usage:
-      primary_email:
-        name: primary_email
-        pattern: ^\S+@[\S+\.]+\S+
-    class_uri: ber_central_schema:Person
-  PersonCollection:
-    name: PersonCollection
-    definition_uri: https://w3id.org/sierra-moxon/ber-central-schema/PersonCollection
-    description: A holder for Person objects
-    from_schema: https://w3id.org/sierra-moxon/ber-central-schema
-    slots:
-    - personCollection__people
-    attributes:
-      people:
-        name: people
-        range: Person
-        multivalued: true
-        inlined_as_list: true
-    class_uri: ber_central_schema:PersonCollection
-    tree_root: true
+      result:
+        name: result
+        range: QuantityValue
+      observed_property:
+        name: observed_property
+        comments:
+        - 'Example constraint: narrows observed_property to BERVO Variable CURIEs
+          (e.g. bervo:BERVO_0000001). Sources whose properties are not yet in BERVO
+          would use Observation, or this pattern widens to alternate vocabularies
+          as they are admitted.'
+        pattern: ^bervo:BERVO_\d{7}$
+    class_uri: bridge:Measurement
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-07-14T20:02:00'
-source_file_size: 2315
-generation_date: '2026-07-14T20:02:13'
+source_file_date: '2026-09-30T17:44:16'
+source_file_size: 1176
+generation_date: '2026-09-30T17:44:25'
 

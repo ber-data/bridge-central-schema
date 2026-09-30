@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ber-central-schema" class="md-skip">
+        <a href="#bridge-central-schema" class="md-skip">
           Skip to content
         </a>
       
@@ -546,9 +546,9 @@
   
 
 
-<h1 id="ber-central-schema">ber-central-schema</h1>
-<p>This is the project description.</p>
-<p>URI: <a href="https://w3id.org/sierra-moxon/ber-central-schema">https://w3id.org/sierra-moxon/ber-central-schema</a></p>
+<h1 id="bridge-central-schema">BRIDGE Central Schema</h1>
+<p>The central BRIDGE schema for harmonized cross-BER data access. Defines shared base elements and composes domain modules (currently: measurements.yaml).</p>
+<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema">https://w3id.org/ber-data/bridge-central-schema</a></p>
 <p>Name: ber-central-schema</p>
 <h2 id="classes">Classes</h2>
 <table>
@@ -560,16 +560,24 @@
 </thead>
 <tbody>
 <tr>
+<td><a href="MeasurementValue/">MeasurementValue</a></td>
+<td>The polymorphic result of an observation or measurement; root of the result-v...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="QuantityValue/">QuantityValue</a></td>
+<td>A numeric value with a unit</td>
+</tr>
+<tr>
 <td><a href="NamedThing/">NamedThing</a></td>
-<td>A generic grouping for any identifiable entity</td>
+<td>Generic base for any identifiable BRIDGE entity</td>
 </tr>
 <tr>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="Person/">Person</a></td>
-<td>Represents a Person</td>
+<td><a href="Observation/">Observation</a></td>
+<td>An act of observing a property of a feature of interest, yielding a result (O...</td>
 </tr>
 <tr>
-<td><a href="PersonCollection/">PersonCollection</a></td>
-<td>A holder for Person objects</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="Measurement/">Measurement</a></td>
+<td>An observation whose result is a quantity</td>
 </tr>
 </tbody>
 </table>
@@ -583,14 +591,6 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="age_in_years/">age_in_years</a></td>
-<td>Number of years since birth</td>
-</tr>
-<tr>
-<td><a href="birth_date/">birth_date</a></td>
-<td>Date on which a person is born</td>
-</tr>
-<tr>
 <td><a href="description/">description</a></td>
 <td>A human-readable description for a thing</td>
 </tr>
@@ -603,16 +603,24 @@
 <td>A human-readable name for a thing</td>
 </tr>
 <tr>
-<td><a href="people/">people</a></td>
+<td><a href="numeric_value/">numeric_value</a></td>
 <td></td>
 </tr>
 <tr>
-<td><a href="primary_email/">primary_email</a></td>
-<td>The main email address of a person</td>
+<td><a href="observed_property/">observed_property</a></td>
+<td>The property observed; a BERVO Variable CURIE when one exists</td>
 </tr>
 <tr>
-<td><a href="vital_status/">vital_status</a></td>
-<td>living or dead status</td>
+<td><a href="raw_value/">raw_value</a></td>
+<td>The value exactly as it appeared at the source</td>
+</tr>
+<tr>
+<td><a href="result/">result</a></td>
+<td>The result of the observation</td>
+</tr>
+<tr>
+<td><a href="unit/">unit</a></td>
+<td>UCUM code preferred</td>
 </tr>
 </tbody>
 </table>
@@ -626,8 +634,8 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="PersonStatus/">PersonStatus</a></td>
-<td>The vital status of a person</td>
+<td></td>
+<td></td>
 </tr>
 </tbody>
 </table>
