@@ -423,6 +423,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Identifier and Mapping Information">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schema-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Source
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -469,8 +486,9 @@
 
 
 <h1 id="slot-observed_property">Slot: observed_property</h1>
+<p><em>The property observed; a BERVO Variable CURIE when one exists.</em></p>
 <div>
-<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/observed_property">ber_central_schema:observed_property</a></p>
+<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/observed_property">bridge_central_schema:observed_property</a></p>
 <!-- no inheritance hierarchy -->
 <h2 id="applicable-classes">Applicable Classes</h2>
 <table>
@@ -483,18 +501,13 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../SourceTermMapping/">SourceTermMapping</a></td>
-<td>A crosswalk row binding one data source's native term to BRIDGE vocabulary, g...</td>
+<td><a href="../Observation/">Observation</a></td>
+<td>An act of observing a property of a feature of interest, yielding a result (O...</td>
 <td>no</td>
 </tr>
 <tr>
 <td><a href="../Measurement/">Measurement</a></td>
-<td>A single act/record of measuring one observed property of one feature of inte...</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../TimeSeriesMeasurement/">TimeSeriesMeasurement</a></td>
-<td>Structural subclass for timeseries results (BASIN-3D MeasurementTimeseriesTVP...</td>
+<td>An observation whose result is a quantity</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -511,11 +524,11 @@
 <tbody>
 <tr>
 <td>Range</td>
-<td><a href="../String/">String</a></td>
+<td><a href="../Uriorcurie/">Uriorcurie</a></td>
 </tr>
 <tr>
 <td>Domain Of</td>
-<td><a href="../SourceTermMapping/">SourceTermMapping</a>, <a href="../Measurement/">Measurement</a></td>
+<td><a href="../Observation/">Observation</a></td>
 </tr>
 </tbody>
 </table>
@@ -535,6 +548,10 @@
 </tbody>
 </table>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
+<h3 id="schema-source">Schema Source</h3>
+<ul>
+<li>from schema: <a href="https://w3id.org/ber-data/bridge-central-schema">https://w3id.org/ber-data/bridge-central-schema</a></li>
+</ul>
 <h2 id="mappings">Mappings</h2>
 <table>
 <thead>
@@ -546,21 +563,23 @@
 <tbody>
 <tr>
 <td>self</td>
-<td>ber_central_schema:observed_property</td>
+<td>bridge_central_schema:observed_property</td>
 </tr>
 <tr>
 <td>native</td>
-<td>ber_central_schema:observed_property</td>
+<td>bridge_central_schema:observed_property</td>
 </tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">observed_property</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The property observed; a BERVO Variable CURIE when one exists.</span>
+<span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
+<span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Observation</span>
+<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
 </code></pre></div>
 </details>
 </div>

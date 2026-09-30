@@ -547,16 +547,7 @@
 
 
 <h1 id="bridge-central-schema">BRIDGE Central Schema</h1>
-<p>The central BRIDGE schema for harmonized cross-BER data access. This root
-schema defines the shared base elements and composes domain modules; each
-module corresponds to one or more rows of the BER harmonization-targets
-matrix (see the lakehouse-registry repo).</p>
-<p>Modules:
-- measurements.yaml: the unified Measurement / ObservedProperty model
-  (harmonization rows: Measurement/observation, Observed property,
-  QuantityValue). Designed at the 2026-09-30 BER hackathon against NMDC,
-  BASALT, and BASIN-3D as reference schemas, with BERVO as the primary
-  observed-property vocabulary.</p>
+<p>The central BRIDGE schema for harmonized cross-BER data access. Defines shared base elements and composes domain modules (currently: measurements.yaml).</p>
 <p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema">https://w3id.org/ber-data/bridge-central-schema</a></p>
 <p>Name: ber-central-schema</p>
 <h2 id="classes">Classes</h2>
@@ -569,64 +560,24 @@ matrix (see the lakehouse-registry repo).</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="BridgeDatabase/">BridgeDatabase</a></td>
-<td>Top-level container for a BRIDGE data exchange document: holds the vocabulary...</td>
-</tr>
-<tr>
-<td><a href="Measurement/">Measurement</a></td>
-<td>A single act/record of measuring one observed property of one feature of inte...</td>
-</tr>
-<tr>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="TimeSeriesMeasurement/">TimeSeriesMeasurement</a></td>
-<td>Structural subclass for timeseries results (BASIN-3D MeasurementTimeseriesTVP...</td>
-</tr>
-<tr>
-<td><a href="MeasurementCollection/">MeasurementCollection</a></td>
-<td>A grouping of measurements produced together: a BASALT *Product row (one assa...</td>
-</tr>
-<tr>
-<td><a href="MeasurementValue/">MeasurementValue</a></td>
-<td>Polymorphic result holder</td>
-</tr>
-<tr>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="BooleanValue/">BooleanValue</a></td>
-<td></td>
-</tr>
-<tr>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="ControlledTermValue/">ControlledTermValue</a></td>
-<td>A categorical result drawn from an ontology or controlled vocabulary</td>
+<td><a href="AttributeValue/">AttributeValue</a></td>
+<td>The value of an attribute</td>
 </tr>
 <tr>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="QuantityValue/">QuantityValue</a></td>
-<td>A scalar or range numeric result with a unit</td>
-</tr>
-<tr>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="TextValue/">TextValue</a></td>
-<td>A free-text result; the fallback when nothing more structured applies</td>
-</tr>
-<tr>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="TimeSeriesValue/">TimeSeriesValue</a></td>
-<td>A timeseries result (BASIN-3D MeasurementTimeseriesTVPResultMixin)</td>
-</tr>
-<tr>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="TimestampValue/">TimestampValue</a></td>
-<td>A date/time result, ISO-8601 in raw_value</td>
+<td>A numeric value with a unit</td>
 </tr>
 <tr>
 <td><a href="NamedThing/">NamedThing</a></td>
 <td>Generic base for any identifiable BRIDGE entity</td>
 </tr>
 <tr>
-<td><a href="ObservedProperty/">ObservedProperty</a></td>
-<td>A measurable/observable property descriptor: the "what was measured"</td>
+<td><a href="Observation/">Observation</a></td>
+<td>An act of observing a property of a feature of interest, yielding a result (O...</td>
 </tr>
 <tr>
-<td><a href="SourceTermMapping/">SourceTermMapping</a></td>
-<td>A crosswalk row binding one data source's native term to BRIDGE vocabulary, g...</td>
-</tr>
-<tr>
-<td><a href="TimeValuePair/">TimeValuePair</a></td>
-<td>One point in a time series (BASIN-3D TVP)</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="Measurement/">Measurement</a></td>
+<td>An observation whose result is a quantity</td>
 </tr>
 </tbody>
 </table>
@@ -640,96 +591,16 @@ matrix (see the lakehouse-registry repo).</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="aggregation_duration/">aggregation_duration</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="boolean_value/">boolean_value</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="canonical_unit/">canonical_unit</a></td>
-<td>Preferred reporting unit as a UCUM code, e</td>
-</tr>
-<tr>
-<td><a href="categories/">categories</a></td>
-<td>Classification path in priority order (BASIN-3D style), e</td>
-</tr>
-<tr>
-<td><a href="data_object/">data_object</a></td>
-<td>Pointer(s) to the source data file(s) (checksum+size+format+URL core, harmoni...</td>
-</tr>
-<tr>
-<td><a href="datasource/">datasource</a></td>
-<td>Identifier of the contributing source, e</td>
-</tr>
-<tr>
-<td><a href="datetime_value/">datetime_value</a></td>
-<td></td>
-</tr>
-<tr>
 <td><a href="description/">description</a></td>
 <td>A human-readable description for a thing</td>
 </tr>
 <tr>
 <td><a href="feature_of_interest/">feature_of_interest</a></td>
-<td>Id of the entity the property was measured on: an NMDC biosample (nmdc:bsm-</td>
-</tr>
-<tr>
-<td><a href="feature_of_interest_type/">feature_of_interest_type</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="feature_position/">feature_position</a></td>
-<td>Sub-feature locator when the feature is measured at a position: plate well ("...</td>
+<td>The entity the property was observed on</td>
 </tr>
 <tr>
 <td><a href="id/">id</a></td>
-<td>Unique id</td>
-</tr>
-<tr>
-<td><a href="instrument/">instrument</a></td>
-<td>Pointer to an Instrument record (harmonization row 28 core - vendor+model)</td>
-</tr>
-<tr>
-<td><a href="label/">label</a></td>
-<td>Human-readable name, e</td>
-</tr>
-<tr>
-<td><a href="language/">language</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="mappings/">mappings</a></td>
-<td>Cross-vocabulary equivalents, e</td>
-</tr>
-<tr>
-<td><a href="maximum_numeric_value/">maximum_numeric_value</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="measured_in/">measured_in</a></td>
-<td>The medium/compartment the property is characteristically measured in (e</td>
-</tr>
-<tr>
-<td><a href="measurement_collections/">measurement_collections</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="measurement_of/">measurement_of</a></td>
-<td>The entity or quality quantified, e</td>
-</tr>
-<tr>
-<td><a href="measurements/">measurements</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="method/">method</a></td>
-<td>Pointer to a Method/Protocol (BASALT *Method classes, NMDC Protocol, MIAPPE M...</td>
-</tr>
-<tr>
-<td><a href="minimum_numeric_value/">minimum_numeric_value</a></td>
-<td></td>
+<td>A unique identifier for a thing</td>
 </tr>
 <tr>
 <td><a href="name/">name</a></td>
@@ -737,147 +608,23 @@ matrix (see the lakehouse-registry repo).</p>
 </tr>
 <tr>
 <td><a href="numeric_value/">numeric_value</a></td>
-<td>The value; for ranges, use minimum/maximum instead or additionally (midpoint)</td>
-</tr>
-<tr>
-<td><a href="observed_properties/">observed_properties</a></td>
 <td></td>
 </tr>
 <tr>
 <td><a href="observed_property/">observed_property</a></td>
-<td>The BRIDGE observed property this source term maps to</td>
-</tr>
-<tr>
-<td><a href="observed_property_source_term/">observed_property_source_term</a></td>
-<td>The verbatim source-native property code (NMDC slot name / MIxS CURIE, BASALT...</td>
-</tr>
-<tr>
-<td><a href="part_of_collection/">part_of_collection</a></td>
-<td>The assay run / product / dataset this measurement belongs to</td>
-</tr>
-<tr>
-<td><a href="phenomenon_time/">phenomenon_time</a></td>
-<td>ISO-8601 instant or interval when the property applied to the feature (collec...</td>
-</tr>
-<tr>
-<td><a href="point_quality/">point_quality</a></td>
-<td>Per-point quality, as in BASIN-3D ResultListTVP</td>
-</tr>
-<tr>
-<td><a href="protocol_url/">protocol_url</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="quality_flags/">quality_flags</a></td>
-<td>Fine-grained QC flags (BASALT ProcessedDataFlag family); per-measurement, not...</td>
-</tr>
-<tr>
-<td><a href="quality_status/">quality_status</a></td>
-<td></td>
+<td>The property observed; a BERVO Variable CURIE when one exists</td>
 </tr>
 <tr>
 <td><a href="raw_value/">raw_value</a></td>
-<td>The value exactly as it appeared at the source ("65 umol/L", "2-4 cm", "Fair"...</td>
-</tr>
-<tr>
-<td><a href="replicate_number/">replicate_number</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="replicate_role/">replicate_role</a></td>
-<td>BASALT measure_type - whether this is a single reading, one replicate, or the...</td>
+<td>The value exactly as it appeared at the source</td>
 </tr>
 <tr>
 <td><a href="result/">result</a></td>
-<td>Polymorphic result; type designator on the value picks the subclass</td>
-</tr>
-<tr>
-<td><a href="result_time/">result_time</a></td>
-<td>ISO-8601 time the result was produced (e</td>
-</tr>
-<tr>
-<td><a href="sampling_medium/">sampling_medium</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="source_quality_label/">source_quality_label</a></td>
-<td>Verbatim source QC code (USGS "A"/"P", BASALT flag, well flag), for round-tri...</td>
-</tr>
-<tr>
-<td><a href="source_term/">source_term</a></td>
-<td>The source's native code exactly as it appears in the data: a USGS parameter ...</td>
-</tr>
-<tr>
-<td><a href="source_term_description/">source_term_description</a></td>
-<td>The source's own description of the term</td>
-</tr>
-<tr>
-<td><a href="source_term_mappings/">source_term_mappings</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="source_vocabulary/">source_vocabulary</a></td>
-<td>The vocabulary this term originates from, e</td>
-</tr>
-<tr>
-<td><a href="statistic/">statistic</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="summary_metrics/">summary_metrics</a></td>
-<td>Run-level summary key-values (BASALT summary_metrics; plate blank_mean, cv_pe...</td>
-</tr>
-<tr>
-<td><a href="summary_of/">summary_of</a></td>
-<td>For AVERAGE (or other summary) rows - the member replicate measurements</td>
-</tr>
-<tr>
-<td><a href="term_id/">term_id</a></td>
-<td>e</td>
-</tr>
-<tr>
-<td><a href="term_label/">term_label</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="text_value/">text_value</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="time_reference_position/">time_reference_position</a></td>
-<td>Whether timestamps mark the START, MIDDLE, or END of each aggregation interva...</td>
-</tr>
-<tr>
-<td><a href="timestamp/">timestamp</a></td>
-<td>ISO-8601</td>
-</tr>
-<tr>
-<td><a href="type/">type</a></td>
-<td>Class designator (NMDC convention) so polymorphic rows/documents resolve to t...</td>
+<td>The result of the observation</td>
 </tr>
 <tr>
 <td><a href="unit/">unit</a></td>
-<td>UCUM unit implied by the source term when the source encodes units in the ter...</td>
-</tr>
-<tr>
-<td><a href="utc_offset/">utc_offset</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="value/">value</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="value_type/">value_type</a></td>
-<td>Whether values are quantitative or qualitative</td>
-</tr>
-<tr>
-<td><a href="values/">values</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="was_generated_by/">was_generated_by</a></td>
-<td>Pointer to the generating activity: NMDC DataGeneration / WorkflowExecution, ...</td>
+<td>UCUM code preferred</td>
 </tr>
 </tbody>
 </table>
@@ -891,39 +638,7 @@ matrix (see the lakehouse-registry repo).</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="AggregationDurationEnum/">AggregationDurationEnum</a></td>
-<td>BASIN-3D AggregationDurationEnum (OGC TM_PeriodDuration)</td>
-</tr>
-<tr>
-<td><a href="FeatureOfInterestTypeEnum/">FeatureOfInterestTypeEnum</a></td>
-<td>Coarse type of the thing measured</td>
-</tr>
-<tr>
-<td><a href="QualityFlagEnum/">QualityFlagEnum</a></td>
-<td>Fine-grained QC flags: union of BASALT ProcessedDataFlag and plate-well flags</td>
-</tr>
-<tr>
-<td><a href="ReplicateRoleEnum/">ReplicateRoleEnum</a></td>
-<td>BASALT ProductMeasureType</td>
-</tr>
-<tr>
-<td><a href="ResultQualityStatusEnum/">ResultQualityStatusEnum</a></td>
-<td>Coarse validation status (BASIN-3D ResultQualityEnum)</td>
-</tr>
-<tr>
-<td><a href="SamplingMediumEnum/">SamplingMediumEnum</a></td>
-<td>BASIN-3D SamplingMediumEnum extended for lab matrices</td>
-</tr>
-<tr>
-<td><a href="StatisticEnum/">StatisticEnum</a></td>
-<td>BASIN-3D StatisticEnum plus summary statistics needed by BASALT averages and ...</td>
-</tr>
-<tr>
-<td><a href="TimeReferencePositionEnum/">TimeReferencePositionEnum</a></td>
 <td></td>
-</tr>
-<tr>
-<td><a href="ValueTypeEnum/">ValueTypeEnum</a></td>
 <td></td>
 </tr>
 </tbody>

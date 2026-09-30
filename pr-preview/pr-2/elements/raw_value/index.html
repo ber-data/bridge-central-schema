@@ -486,9 +486,9 @@
 
 
 <h1 id="slot-raw_value">Slot: raw_value</h1>
-<p><em>The value exactly as it appeared at the source ("65 umol/L", "2-4 cm", "Fair"), preserved verbatim for provenance and re-parsing.</em></p>
+<p><em>The value exactly as it appeared at the source.</em></p>
 <div>
-<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/raw_value">ber_central_schema:raw_value</a></p>
+<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/raw_value">bridge_central_schema:raw_value</a></p>
 <!-- no inheritance hierarchy -->
 <h2 id="applicable-classes">Applicable Classes</h2>
 <table>
@@ -501,38 +501,13 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../MeasurementValue/">MeasurementValue</a></td>
-<td>Polymorphic result holder</td>
+<td><a href="../AttributeValue/">AttributeValue</a></td>
+<td>The value of an attribute</td>
 <td>no</td>
 </tr>
 <tr>
 <td><a href="../QuantityValue/">QuantityValue</a></td>
-<td>A scalar or range numeric result with a unit</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../ControlledTermValue/">ControlledTermValue</a></td>
-<td>A categorical result drawn from an ontology or controlled vocabulary</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../TextValue/">TextValue</a></td>
-<td>A free-text result; the fallback when nothing more structured applies</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../BooleanValue/">BooleanValue</a></td>
-<td></td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../TimestampValue/">TimestampValue</a></td>
-<td>A date/time result, ISO-8601 in raw_value</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../TimeSeriesValue/">TimeSeriesValue</a></td>
-<td>A timeseries result (BASIN-3D MeasurementTimeseriesTVPResultMixin)</td>
+<td>A numeric value with a unit</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -553,7 +528,7 @@
 </tr>
 <tr>
 <td>Domain Of</td>
-<td><a href="../MeasurementValue/">MeasurementValue</a></td>
+<td><a href="../AttributeValue/">AttributeValue</a></td>
 </tr>
 </tbody>
 </table>
@@ -588,29 +563,22 @@
 <tbody>
 <tr>
 <td>self</td>
-<td>ber_central_schema:raw_value</td>
+<td>bridge_central_schema:raw_value</td>
 </tr>
 <tr>
 <td>native</td>
-<td>ber_central_schema:raw_value</td>
-</tr>
-<tr>
-<td>exact</td>
-<td>nmdc:has_raw_value</td>
+<td>bridge_central_schema:raw_value</td>
 </tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">raw_value</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The value exactly as it appeared at the source (&quot;65 umol/L&quot;, &quot;2-4 cm&quot;,</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">&quot;Fair&quot;), preserved verbatim for provenance and re-parsing.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The value exactly as it appeared at the source.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
-<span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:has_raw_value</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementValue</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AttributeValue</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 </code></pre></div>
 </details>

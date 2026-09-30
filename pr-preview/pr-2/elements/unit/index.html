@@ -423,6 +423,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Identifier and Mapping Information">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schema-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Source
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -469,8 +486,9 @@
 
 
 <h1 id="slot-unit">Slot: unit</h1>
+<p><em>UCUM code preferred.</em></p>
 <div>
-<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/unit">ber_central_schema:unit</a></p>
+<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/unit">bridge_central_schema:unit</a></p>
 <!-- no inheritance hierarchy -->
 <h2 id="applicable-classes">Applicable Classes</h2>
 <table>
@@ -483,18 +501,8 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../SourceTermMapping/">SourceTermMapping</a></td>
-<td>A crosswalk row binding one data source's native term to BRIDGE vocabulary, g...</td>
-<td>no</td>
-</tr>
-<tr>
 <td><a href="../QuantityValue/">QuantityValue</a></td>
-<td>A scalar or range numeric result with a unit</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../TimeSeriesValue/">TimeSeriesValue</a></td>
-<td>A timeseries result (BASIN-3D MeasurementTimeseriesTVPResultMixin)</td>
+<td>A numeric value with a unit</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -515,7 +523,7 @@
 </tr>
 <tr>
 <td>Domain Of</td>
-<td><a href="../SourceTermMapping/">SourceTermMapping</a>, <a href="../QuantityValue/">QuantityValue</a>, <a href="../TimeSeriesValue/">TimeSeriesValue</a></td>
+<td><a href="../QuantityValue/">QuantityValue</a></td>
 </tr>
 </tbody>
 </table>
@@ -535,6 +543,10 @@
 </tbody>
 </table>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
+<h3 id="schema-source">Schema Source</h3>
+<ul>
+<li>from schema: <a href="https://w3id.org/ber-data/bridge-central-schema">https://w3id.org/ber-data/bridge-central-schema</a></li>
+</ul>
 <h2 id="mappings">Mappings</h2>
 <table>
 <thead>
@@ -546,21 +558,22 @@
 <tbody>
 <tr>
 <td>self</td>
-<td>ber_central_schema:unit</td>
+<td>bridge_central_schema:unit</td>
 </tr>
 <tr>
 <td>native</td>
-<td>ber_central_schema:unit</td>
+<td>bridge_central_schema:unit</td>
 </tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unit</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UCUM code preferred.</span>
+<span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
+<span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QuantityValue</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TimeSeriesValue</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 </code></pre></div>
 </details>

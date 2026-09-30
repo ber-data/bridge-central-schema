@@ -277,7 +277,7 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-namedthing">Class: NamedThing</h1>
-<p><em>Generic base for any identifiable BRIDGE entity. Aligns with the id/name/description root shared by twelve BER schemas (harmonization row: "Base / named entity"). Domain classes in future modules (samples, sites, datasets) should derive from this; the measurements module keeps its classes thin and points at NamedThing-derived entities via uriorcurie slots.</em></p>
+<p><em>Generic base for any identifiable BRIDGE entity.</em></p>
 <div>
 <p>URI: <a href="http://schema.org/Thing">schema:Thing</a></p>
 <pre class="mermaid"><code> classDiagram
@@ -288,8 +288,6 @@
       NamedThing : id
 
       NamedThing : name
-
-      NamedThing : type
 
 </code></pre>
 <!-- no inheritance hierarchy -->
@@ -322,13 +320,7 @@
 <tr>
 <td><a href="../id/">id</a></td>
 <td>1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>Unique id</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../type/">type</a></td>
-<td>0..1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>Class designator (NMDC convention) so polymorphic rows/documents resolve to t...</td>
+<td>A unique identifier for a thing</td>
 <td>direct</td>
 </tr>
 <tr>
@@ -365,7 +357,7 @@
 </tr>
 <tr>
 <td>native</td>
-<td>ber_central_schema:NamedThing</td>
+<td>bridge_central_schema:NamedThing</td>
 </tr>
 </tbody>
 </table>
@@ -374,15 +366,10 @@
 <h3 id="direct">Direct</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Generic</span><span class="nv"> </span><span class="s">base</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">any</span><span class="nv"> </span><span class="s">identifiable</span><span class="nv"> </span><span class="s">BRIDGE</span><span class="nv"> </span><span class="s">entity.</span><span class="nv"> </span><span class="s">Aligns</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">id/name/description</span>
-<span class="w">  </span><span class="s">root</span><span class="nv"> </span><span class="s">shared</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">twelve</span><span class="nv"> </span><span class="s">BER</span><span class="nv"> </span><span class="s">schemas</span><span class="nv"> </span><span class="s">(harmonization</span><span class="nv"> </span><span class="s">row:</span><span class="nv"> </span><span class="s">"Base</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">named</span><span class="nv"> </span><span class="s">entity").</span><span class="nv"> </span><span class="s">Domain</span>
-<span class="w">  </span><span class="s">classes</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">future</span><span class="nv"> </span><span class="s">modules</span><span class="nv"> </span><span class="s">(samples,</span><span class="nv"> </span><span class="s">sites,</span><span class="nv"> </span><span class="s">datasets)</span><span class="nv"> </span><span class="s">should</span><span class="nv"> </span><span class="s">derive</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">this;</span><span class="nv"> </span><span class="s">the</span>
-<span class="w">  </span><span class="s">measurements</span><span class="nv"> </span><span class="s">module</span><span class="nv"> </span><span class="s">keeps</span><span class="nv"> </span><span class="s">its</span><span class="nv"> </span><span class="s">classes</span><span class="nv"> </span><span class="s">thin</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">points</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">NamedThing-derived</span><span class="nv"> </span><span class="s">entities</span>
-<span class="w">  </span><span class="s">via</span><span class="nv"> </span><span class="s">uriorcurie</span><span class="nv"> </span><span class="s">slots.'</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generic base for any identifiable BRIDGE entity.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
 <span class="nt">slots</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">type</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">description</span>
 <span class="nt">class_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema:Thing</span>
@@ -391,43 +378,21 @@
 <h3 id="induced">Induced</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Generic</span><span class="nv"> </span><span class="s">base</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">any</span><span class="nv"> </span><span class="s">identifiable</span><span class="nv"> </span><span class="s">BRIDGE</span><span class="nv"> </span><span class="s">entity.</span><span class="nv"> </span><span class="s">Aligns</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">id/name/description</span>
-<span class="w">  </span><span class="s">root</span><span class="nv"> </span><span class="s">shared</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">twelve</span><span class="nv"> </span><span class="s">BER</span><span class="nv"> </span><span class="s">schemas</span><span class="nv"> </span><span class="s">(harmonization</span><span class="nv"> </span><span class="s">row:</span><span class="nv"> </span><span class="s">"Base</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">named</span><span class="nv"> </span><span class="s">entity").</span><span class="nv"> </span><span class="s">Domain</span>
-<span class="w">  </span><span class="s">classes</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">future</span><span class="nv"> </span><span class="s">modules</span><span class="nv"> </span><span class="s">(samples,</span><span class="nv"> </span><span class="s">sites,</span><span class="nv"> </span><span class="s">datasets)</span><span class="nv"> </span><span class="s">should</span><span class="nv"> </span><span class="s">derive</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">this;</span><span class="nv"> </span><span class="s">the</span>
-<span class="w">  </span><span class="s">measurements</span><span class="nv"> </span><span class="s">module</span><span class="nv"> </span><span class="s">keeps</span><span class="nv"> </span><span class="s">its</span><span class="nv"> </span><span class="s">classes</span><span class="nv"> </span><span class="s">thin</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">points</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">NamedThing-derived</span><span class="nv"> </span><span class="s">entities</span>
-<span class="w">  </span><span class="s">via</span><span class="nv"> </span><span class="s">uriorcurie</span><span class="nv"> </span><span class="s">slots.'</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generic base for any identifiable BRIDGE entity.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">id</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique id. For lakehouse-materialized measurement rows a UUID or</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">source-derived deterministic id (e.g. "{datasource}:{source_record}:{source_term}").</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A unique identifier for a thing</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema:identifier</span>
 <span class="w">    </span><span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ObservedProperty</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">type</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">type</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Class designator (NMDC convention) so polymorphic rows/documents</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">resolve to their class.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rdf:type</span>
-<span class="w">    </span><span class="nt">designates_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementValue</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A human-readable name for a thing</span>
@@ -437,7 +402,6 @@
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="w">  </span><span class="nt">description</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">description</span>
@@ -448,8 +412,6 @@
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ObservedProperty</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="nt">class_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema:Thing</span>
 </code></pre></div>

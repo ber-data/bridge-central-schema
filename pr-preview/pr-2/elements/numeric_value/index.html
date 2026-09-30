@@ -486,9 +486,8 @@
 
 
 <h1 id="slot-numeric_value">Slot: numeric_value</h1>
-<p><em>The value; for ranges, use minimum/maximum instead or additionally (midpoint).</em></p>
 <div>
-<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/numeric_value">ber_central_schema:numeric_value</a></p>
+<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/numeric_value">bridge_central_schema:numeric_value</a></p>
 <!-- no inheritance hierarchy -->
 <h2 id="applicable-classes">Applicable Classes</h2>
 <table>
@@ -502,7 +501,7 @@
 <tbody>
 <tr>
 <td><a href="../QuantityValue/">QuantityValue</a></td>
-<td>A scalar or range numeric result with a unit</td>
+<td>A numeric value with a unit</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -537,22 +536,8 @@
 </thead>
 <tbody>
 <tr>
-<td>### Slot Characteristics</td>
 <td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Owner</td>
-<td><a href="../QuantityValue/">QuantityValue</a></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -572,29 +557,19 @@
 <tbody>
 <tr>
 <td>self</td>
-<td>ber_central_schema:numeric_value</td>
+<td>bridge_central_schema:numeric_value</td>
 </tr>
 <tr>
 <td>native</td>
-<td>ber_central_schema:numeric_value</td>
-</tr>
-<tr>
-<td>exact</td>
-<td>nmdc:has_numeric_value, qudt:quantityValue, schema:value</td>
+<td>bridge_central_schema:numeric_value</td>
 </tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">numeric_value</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The value; for ranges, use minimum/maximum instead or additionally (midpoint).</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
-<span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:has_numeric_value</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qudt:quantityValue</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">schema:value</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QuantityValue</span>
 <span class="nt">domain_of</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QuantityValue</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">double</span>

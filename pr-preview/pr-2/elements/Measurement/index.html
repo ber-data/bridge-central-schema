@@ -208,15 +208,6 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#usages">
-<span class="md-ellipsis">
-      
-        Usages
-      
-    </span>
-</a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="#identifier-and-mapping-information">
 <span class="md-ellipsis">
       
@@ -286,111 +277,18 @@
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
 <h1 id="class-measurement">Class: Measurement</h1>
-<p><em>A single act/record of measuring one observed property of one feature of interest, yielding one result. This is the union row: NMDC Biosample.<mixs_slot> values, BASALT product columns, and BASIN-3D observations all project into it. Deliberately EAV-shaped so that lakehouse-wide search ("all nitrate measurements across NMDC, MONet, and watershed timeseries") is a single-table query.</mixs_slot></em></p>
+<p><em>An observation whose result is a quantity.</em></p>
 <div>
-<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/Measurement">ber_central_schema:Measurement</a></p>
+<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/Measurement">bridge_central_schema:Measurement</a></p>
 <pre class="mermaid"><code> classDiagram
     class Measurement
     click Measurement href "../Measurement/"
-      Measurement &lt;|-- TimeSeriesMeasurement
-        click TimeSeriesMeasurement href "../TimeSeriesMeasurement/"
-
-      Measurement : aggregation_duration
-
-
-
-
-
-        Measurement --&gt; "0..1" AggregationDurationEnum : aggregation_duration
-        click AggregationDurationEnum href "../AggregationDurationEnum/"
-
-
-
-      Measurement : datasource
+      Observation &lt;|-- Measurement
+        click Observation href "../Observation/"
 
       Measurement : feature_of_interest
 
-      Measurement : feature_of_interest_type
-
-
-
-
-
-        Measurement --&gt; "0..1" FeatureOfInterestTypeEnum : feature_of_interest_type
-        click FeatureOfInterestTypeEnum href "../FeatureOfInterestTypeEnum/"
-
-
-
-      Measurement : feature_position
-
-      Measurement : id
-
-      Measurement : instrument
-
-      Measurement : method
-
       Measurement : observed_property
-
-
-
-
-
-        Measurement --&gt; "1" ObservedProperty : observed_property
-        click ObservedProperty href "../ObservedProperty/"
-
-
-
-      Measurement : observed_property_source_term
-
-      Measurement : part_of_collection
-
-
-
-
-
-        Measurement --&gt; "0..1" MeasurementCollection : part_of_collection
-        click MeasurementCollection href "../MeasurementCollection/"
-
-
-
-      Measurement : phenomenon_time
-
-      Measurement : protocol_url
-
-      Measurement : quality_flags
-
-
-
-
-
-        Measurement --&gt; "*" QualityFlagEnum : quality_flags
-        click QualityFlagEnum href "../QualityFlagEnum/"
-
-
-
-      Measurement : quality_status
-
-
-
-
-
-        Measurement --&gt; "0..1" ResultQualityStatusEnum : quality_status
-        click ResultQualityStatusEnum href "../ResultQualityStatusEnum/"
-
-
-
-      Measurement : replicate_number
-
-      Measurement : replicate_role
-
-
-
-
-
-        Measurement --&gt; "0..1" ReplicateRoleEnum : replicate_role
-        click ReplicateRoleEnum href "../ReplicateRoleEnum/"
-
-
 
       Measurement : result
 
@@ -398,59 +296,16 @@
 
 
 
-        Measurement --&gt; "1" MeasurementValue : result
-        click MeasurementValue href "../MeasurementValue/"
+        Measurement --&gt; "0..1" QuantityValue : result
+        click QuantityValue href "../QuantityValue/"
 
 
-
-      Measurement : result_time
-
-      Measurement : sampling_medium
-
-
-
-
-
-        Measurement --&gt; "0..1" SamplingMediumEnum : sampling_medium
-        click SamplingMediumEnum href "../SamplingMediumEnum/"
-
-
-
-      Measurement : source_quality_label
-
-      Measurement : statistic
-
-
-
-
-
-        Measurement --&gt; "0..1" StatisticEnum : statistic
-        click StatisticEnum href "../StatisticEnum/"
-
-
-
-      Measurement : summary_of
-
-
-
-
-
-        Measurement --&gt; "*" Measurement : summary_of
-        click Measurement href "../Measurement/"
-
-
-
-      Measurement : type
-
-      Measurement : utc_offset
-
-      Measurement : was_generated_by
 
 </code></pre>
 <h2 id="inheritance">Inheritance</h2>
 <ul>
-<li><strong>Measurement</strong><ul>
-<li><a href="../TimeSeriesMeasurement/">TimeSeriesMeasurement</a></li>
+<li><a href="../Observation/">Observation</a><ul>
+<li><strong>Measurement</strong></li>
 </ul>
 </li>
 </ul>
@@ -466,191 +321,22 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../id/">id</a></td>
-<td>1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>Unique id</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../type/">type</a></td>
-<td>0..1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>Class designator (NMDC convention) so polymorphic rows/documents resolve to t...</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../result/">result</a></td>
-<td>1 <br/> <a href="../MeasurementValue/">MeasurementValue</a></td>
-<td>Polymorphic result; type designator on the value picks the subclass</td>
-<td>direct</td>
-</tr>
-<tr>
 <td><a href="../observed_property/">observed_property</a></td>
-<td>1 <br/> <a href="../ObservedProperty/">ObservedProperty</a></td>
-<td>The BRIDGE/BERVO term for what was measured</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../observed_property_source_term/">observed_property_source_term</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
-<td>The verbatim source-native property code (NMDC slot name / MIxS CURIE, BASALT...</td>
-<td>direct</td>
+<td>0..1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
+<td>The property observed; a BERVO Variable CURIE when one exists</td>
+<td><a href="../Observation/">Observation</a></td>
 </tr>
 <tr>
 <td><a href="../feature_of_interest/">feature_of_interest</a></td>
 <td>0..1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>Id of the entity the property was measured on: an NMDC biosample (nmdc:bsm-</td>
-<td>direct</td>
+<td>The entity the property was observed on</td>
+<td><a href="../Observation/">Observation</a></td>
 </tr>
 <tr>
-<td><a href="../feature_of_interest_type/">feature_of_interest_type</a></td>
-<td>0..1 <br/> <a href="../FeatureOfInterestTypeEnum/">FeatureOfInterestTypeEnum</a></td>
-<td></td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../feature_position/">feature_position</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
-<td>Sub-feature locator when the feature is measured at a position: plate well ("...</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../sampling_medium/">sampling_medium</a></td>
-<td>0..1 <br/> <a href="../SamplingMediumEnum/">SamplingMediumEnum</a></td>
-<td></td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../phenomenon_time/">phenomenon_time</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
-<td>ISO-8601 instant or interval when the property applied to the feature (collec...</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../result_time/">result_time</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
-<td>ISO-8601 time the result was produced (e</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../utc_offset/">utc_offset</a></td>
-<td>0..1 <br/> <a href="../Integer/">Integer</a></td>
-<td></td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../statistic/">statistic</a></td>
-<td>0..1 <br/> <a href="../StatisticEnum/">StatisticEnum</a></td>
-<td>Statistical summary the value represents (MEAN, MAX,</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../aggregation_duration/">aggregation_duration</a></td>
-<td>0..1 <br/> <a href="../AggregationDurationEnum/">AggregationDurationEnum</a></td>
-<td>Time period over which the statistic applies; NONE for instantaneous</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../replicate_role/">replicate_role</a></td>
-<td>0..1 <br/> <a href="../ReplicateRoleEnum/">ReplicateRoleEnum</a></td>
-<td>BASALT measure_type - whether this is a single reading, one replicate, or the...</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../replicate_number/">replicate_number</a></td>
-<td>0..1 <br/> <a href="../Integer/">Integer</a></td>
-<td></td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../summary_of/">summary_of</a></td>
-<td>* <br/> <a href="./">Measurement</a></td>
-<td>For AVERAGE (or other summary) rows - the member replicate measurements</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../quality_status/">quality_status</a></td>
-<td>0..1 <br/> <a href="../ResultQualityStatusEnum/">ResultQualityStatusEnum</a></td>
-<td>Coarse validation status (BASIN-3D ResultQualityEnum)</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../quality_flags/">quality_flags</a></td>
-<td>* <br/> <a href="../QualityFlagEnum/">QualityFlagEnum</a></td>
-<td>Fine-grained QC flags (BASALT ProcessedDataFlag family); per-measurement, not...</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../source_quality_label/">source_quality_label</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
-<td>Verbatim source QC code (USGS "A"/"P", BASALT flag, well flag), for round-tri...</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../method/">method</a></td>
-<td>0..1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>Pointer to a Method/Protocol (BASALT *Method classes, NMDC Protocol, MIAPPE M...</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../protocol_url/">protocol_url</a></td>
-<td>0..1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td></td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../instrument/">instrument</a></td>
-<td>0..1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>Pointer to an Instrument record (harmonization row 28 core - vendor+model)</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../part_of_collection/">part_of_collection</a></td>
-<td>0..1 <br/> <a href="../MeasurementCollection/">MeasurementCollection</a></td>
-<td>The assay run / product / dataset this measurement belongs to</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../was_generated_by/">was_generated_by</a></td>
-<td>0..1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>Pointer to the generating activity: NMDC DataGeneration / WorkflowExecution, ...</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../datasource/">datasource</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
-<td>The contributing source system, e</td>
-<td>direct</td>
-</tr>
-</tbody>
-</table>
-<h2 id="usages">Usages</h2>
-<table>
-<thead>
-<tr>
-<th>used by</th>
-<th>used in</th>
-<th>type</th>
-<th>used</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="../BridgeDatabase/">BridgeDatabase</a></td>
-<td><a href="../measurements/">measurements</a></td>
-<td>range</td>
-<td><a href="./">Measurement</a></td>
-</tr>
-<tr>
-<td><a href="./">Measurement</a></td>
-<td><a href="../summary_of/">summary_of</a></td>
-<td>range</td>
-<td><a href="./">Measurement</a></td>
-</tr>
-<tr>
-<td><a href="../TimeSeriesMeasurement/">TimeSeriesMeasurement</a></td>
-<td><a href="../summary_of/">summary_of</a></td>
-<td>range</td>
-<td><a href="./">Measurement</a></td>
+<td><a href="../result/">result</a></td>
+<td>0..1 <br/> <a href="../QuantityValue/">QuantityValue</a></td>
+<td>The result of the observation</td>
+<td><a href="../Observation/">Observation</a></td>
 </tr>
 </tbody>
 </table>
@@ -670,19 +356,11 @@
 <tbody>
 <tr>
 <td>self</td>
-<td>ber_central_schema:Measurement</td>
+<td>bridge_central_schema:Measurement</td>
 </tr>
 <tr>
 <td>native</td>
-<td>ber_central_schema:Measurement</td>
-</tr>
-<tr>
-<td>exact</td>
-<td>sosa:Observation</td>
-</tr>
-<tr>
-<td>close</td>
-<td>nmdc:PropertyAssertion</td>
+<td>bridge_central_schema:Measurement</td>
 </tr>
 </tbody>
 </table>
@@ -691,526 +369,53 @@
 <h3 id="direct">Direct</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'A</span><span class="nv"> </span><span class="s">single</span><span class="nv"> </span><span class="s">act/record</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">measuring</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">observed</span><span class="nv"> </span><span class="s">property</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">feature</span>
-<span class="w">  </span><span class="s">of</span><span class="nv"> </span><span class="s">interest,</span><span class="nv"> </span><span class="s">yielding</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">result.</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">union</span><span class="nv"> </span><span class="s">row:</span><span class="nv"> </span><span class="s">NMDC</span><span class="nv"> </span><span class="s">Biosample.&lt;mixs_slot&gt;</span>
-<span class="w">  </span><span class="s">values,</span><span class="nv"> </span><span class="s">BASALT</span><span class="nv"> </span><span class="s">product</span><span class="nv"> </span><span class="s">columns,</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">BASIN-3D</span><span class="nv"> </span><span class="s">observations</span><span class="nv"> </span><span class="s">all</span><span class="nv"> </span><span class="s">project</span><span class="nv"> </span><span class="s">into</span><span class="nv"> </span><span class="s">it.</span><span class="nv"> </span><span class="s">Deliberately</span>
-<span class="w">  </span><span class="s">EAV-shaped</span><span class="nv"> </span><span class="s">so</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">lakehouse-wide</span><span class="nv"> </span><span class="s">search</span><span class="nv"> </span><span class="s">("all</span><span class="nv"> </span><span class="s">nitrate</span><span class="nv"> </span><span class="s">measurements</span><span class="nv"> </span><span class="s">across</span><span class="nv"> </span><span class="s">NMDC,</span>
-<span class="w">  </span><span class="s">MONet,</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">watershed</span><span class="nv"> </span><span class="s">timeseries")</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">single-table</span><span class="nv"> </span><span class="s">query.'</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">An observation whose result is a quantity.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
-<span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:Observation</span>
-<span class="nt">close_mappings</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:PropertyAssertion</span>
-<span class="nt">slots</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">type</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result</span>
-<span class="nt">attributes</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">observed_property</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">observed_property</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The BRIDGE/BERVO term for what was measured.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:observedProperty</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:has_attribute_id</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ObservedProperty</span>
-<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">  </span><span class="nt">observed_property_source_term</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">observed_property_source_term</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The verbatim source-native property code (NMDC slot name / MIxS CURIE,</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">BASALT column name, USGS parameter code), preserved for round-tripping. Resolved</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">to observed_property via SourceTermMapping.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">  </span><span class="nt">feature_of_interest</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">feature_of_interest</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Id</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">entity</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">property</span><span class="nv"> </span><span class="s">was</span><span class="nv"> </span><span class="s">measured</span><span class="nv"> </span><span class="s">on:</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">NMDC</span><span class="nv"> </span><span class="s">biosample</span>
-<span class="w">      </span><span class="s">(nmdc:bsm-...),</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">BASALT</span><span class="nv"> </span><span class="s">ProcessedSample,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">BASIN-3D</span><span class="nv"> </span><span class="s">MonitoringFeature,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">plate</span>
-<span class="w">      </span><span class="s">well</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">parent</span><span class="nv"> </span><span class="s">culture,</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">organism.</span><span class="nv"> </span><span class="s">Kept</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">loose</span><span class="nv"> </span><span class="s">pointer</span><span class="nv"> </span><span class="s">so</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">module</span>
-<span class="w">      </span><span class="s">doesn</span><span class="se">''</span><span class="s">t</span><span class="nv"> </span><span class="s">import</span><span class="nv"> </span><span class="s">every</span><span class="nv"> </span><span class="s">sample/site</span><span class="nv"> </span><span class="s">class;</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">central</span><span class="nv"> </span><span class="s">BRIDGE</span><span class="nv"> </span><span class="s">FeatureOfInterest</span>
-<span class="w">      </span><span class="s">role</span><span class="nv"> </span><span class="s">class</span><span class="nv"> </span><span class="s">(harmonization</span><span class="nv"> </span><span class="s">row</span><span class="nv"> </span><span class="s">3)</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">eventual</span><span class="nv"> </span><span class="s">range.'</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:hasFeatureOfInterest</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">  </span><span class="nt">feature_of_interest_type</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">feature_of_interest_type</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FeatureOfInterestTypeEnum</span>
-<span class="w">  </span><span class="nt">feature_position</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">feature_position</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Sub-feature</span><span class="nv"> </span><span class="s">locator</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">measured</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">position:</span>
-<span class="w">      </span><span class="s">plate</span><span class="nv"> </span><span class="s">well</span><span class="nv"> </span><span class="s">("A01"),</span><span class="nv"> </span><span class="s">core</span><span class="nv"> </span><span class="s">section</span><span class="nv"> </span><span class="s">("TOP"/"MID"/"BTM"),</span><span class="nv"> </span><span class="s">depth</span><span class="nv"> </span><span class="s">interval,</span><span class="nv"> </span><span class="s">timepoint</span>
-<span class="w">      </span><span class="s">label.'</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">  </span><span class="nt">sampling_medium</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sampling_medium</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SamplingMediumEnum</span>
-<span class="w">  </span><span class="nt">phenomenon_time</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">phenomenon_time</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ISO-8601 instant or interval when the property applied to the feature</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">(collection/observation time, not lab-analysis time).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:phenomenonTime</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">  </span><span class="nt">result_time</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result_time</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ISO-8601 time the result was produced (e.g. lab analysis date).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:resultTime</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">  </span><span class="nt">utc_offset</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">utc_offset</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
-<span class="w">  </span><span class="nt">statistic</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statistic</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Statistical summary the value represents (MEAN, MAX, ...).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StatisticEnum</span>
-<span class="w">  </span><span class="nt">aggregation_duration</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aggregation_duration</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Time period over which the statistic applies; NONE for instantaneous.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AggregationDurationEnum</span>
-<span class="w">  </span><span class="nt">replicate_role</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replicate_role</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BASALT measure_type - whether this is a single reading, one replicate,</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">or the average.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReplicateRoleEnum</span>
-<span class="w">  </span><span class="nt">replicate_number</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replicate_number</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
-<span class="w">  </span><span class="nt">summary_of</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">summary_of</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">For AVERAGE (or other summary) rows - the member replicate measurements.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">  </span><span class="nt">quality_status</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quality_status</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Coarse validation status (BASIN-3D ResultQualityEnum).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ResultQualityStatusEnum</span>
-<span class="w">  </span><span class="nt">quality_flags</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quality_flags</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Fine-grained QC flags (BASALT ProcessedDataFlag family); per-measurement,</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">not per-run.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QualityFlagEnum</span>
-<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">source_quality_label</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source_quality_label</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Verbatim source QC code (USGS "A"/"P", BASALT flag, well flag), for</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">round-tripping.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">  </span><span class="nt">method</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">method</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pointer to a Method/Protocol (BASALT *Method classes, NMDC Protocol,</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">MIAPPE Method).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">  </span><span class="nt">protocol_url</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">protocol_url</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">  </span><span class="nt">instrument</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instrument</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pointer to an Instrument record (harmonization row 28 core - vendor+model).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">  </span><span class="nt">part_of_collection</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">part_of_collection</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The assay run / product / dataset this measurement belongs to.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
-<span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">  </span><span class="nt">was_generated_by</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">was_generated_by</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Pointer</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">generating</span><span class="nv"> </span><span class="s">activity:</span><span class="nv"> </span><span class="s">NMDC</span><span class="nv"> </span><span class="s">DataGeneration</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">WorkflowExecution,</span>
-<span class="w">      </span><span class="s">BASALT</span><span class="nv"> </span><span class="s">DataGenerationActivity</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">DataProcessingActivity.</span><span class="nv"> </span><span class="s">Distinguishes</span><span class="nv"> </span><span class="s">direct</span>
-<span class="w">      </span><span class="s">readings</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">derived/</span><span class="nv"> </span><span class="s">model-fitted</span><span class="nv"> </span><span class="s">quantities</span><span class="nv"> </span><span class="s">(e.g.</span><span class="nv"> </span><span class="s">van</span><span class="nv"> </span><span class="s">Genuchten</span><span class="nv"> </span><span class="s">parameters,</span>
-<span class="w">      </span><span class="s">XCT</span><span class="nv"> </span><span class="s">pore</span><span class="nv"> </span><span class="s">metrics),</span><span class="nv"> </span><span class="s">whose</span><span class="nv"> </span><span class="s">generator</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">processing</span><span class="nv"> </span><span class="s">activity.'</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">  </span><span class="nt">datasource</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">datasource</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The contributing source system, e.g. "nmdc", "basalt", "usgs" (BASIN-3D</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">DataSource analog); supports faceting the union table by source.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
+<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Observation</span>
+<span class="nt">slot_usage</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">result</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QuantityValue</span>
 </code></pre></div>
 </details>
 <h3 id="induced">Induced</h3>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'A</span><span class="nv"> </span><span class="s">single</span><span class="nv"> </span><span class="s">act/record</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">measuring</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">observed</span><span class="nv"> </span><span class="s">property</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">feature</span>
-<span class="w">  </span><span class="s">of</span><span class="nv"> </span><span class="s">interest,</span><span class="nv"> </span><span class="s">yielding</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">result.</span><span class="nv"> </span><span class="s">This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">union</span><span class="nv"> </span><span class="s">row:</span><span class="nv"> </span><span class="s">NMDC</span><span class="nv"> </span><span class="s">Biosample.&lt;mixs_slot&gt;</span>
-<span class="w">  </span><span class="s">values,</span><span class="nv"> </span><span class="s">BASALT</span><span class="nv"> </span><span class="s">product</span><span class="nv"> </span><span class="s">columns,</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">BASIN-3D</span><span class="nv"> </span><span class="s">observations</span><span class="nv"> </span><span class="s">all</span><span class="nv"> </span><span class="s">project</span><span class="nv"> </span><span class="s">into</span><span class="nv"> </span><span class="s">it.</span><span class="nv"> </span><span class="s">Deliberately</span>
-<span class="w">  </span><span class="s">EAV-shaped</span><span class="nv"> </span><span class="s">so</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">lakehouse-wide</span><span class="nv"> </span><span class="s">search</span><span class="nv"> </span><span class="s">("all</span><span class="nv"> </span><span class="s">nitrate</span><span class="nv"> </span><span class="s">measurements</span><span class="nv"> </span><span class="s">across</span><span class="nv"> </span><span class="s">NMDC,</span>
-<span class="w">  </span><span class="s">MONet,</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">watershed</span><span class="nv"> </span><span class="s">timeseries")</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">single-table</span><span class="nv"> </span><span class="s">query.'</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">An observation whose result is a quantity.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
-<span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:Observation</span>
-<span class="nt">close_mappings</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:PropertyAssertion</span>
+<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Observation</span>
+<span class="nt">slot_usage</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">result</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QuantityValue</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">observed_property</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">observed_property</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The BRIDGE/BERVO term for what was measured.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:observedProperty</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:has_attribute_id</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ObservedProperty</span>
-<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">  </span><span class="nt">observed_property_source_term</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">observed_property_source_term</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The verbatim source-native property code (NMDC slot name / MIxS CURIE,</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">BASALT column name, USGS parameter code), preserved for round-tripping. Resolved</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">to observed_property via SourceTermMapping.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The property observed; a BERVO Variable CURIE when one exists.</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Observation</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
 <span class="w">  </span><span class="nt">feature_of_interest</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">feature_of_interest</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Id</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">entity</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">property</span><span class="nv"> </span><span class="s">was</span><span class="nv"> </span><span class="s">measured</span><span class="nv"> </span><span class="s">on:</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">NMDC</span><span class="nv"> </span><span class="s">biosample</span>
-<span class="w">      </span><span class="s">(nmdc:bsm-...),</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">BASALT</span><span class="nv"> </span><span class="s">ProcessedSample,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">BASIN-3D</span><span class="nv"> </span><span class="s">MonitoringFeature,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">plate</span>
-<span class="w">      </span><span class="s">well</span><span class="se">''</span><span class="s">s</span><span class="nv"> </span><span class="s">parent</span><span class="nv"> </span><span class="s">culture,</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">organism.</span><span class="nv"> </span><span class="s">Kept</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">loose</span><span class="nv"> </span><span class="s">pointer</span><span class="nv"> </span><span class="s">so</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">module</span>
-<span class="w">      </span><span class="s">doesn</span><span class="se">''</span><span class="s">t</span><span class="nv"> </span><span class="s">import</span><span class="nv"> </span><span class="s">every</span><span class="nv"> </span><span class="s">sample/site</span><span class="nv"> </span><span class="s">class;</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">central</span><span class="nv"> </span><span class="s">BRIDGE</span><span class="nv"> </span><span class="s">FeatureOfInterest</span>
-<span class="w">      </span><span class="s">role</span><span class="nv"> </span><span class="s">class</span><span class="nv"> </span><span class="s">(harmonization</span><span class="nv"> </span><span class="s">row</span><span class="nv"> </span><span class="s">3)</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">eventual</span><span class="nv"> </span><span class="s">range.'</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:hasFeatureOfInterest</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">  </span><span class="nt">feature_of_interest_type</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">feature_of_interest_type</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FeatureOfInterestTypeEnum</span>
-<span class="w">  </span><span class="nt">feature_position</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">feature_position</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Sub-feature</span><span class="nv"> </span><span class="s">locator</span><span class="nv"> </span><span class="s">when</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">feature</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">measured</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">position:</span>
-<span class="w">      </span><span class="s">plate</span><span class="nv"> </span><span class="s">well</span><span class="nv"> </span><span class="s">("A01"),</span><span class="nv"> </span><span class="s">core</span><span class="nv"> </span><span class="s">section</span><span class="nv"> </span><span class="s">("TOP"/"MID"/"BTM"),</span><span class="nv"> </span><span class="s">depth</span><span class="nv"> </span><span class="s">interval,</span><span class="nv"> </span><span class="s">timepoint</span>
-<span class="w">      </span><span class="s">label.'</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">sampling_medium</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sampling_medium</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SamplingMediumEnum</span>
-<span class="w">  </span><span class="nt">phenomenon_time</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">phenomenon_time</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ISO-8601 instant or interval when the property applied to the feature</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">(collection/observation time, not lab-analysis time).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:phenomenonTime</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">result_time</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result_time</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ISO-8601 time the result was produced (e.g. lab analysis date).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:resultTime</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">utc_offset</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">utc_offset</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
-<span class="w">  </span><span class="nt">statistic</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statistic</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Statistical summary the value represents (MEAN, MAX, ...).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StatisticEnum</span>
-<span class="w">  </span><span class="nt">aggregation_duration</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aggregation_duration</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Time period over which the statistic applies; NONE for instantaneous.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AggregationDurationEnum</span>
-<span class="w">  </span><span class="nt">replicate_role</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replicate_role</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BASALT measure_type - whether this is a single reading, one replicate,</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">or the average.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReplicateRoleEnum</span>
-<span class="w">  </span><span class="nt">replicate_number</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replicate_number</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
-<span class="w">  </span><span class="nt">summary_of</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">summary_of</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">For AVERAGE (or other summary) rows - the member replicate measurements.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">  </span><span class="nt">quality_status</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quality_status</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Coarse validation status (BASIN-3D ResultQualityEnum).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ResultQualityStatusEnum</span>
-<span class="w">  </span><span class="nt">quality_flags</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quality_flags</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Fine-grained QC flags (BASALT ProcessedDataFlag family); per-measurement,</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">not per-run.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QualityFlagEnum</span>
-<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">source_quality_label</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source_quality_label</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Verbatim source QC code (USGS "A"/"P", BASALT flag, well flag), for</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">round-tripping.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">method</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">method</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pointer to a Method/Protocol (BASALT *Method classes, NMDC Protocol,</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">MIAPPE Method).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">  </span><span class="nt">protocol_url</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">protocol_url</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">  </span><span class="nt">instrument</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instrument</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pointer to an Instrument record (harmonization row 28 core - vendor+model).</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">  </span><span class="nt">part_of_collection</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">part_of_collection</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The assay run / product / dataset this measurement belongs to.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
-<span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">  </span><span class="nt">was_generated_by</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">was_generated_by</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">'Pointer</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">generating</span><span class="nv"> </span><span class="s">activity:</span><span class="nv"> </span><span class="s">NMDC</span><span class="nv"> </span><span class="s">DataGeneration</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">WorkflowExecution,</span>
-<span class="w">      </span><span class="s">BASALT</span><span class="nv"> </span><span class="s">DataGenerationActivity</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">DataProcessingActivity.</span><span class="nv"> </span><span class="s">Distinguishes</span><span class="nv"> </span><span class="s">direct</span>
-<span class="w">      </span><span class="s">readings</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">derived/</span><span class="nv"> </span><span class="s">model-fitted</span><span class="nv"> </span><span class="s">quantities</span><span class="nv"> </span><span class="s">(e.g.</span><span class="nv"> </span><span class="s">van</span><span class="nv"> </span><span class="s">Genuchten</span><span class="nv"> </span><span class="s">parameters,</span>
-<span class="w">      </span><span class="s">XCT</span><span class="nv"> </span><span class="s">pore</span><span class="nv"> </span><span class="s">metrics),</span><span class="nv"> </span><span class="s">whose</span><span class="nv"> </span><span class="s">generator</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">processing</span><span class="nv"> </span><span class="s">activity.'</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">  </span><span class="nt">datasource</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">datasource</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The contributing source system, e.g. "nmdc", "basalt", "usgs" (BASIN-3D</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">DataSource analog); supports faceting the union table by source.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-measurements</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SourceTermMapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">id</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique id. For lakehouse-materialized measurement rows a UUID or</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">source-derived deterministic id (e.g. "{datasource}:{source_record}:{source_term}").</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The entity the property was observed on.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ObservedProperty</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">type</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">type</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Class designator (NMDC convention) so polymorphic rows/documents</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">resolve to their class.</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rdf:type</span>
-<span class="w">    </span><span class="nt">designates_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NamedThing</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementValue</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementCollection</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Observation</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
 <span class="w">  </span><span class="nt">result</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Polymorphic result; type designator on the value picks the subclass.</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The result of the observation.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
-<span class="w">    </span><span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:hasResult</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementValue</span>
-<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Observation</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QuantityValue</span>
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 </details>

@@ -486,9 +486,9 @@
 
 
 <h1 id="slot-result">Slot: result</h1>
-<p><em>Polymorphic result; type designator on the value picks the subclass.</em></p>
+<p><em>The result of the observation.</em></p>
 <div>
-<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/result">ber_central_schema:result</a></p>
+<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/result">bridge_central_schema:result</a></p>
 <!-- no inheritance hierarchy -->
 <h2 id="applicable-classes">Applicable Classes</h2>
 <table>
@@ -501,13 +501,13 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../Measurement/">Measurement</a></td>
-<td>A single act/record of measuring one observed property of one feature of inte...</td>
+<td><a href="../Observation/">Observation</a></td>
+<td>An act of observing a property of a feature of interest, yielding a result (O...</td>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../TimeSeriesMeasurement/">TimeSeriesMeasurement</a></td>
-<td>Structural subclass for timeseries results (BASIN-3D MeasurementTimeseriesTVP...</td>
+<td><a href="../Measurement/">Measurement</a></td>
+<td>An observation whose result is a quantity</td>
 <td>yes</td>
 </tr>
 </tbody>
@@ -524,11 +524,11 @@
 <tbody>
 <tr>
 <td>Range</td>
-<td><a href="../MeasurementValue/">MeasurementValue</a></td>
+<td><a href="../AttributeValue/">AttributeValue</a></td>
 </tr>
 <tr>
 <td>Domain Of</td>
-<td><a href="../Measurement/">Measurement</a></td>
+<td><a href="../Observation/">Observation</a></td>
 </tr>
 </tbody>
 </table>
@@ -542,8 +542,8 @@
 </thead>
 <tbody>
 <tr>
-<td>Required</td>
-<td>Yes</td>
+<td></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -563,30 +563,23 @@
 <tbody>
 <tr>
 <td>self</td>
-<td>ber_central_schema:result</td>
+<td>bridge_central_schema:result</td>
 </tr>
 <tr>
 <td>native</td>
-<td>ber_central_schema:result</td>
-</tr>
-<tr>
-<td>exact</td>
-<td>sosa:hasResult</td>
+<td>bridge_central_schema:result</td>
 </tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">result</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Polymorphic result; type designator on the value picks the subclass.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The result of the observation.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
-<span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:hasResult</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
-<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasurementValue</span>
-<span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Observation</span>
+<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AttributeValue</span>
 <span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 </details>

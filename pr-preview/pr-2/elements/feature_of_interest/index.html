@@ -486,9 +486,9 @@
 
 
 <h1 id="slot-feature_of_interest">Slot: feature_of_interest</h1>
-<p><em>Id of the entity the property was measured on: an NMDC biosample (nmdc:bsm-...), a BASALT ProcessedSample, a BASIN-3D MonitoringFeature, a plate well's parent culture, an organism. Kept as a loose pointer so this module doesn't import every sample/site class; the central BRIDGE FeatureOfInterest role class (harmonization row 3) is the eventual range.</em></p>
+<p><em>The entity the property was observed on.</em></p>
 <div>
-<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/feature_of_interest">ber_central_schema:feature_of_interest</a></p>
+<p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/feature_of_interest">bridge_central_schema:feature_of_interest</a></p>
 <!-- no inheritance hierarchy -->
 <h2 id="applicable-classes">Applicable Classes</h2>
 <table>
@@ -501,13 +501,13 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../Measurement/">Measurement</a></td>
-<td>A single act/record of measuring one observed property of one feature of inte...</td>
+<td><a href="../Observation/">Observation</a></td>
+<td>An act of observing a property of a feature of interest, yielding a result (O...</td>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../TimeSeriesMeasurement/">TimeSeriesMeasurement</a></td>
-<td>Structural subclass for timeseries results (BASIN-3D MeasurementTimeseriesTVP...</td>
+<td><a href="../Measurement/">Measurement</a></td>
+<td>An observation whose result is a quantity</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -528,7 +528,7 @@
 </tr>
 <tr>
 <td>Domain Of</td>
-<td><a href="../Measurement/">Measurement</a></td>
+<td><a href="../Observation/">Observation</a></td>
 </tr>
 </tbody>
 </table>
@@ -542,22 +542,8 @@
 </thead>
 <tbody>
 <tr>
-<td>### Slot Characteristics</td>
 <td></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Owner</td>
-<td><a href="../Measurement/">Measurement</a></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -577,33 +563,22 @@
 <tbody>
 <tr>
 <td>self</td>
-<td>ber_central_schema:feature_of_interest</td>
+<td>bridge_central_schema:feature_of_interest</td>
 </tr>
 <tr>
 <td>native</td>
-<td>ber_central_schema:feature_of_interest</td>
-</tr>
-<tr>
-<td>exact</td>
-<td>sosa:hasFeatureOfInterest</td>
+<td>bridge_central_schema:feature_of_interest</td>
 </tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">feature_of_interest</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Id</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">entity</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">property</span><span class="nv"> </span><span class="s">was</span><span class="nv"> </span><span class="s">measured</span><span class="nv"> </span><span class="s">on:</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">NMDC</span><span class="nv"> </span><span class="s">biosample</span><span class="nv"> </span><span class="s">(nmdc:bsm-...),</span>
-<span class="w">  </span><span class="s">a</span><span class="nv"> </span><span class="s">BASALT</span><span class="nv"> </span><span class="s">ProcessedSample,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">BASIN-3D</span><span class="nv"> </span><span class="s">MonitoringFeature,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">plate</span><span class="nv"> </span><span class="s">well</span><span class="se">&#39;&#39;</span><span class="s">s</span><span class="nv"> </span><span class="s">parent</span><span class="nv"> </span><span class="s">culture,</span>
-<span class="w">  </span><span class="s">an</span><span class="nv"> </span><span class="s">organism.</span><span class="nv"> </span><span class="s">Kept</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">loose</span><span class="nv"> </span><span class="s">pointer</span><span class="nv"> </span><span class="s">so</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">module</span><span class="nv"> </span><span class="s">doesn</span><span class="se">&#39;&#39;</span><span class="s">t</span><span class="nv"> </span><span class="s">import</span><span class="nv"> </span><span class="s">every</span><span class="nv"> </span><span class="s">sample/site</span>
-<span class="w">  </span><span class="s">class;</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">central</span><span class="nv"> </span><span class="s">BRIDGE</span><span class="nv"> </span><span class="s">FeatureOfInterest</span><span class="nv"> </span><span class="s">role</span><span class="nv"> </span><span class="s">class</span><span class="nv"> </span><span class="s">(harmonization</span><span class="nv"> </span><span class="s">row</span><span class="nv"> </span><span class="s">3)</span><span class="nv"> </span><span class="s">is</span>
-<span class="w">  </span><span class="s">the</span><span class="nv"> </span><span class="s">eventual</span><span class="nv"> </span><span class="s">range.&#39;</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The entity the property was observed on.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
-<span class="nt">exact_mappings</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sosa:hasFeatureOfInterest</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Observation</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
 </code></pre></div>
 </details>
