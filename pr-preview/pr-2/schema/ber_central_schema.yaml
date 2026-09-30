@@ -6,9 +6,7 @@ description: "The central BRIDGE schema for harmonized cross-BER data access. Th
   \ Measurement / ObservedProperty model\n  (harmonization rows: Measurement/observation,\
   \ Observed property,\n  QuantityValue). Designed at the 2026-09-30 BER hackathon\
   \ against NMDC,\n  BASALT, and BASIN-3D as reference schemas, with BERVO as the\
-  \ primary\n  observed-property vocabulary.\n\nPlanned modules (not yet designed):\n\
-  - feature-of-interest (Sample / Site / ObservationTarget role class)\n- agents (Person\
-  \ / Organization / Contribution)\n- datasets (Dataset / DataObject / Study)"
+  \ primary\n  observed-property vocabulary."
 title: BRIDGE Central Schema
 see_also:
 - https://github.com/ber-data/bridge-central-schema
@@ -1974,7 +1972,7 @@ classes:
     class_uri: bridge:MeasurementCollection
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-09-30T17:26:36'
-source_file_size: 2846
-generation_date: '2026-09-30T17:26:47'
+source_file_date: '2026-09-30T17:27:17'
+source_file_size: 2643
+generation_date: '2026-09-30T17:27:27'
 
