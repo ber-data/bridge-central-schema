@@ -6,38 +6,10 @@ description: >-
   Draft LinkML model for genome and metagenome sequence features across BER data sources
   (NMDC, JGI IMG, KBase).
 notes:
-  - Staged in turbomam/feature-table-corpus, not in ber-data/gff-schema, because that
-    repository does not exist yet as of 2026-09-18; the 2026-09-11 kickoff floated creating
-    it or moving biodatamodels/gff-schema into ber-data, and neither has happened. Move or
-    re-home this file once that decision is made.
-  - Every field's `notes` cites the measurement or confirmation it is based on, dated, so a
-    reader can tell what is verified versus what is still a guess.
-  - "Two design decisions this draft takes that earlier drafts did not: (1) multivalued and
-    nested slots (parent, attributes) are used directly rather than decomposed into join
-    tables Chado-style, because Georg Rath (gbrath-lbl) confirmed 2026-09-17 that BRIDGE's
-    scalar-only flat-table profile (ber-data/bridge-catalog-mvp docs/architecture.md) is an
-    early-prototype decision, not a requirement; flattening remains a legitimate downstream
-    publishing-profile decision, see scripts/flat_profile_audit.py in this repository. (2)
-    `type` stays a plain string, not Sequence-Ontology-constrained, because 7 of 14 real
-    NMDC GFF file types put a bare database accession there instead (measured 2026-09-11,
-    see docs/columns-and-discretion.md)."
-  - Open questions from the 2026-09-11 kickoff this draft does NOT resolve, predicted-vs-sequenced
-    metagenome disambiguation, whether CURIEs are required more broadly than the one
-    column-3 finding above, and where this schema's permanent home is.
-  - "Directives and comments are represented separately in model/schema/source_document.yaml,
-    not imported into this biological Dataset model. Measured 2026-09-18
-    across all 14 real NMDC GFF files, only 1 carries any `##` directive at all
-    (`##gff-version  3`, two spaces, in the Prodigal file); the other 13 open straight into
-    data rows. The original pair of vendored NCBI RefSeq GFF3 files carry 4 each (gff-version, sequence-region,
-    species, and a closing `###`). GFF3's `##sequence-region` declares a region, not necessarily
-    a full sequence length; `##species` is document-level organism metadata, not a taxonomic
-    lineage for each contig. Contig.taxonomic_lineage uses other sidecar files here instead, and
-    Contig.length_bp does too, except that gff3-contig takes an NCBI whole-record region as the
-    length (see their own notes). This directive count excludes single-#
-    comments: the Prodigal example has 5 Sequence Data and 5 Model Data comments interleaved
-    with feature rows, including sequence lengths and per-sequence prediction settings.
-    The source-document reader preserves these with explicit sequence scope;
-    scarcity of ## directives does not imply absence of useful comment metadata."
+  - Copied from the feature-table-corpus v0.1.0 release
+    (https://github.com/turbomam/feature-table-corpus/releases/tag/v0.1.0). The evidence and
+    decision history behind each element, and the source-specific conversion tooling, stay in
+    that repository and are not part of this module.
 license: https://creativecommons.org/publicdomain/zero/1.0/
 
 prefixes:
@@ -61,14 +33,8 @@ imports:
 
 classes:
   Dataset:
-    tree_root: true
     title: Feature dataset
     description: A document holding every Contig and Feature harmonized from one or more workflow executions.
-    notes:
-      - Added 2026-09-18 so a whole harmonized data file (e.g.
-        model/examples/one-biosample-sequencing/harmonized.yaml) can be validated as one instance
-        of one class, rather than only validating its Contig and Feature entries one at a
-        time. linkml-lint's tree_root_class check caught the absence of this class.
     slots:
       - contig_collections
       - contigs
@@ -94,16 +60,14 @@ classes:
     exact_mappings:
       - kb_cdm:ContigCollection
     notes:
-      - Added for https://github.com/turbomam/feature-table-corpus/issues/41, so that "same
-        organism" can be asked of features through their contigs. Mapped to the KBase CDM class
-        of the same name (kbase/cdm-schema src/linkml/cdm_bioentity.yaml, commit c1a59b9, read
-        2026-09-25). CDM records the same membership in its Contig_x_ContigCollection table,
-        defined in src/linkml/cdm_join_tables.yaml.
       - Only isolate, mag, sag and virus collections stand for one organism. A metagenome or
         metatranscriptome collection is a whole community, so a same-organism query filters on
         collection_type.
       - Assembly and bin statistics (N50, CheckM completeness and contamination) are left to
         CDM and source catalogues; this model only records membership.
+      - Maps to the KBase CDM class of the same name (https://github.com/kbase/cdm-schema,
+        src/linkml/cdm_bioentity.yaml). CDM records the same membership in its
+        Contig_x_ContigCollection table.
     slots:
       - collection_id
       - collection_type
@@ -117,17 +81,15 @@ classes:
 
   Feature:
     title: Feature
-    description: An annotated sequence interval; explicit conversion profiles define its source representation.
+    description: An annotated sequence interval.
+    notes:
+      - Holds gene- and CDS-level calls and the per-database evidence hits (Pfam, COG, KO, EC and
+        others) that a functional annotation pipeline reports about a gene, linked to the gene
+        through parent rather than through a second class.
     close_mappings:
       # SO:0000110 is "any extent of continuous biological sequence"; a Feature can also be a
       # joined location or a protein-coordinate hit, so the match is close, not exact.
       - SO:0000110
-    notes:
-      - Used for both gene/CDS-level calls and for finer-grained per-database evidence hits
-        (Pfam, COG, CATH-FunFam, SUPERFAMILY, KO, EC) that a functional annotation pipeline
-        reports about a gene, linked via `parent` rather than a second, parallel class. See
-        docs/columns-and-discretion.md section 5 for the non-GFF formats (EC, KO, CRISPR
-        Terms) this same class also holds.
     slots:
       - feature_id
       - stable_identifiers
@@ -180,11 +142,8 @@ classes:
       Where a hit aligns on the thing it matched, such as a Pfam model or a reference protein, in
       that thing's own positions. GFF3 writes this as the Target and Gap tags.
     notes:
-      - Added for https://github.com/turbomam/feature-table-corpus/issues/94. A hit's own start,
-        end and seqid say where it lies on the query protein (docs/protein-coordinates.md); this
-        says where on the target. nmdc-pfam-protein fills it from HMMER's model_start and
-        model_end, which all 416 rows of the vendored NMDC Pfam file carry, with the Pfam
-        accession as target_id. The generic attributes stay as they are.
+      - A hit's own start, end and seqid say where it lies on the query; this says where it lies on
+        the target.
     slots:
       - target_id
       - target_start
@@ -226,13 +185,9 @@ slots:
     maximum_value: 33
     description: NCBI genetic code used to translate coding features on this contig, such as 11 for bacteria and archaea or 4 for Mycoplasma.
     notes:
-      - Added for https://github.com/turbomam/feature-table-corpus/issues/46. NMDC writes it per
-        CDS as a translation_table attribute, and Prodigal also writes transl_table in its
-        per-sequence Model Data comments (docs/source-documents.md). A CDS attribute stays in
-        attributes; this slot records the table the contig was translated with.
-      - The upper bound is the highest NCBI genetic code identifier in use, 33, as listed at
-        https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi (read 2026-09-25). Codes 7, 8
-        and 17 to 20 are unassigned; scripts/validate_closed.py rejects them.
+      - The upper bound is the highest NCBI genetic code identifier in use, 33
+        (https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi). Codes 7, 8 and 17 to 20 are
+        unassigned.
   target:
     title: Alignment target
     description: Where this hit aligns on the thing it matched; absent for features that are not alignments.
@@ -367,14 +322,6 @@ slots:
     title: Ontology term
     multivalued: true
     description: GFF3 Ontology_term values, ontology term CURIEs such as GO:0003677, in source order.
-    notes:
-      - name, note, dbxref and ontology_term hold the GFF3 reserved tags of the same names
-        (https://github.com/turbomam/feature-table-corpus/issues/43). gff3-contig fills them and
-        keeps every occurrence in attributes as well, as it does for ID, Parent and product; export
-        refuses a Feature whose typed and generic copies disagree. Measured 2026-09-28 across the
-        51 GFF files in corpus/, Name is on 21,240 rows and never repeated, Note on 412, Dbxref on
-        8,315 (182 rows with more than one), and Ontology_term on 4,750 (3,567 with more than one).
-        Alias and Derives_from occur in none of them, so they stay in attributes.
   length_bp:
     title: Length (bp)
     range: integer
@@ -383,11 +330,6 @@ slots:
     notes:
       - Compute directly from the contig's own FASTA record where there is one, not from a
         summary statistics file, so it is exact rather than an average.
-      - gff3-contig 4.0.0 also takes it from a GFF3 sequence-region directive, under the ncbi metadata
-        profile only and only from a single region starting at 1, because NCBI writes one region
-        per record from 1 to the record's length (https://github.com/turbomam/feature-table-corpus/issues/46).
-        GFF3 lets a region cover part of a sequence, so no other producer's regions are used;
-        https://github.com/turbomam/feature-table-corpus/issues/126 tracks measuring them.
   taxonomic_lineage:
     title: Taxonomic lineage
     multivalued: true
@@ -410,42 +352,25 @@ slots:
     close_mappings:
       - gff3:ID
     title: Feature ID
-    description: Identity unique within this Dataset; supplied by the source or assigned by an explicit profile.
+    description: Identifier unique within its Dataset.
     notes:
-      - A mapping whose Datasets can hold hits of several methods forms a hit's feature_id as
-        <source ID>|<method>|<type> and keeps the source ID in attributes
-        (https://github.com/turbomam/feature-table-corpus/issues/98). Hit files from different
-        methods reuse one source ID for hits on the same span (1,138 IDs in one IMG isolate's
-        seven files, counted 2026-09-28), so the bare ID would collide. The IMG per-method
-        mapping and nmdc-lakehouse use this form. nmdc-pfam-protein reads one Pfam file, whose
-        IDs are unique, and keeps the source ID as feature_id.
-      - Uniqueness is a rule for the Dataset, not a property of sources. Older NMDC annotation
-        runs repeat an ID within one file. In nmdc:wfmgan-12-2h43v434.1's Functional Annotation
-        GFF, an INFERNAL misc_feature on + and a GeneMark CDS on - both have
-        ID=Ga0495594_0816865_1_525, because the ID encodes the interval and not the strand
-        (checked 2026-09-23; https://github.com/turbomam/feature-table-corpus/issues/38). Every
-        mapping here validates its Dataset, so such a file is refused as "duplicate feature_id".
-        nmdc-lakehouse instead qualifies a repeated ID with its strand, as <ID>|<strand>.
+      - Uniqueness is a rule for the Dataset, not a property of sources; some sources repeat an ID
+        within one file.
+      - feature_id is a file-local key, not a globally unique persistent identifier. GFF3 IDs are
+        not stable identifiers; use stable_identifiers for those.
   stable_identifiers:
     title: Stable identifiers
     multivalued: true
     description: Identifiers an authority assigns to this feature and keeps across releases, as opposed to feature_id, which only needs to be unique within this Dataset.
     notes:
-      - Added for https://github.com/turbomam/feature-table-corpus/issues/44. The AgBioData GFF3
-        recommendations advise "NOT using the ID attribute to specify the globally unique,
-        persistent identifier", and NCBI says its GFF3 IDs are "not intended to be used as stable
-        feature identifiers" (both read 2026-09-23). feature_id stays the file-local key.
-      - Use a CURIE when a prefix exists, such as an NCBI GeneID. A locus tag has no registered
-        prefix and is written as it appears. In the vendored RefSeq file
-        corpus/sources/ncbi-refseq/NC_003888.3_2026-09-21.gff3, the gene with current locus tag
-        SC_RS27595 also carries old_locus_tag SCO5087; list the current and legacy locus tags.
-        That file has no GeneID Dbxrefs (checked 2026-09-25).
       - NMDC annotation files carry no such identifier for their own genes. The IMG gene oid in
         the KO and EC files (column 2 of Annotation KEGG Orthology, subject_gene_ids in KO_EC
         Annotation GFF) identifies the reference gene the query was aligned to, not the
         annotated gene, so it does not belong here. Checked 2026-09-25 on
         nmdc:wfmgan-11-grwgtd27.2, where both files give 2776147680 for the hit of
         nmdc:wfmgan-11-grwgtd27.2_0016_3_1208.
+      - Use a CURIE when a prefix exists, such as an NCBI GeneID. A locus tag has no registered
+        prefix and is written as it appears; list both current and legacy locus tags.
   seqid:
     exact_mappings:
       - gff3:seqid
@@ -459,11 +384,9 @@ slots:
       chrom; interpreted within its assembly context. A contig for contig coordinates; for
       protein coordinates, the CDS whose translation they count residues of.
     notes:
-      - Decided 2026-09-28 (https://github.com/turbomam/feature-table-corpus/issues/40); before,
-        a protein-coordinate hit named its contig. GFF3 defines column 1 as the landmark that
-        establishes the coordinate system, and NMDC's hit files put the protein there.
-        docs/protein-coordinates.md gives the rule, queries, and the alternatives considered.
       - A protein-coordinate feature's parent is the same CDS. LocationPart.seqid stays a Contig.
+      - For a hit reported in protein coordinates, seqid names the protein, because GFF3 column 1 is
+        the landmark that establishes the coordinate system.
   source:
     exact_mappings:
       - gff3:source
@@ -514,8 +437,6 @@ slots:
     required: true
     minimum_value: 1
     description: 1-based inclusive end, always >= start; when location is present this is only the maximum reported part coordinate.
-    comments:
-      - Cross-field comparison is enforced by scripts/validate_closed.py for Dataset instances.
   coordinate_system:
     title: Coordinate system
     range: CoordinateSystemEnum
@@ -543,8 +464,6 @@ slots:
     range: ScoreTypeEnum
     description: What kind of number score is.
     notes:
-      - Added for https://github.com/turbomam/feature-table-corpus/issues/46, so an e-value and a
-        bit score are not mistaken for each other. Each value maps to an EDAM data term.
       - Leave it unset when no source states what the score means. Unset says the meaning is
         not recorded, not that the score is generic.
   strand:
@@ -614,12 +533,6 @@ slots:
     range: boolean
     description: Whether the annotation pipeline chose this call as canonical for its locus.
     notes:
-      - Measured 2026-09-18, Structural Annotation GFF (the roll-up) contains only the
-        Prodigal calls for a locus where both Prodigal and GeneMark called competing
-        boundaries, even though both tools' calls exist as separate DataObjects. Without this
-        field, a table holding both calls has no way to say which is canonical, and naively
-        adding the roll-up as a third source would silently duplicate the Prodigal rows. See
-        model/examples/one-biosample-sequencing/ for the worked case.
       - "Open question, found 2026-09-18 in that same worked case: is_selected=false does not
         always mean \"a competing caller won\". One real Prodigal call there
         (nmdc:wfmgas-11-19jh9v28.1_scf_1_c1_3_65) had no GeneMark call at all for the same
@@ -634,21 +547,10 @@ slots:
       Whether the source names this transcript as its gene's representative isoform, the one to
       use when a query wants a single transcript per gene.
     notes:
-      - Phytozome writes longest=1 on one mRNA per gene and longest=0 on the others. In
-        Athaliana_167_TAIR10.gene_exons.gff3, downloaded 2026-09-25, 27,416 of 35,386 mRNA rows
-        have longest=1, one for each gene. Despite the key name the flag is Phytozome's choice
-        and not a length rule. In 16 of the 5,804 genes with more than one isoform, the flagged
-        mRNA does not have the longest CDS (docs/conversion-profiles.md). Other sources mark the
-        same idea differently. Ensembl GFF3 lists Ensembl_canonical as one of the comma-separated
-        values of an mRNA's tag attribute.
-      - Unset means the source does not say. Set false only where the source says so, as
-        Phytozome's longest=0 does. A marked feature needs a parent, its gene, and a gene has at
-        most one representative; the Dataset validator checks both. Type names vary by source
-        (mRNA, transcript, lnc_RNA; gene, ncRNA_gene, pseudogene), so the validator recognizes the
-        gene by structure, as a top-level feature with no parent of its own, not by type.
-      - Different from is_selected, which records which competing call an annotation pipeline
-        kept for a locus, not which of a gene's isoforms stands for it
-        (https://github.com/turbomam/feature-table-corpus/issues/48).
+      - Unset means the source does not say; set false only where the source says so. A marked
+        feature needs a parent (its gene), and a gene has at most one representative.
+      - Different from is_selected, which records which competing call an annotation pipeline kept
+        for a locus, not which of a gene's isoforms stands for it.
   product:
     title: Product
     description: Human-readable functional product name for a gene, e.g. "transposase".
@@ -662,10 +564,6 @@ slots:
         file for every protein-coding gene checked so far. Use this slot or that file, never
         both, so the same product assignment is never recorded twice under two different
         provenance stories.
-      - Not for RNA rows. There, Product Names carries a third-column label such as rRNA_28S
-        or tRNA where the Functional Annotation GFF has no product_source, across 50 NMDC runs
-        (measured in nmdc-lakehouse 2026-09-23, not re-checked here;
-        https://github.com/turbomam/feature-table-corpus/issues/38).
   translated_sequence:
     title: Translated sequence
     description: Amino-acid translation of a CDS feature, from the workflow's protein FASTA output.
@@ -778,15 +676,6 @@ enums:
   CoordinateSystemEnum:
     title: Coordinate system
     description: Which coordinate space a Feature's start/end are measured in.
-    notes:
-      - "Named contig/protein, lowercase, not CONTIG/PROTEIN. An earlier revision tried
-        uppersnake to satisfy linkml-lint's permissible_values_format rule, which suggests
-        uppersnake by default, without checking it against standard_naming, whose own
-        default (as used in LinkML's bundled recommended.yaml) expects lowercase snake_case
-        and would then flag the uppercase form instead. model/schema/strict-lint-config.yaml sets
-        both rules to the same snake-case convention so they agree, and this enum's values
-        match it; unlike StrandEnum, this enum is the schema's own invention so there was no
-        format-fidelity reason to pick uppersnake in the first place."
     permissible_values:
       contig:
         description: start/end are nucleotide positions on the referenced Contig.
