@@ -1,5 +1,5 @@
 # Real NMDC data: one CDS from annotation nmdc:wfmgan-11-5xxrm214.2 and its three Pfam hits, from
-# https://github.com/turbomam/feature-table-corpus/blob/4aaca94/model/examples/multiple-pfams/harmonized.yaml (CC BY 4.0).
+# https://github.com/turbomam/feature-table-corpus/blob/v0.1.0/model/examples/multiple-pfams/harmonized.yaml (CC BY 4.0).
 contigs:
 - contig_id: nmdc:wfmgas-11-19jh9v28.1_scf_10_c1
   length_bp: 1173
