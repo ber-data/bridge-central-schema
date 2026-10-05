@@ -96,6 +96,7 @@ classes:
       - seqid
       - source
       - type
+      - method
       - start
       - end
       - coordinate_system
@@ -415,6 +416,21 @@ slots:
         Rfam covariance model accession) in a lowercase `model`/`accession` attribute pair
         instead, an accession where an SO term is expected in one case, a generic placeholder
         where an accession would be more specific in another.
+  method:
+    title: Method
+    range: MethodEnum
+    description: >-
+      The annotation method or reference database whose search produced this feature, such as
+      Pfam or KEGG Orthology.
+    notes:
+      - Distinct from source, which is the tool and version (GFF3 column 2), and from
+        generated_by, which is the run. Set it on evidence hits; leave it unset on gene and RNA
+        calls, where source already names the caller.
+      - A Dataset that holds hits of several methods forms a hit's feature_id as
+        <source ID>|<method>|<type>; when method is set it should equal that middle part.
+      - Added so one table can hold every method's hits and still be filtered or partitioned by
+        method. Before it, the method was only inside feature_id, and two converters spelled
+        SUPERFAMILY hits differently (supfam and superfamily).
   start:
     exact_mappings:
       - gff3:start
@@ -623,6 +639,28 @@ enums:
       score:
         description: A tool-specific score of no more specific kind.
         meaning: EDAM:data_1772
+  MethodEnum:
+    title: Method
+    description: Annotation method or reference database that produced an evidence hit.
+    permissible_values:
+      pfam:
+        description: Pfam protein families, https://www.ebi.ac.uk/interpro/entry/pfam/
+      cog:
+        description: Clusters of Orthologous Genes, https://www.ncbi.nlm.nih.gov/research/cog/
+      tigrfam:
+        description: TIGRFAMs protein families, https://www.ncbi.nlm.nih.gov/genome/annotation_prok/tigrfams/
+      smart:
+        description: SMART protein domains, https://smart.embl.de/
+      supfam:
+        description: SUPERFAMILY structural domain assignments, https://supfam.org/
+      cath_funfam:
+        description: CATH functional families (FunFams), https://www.cathdb.info/
+      ko_ec:
+        description: KEGG Orthology assignments and the EC numbers that come with them, https://www.genome.jp/kegg/ko.html
+      tmhmm:
+        description: TMHMM transmembrane helix predictions.
+      signalp:
+        description: SignalP signal peptide predictions.
   TopologyEnum:
     description: Reference topology used by location validation and distance queries.
     permissible_values:
