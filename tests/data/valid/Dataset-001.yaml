@@ -29,6 +29,8 @@ features:
   seqid: nmdc:wfmgas-11-19jh9v28.1_scf_10_c1_63_1091
   source: HMMER 3.1b2 (February 2015)
   type: PF13358
+  # `name` is the key the display_name slot reads, through alias: name.
+  name: DDE_3
   start: 168
   end: 312
   coordinate_system: protein
