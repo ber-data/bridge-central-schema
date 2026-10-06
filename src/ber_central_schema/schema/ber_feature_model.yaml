@@ -426,10 +426,12 @@ slots:
       - Distinct from source, which is the tool and version (GFF3 column 2), and from
         generated_by, which is the run. Set it on evidence hits; leave it unset on gene and RNA
         calls, where source already names the caller.
-      - A Dataset that holds hits of several methods forms a hit's feature_id as
-        <source ID>|<method>|<type>; when method is set it should equal that middle part,
-        except for TMHMM and SignalP hits, whose feature_id carries the IMG file suffixes tmh and
-        cleavage_sites while method is tmhmm or signalp.
+      - feature_id has no required format, which is why method is a separate slot to filter on.
+        The IMG per-method converter forms a hit's feature_id as <source ID>|<method>|<type>, and
+        when method is set on such a hit it equals that middle part, except for TMHMM and SignalP
+        hits, whose feature_id carries the IMG file suffixes tmh and cleavage_sites while method
+        is tmhmm or signalp. Other data, such as tests/data/valid/Dataset-002.yaml, uses
+        <source ID>_<method>.
       - Added so one table can hold every method's hits and still be filtered or partitioned by
         method. Before it, the method was only inside feature_id, and two converters spelled
         SUPERFAMILY hits differently (supfam and superfamily).
