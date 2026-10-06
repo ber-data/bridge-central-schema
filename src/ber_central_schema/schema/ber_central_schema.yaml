@@ -18,7 +18,7 @@ prefixes:
   # declares when enum meanings use them (the feature model's ContigCollectionTypeEnum and
   # ScoreTypeEnum).
   MIXS: https://w3id.org/mixs/
-  EDAM: http://edamontology.org/
+  EDAM_DATA: http://edamontology.org/data_
   schema: http://schema.org/
 default_prefix: bridge_central_schema
 default_range: string
