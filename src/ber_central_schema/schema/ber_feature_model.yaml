@@ -427,7 +427,9 @@ slots:
         generated_by, which is the run. Set it on evidence hits; leave it unset on gene and RNA
         calls, where source already names the caller.
       - A Dataset that holds hits of several methods forms a hit's feature_id as
-        <source ID>|<method>|<type>; when method is set it should equal that middle part.
+        <source ID>|<method>|<type>; when method is set it should equal that middle part,
+        except for TMHMM and SignalP hits, whose feature_id carries the IMG file suffixes tmh and
+        cleavage_sites while method is tmhmm or signalp.
       - Added so one table can hold every method's hits and still be filtered or partitioned by
         method. Before it, the method was only inside feature_id, and two converters spelled
         SUPERFAMILY hits differently (supfam and superfamily).
