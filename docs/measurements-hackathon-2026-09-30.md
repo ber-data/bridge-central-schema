@@ -158,6 +158,7 @@ flowchart LR
 | `Observation`, with `Measurement` under it | `Measurement` only | One class to start (R01, R02) |
 | Values in a separate `MeasurementValue` / `QuantityValue` object under `result` | Value slots directly on `Measurement` | The 10/07 notes list type, value, raw value and unit as slots of one class; one flat record per value also loads as one table row |
 | `observed_property` must match `^bervo:BERVO_\d{7}$` | Any identifier, or `property_label` | Most GOLD and EMSL properties have no BERVO term yet (R38) |
+| (not in 0.2.0) | Not taken: `Measurement` as a subclass of a `QuantityValue` class | Open question 12 (R69). The first pass puts the value slots on `Measurement` directly instead |
 | `exact_mappings` to `nmdc:QuantityValue` and `nmdc:AttributeValue` | `close_mappings`, slot by slot | NMDC requires a unit from a closed list and has min/max; this module does not require a unit (issue 4, point 6) |
 | `feature_of_interest` commented out | A reference slot only | GOLD values cannot be told apart without the organism (issue 4, point 1); the classes it points to stay with the Sample working group |
 | Example BERVO IDs `BERVO_0000001`, `BERVO_0000915`, `BERVO_0000123` | Real terms or BRIDGE-issued IDs | In BERVO release 2026-09-25 those three IDs are Ecosystem net radiation, Total phosphorus drainage below root zone, and an FePO4 equilibrium constant, not nitrate, total carbon and water temperature |
@@ -202,6 +203,7 @@ The first pass makes a provisional choice where it can. Each needs a group decis
 9. A QA class, or is one `quality_flag` enough for now? (R64)
 10. What do people want to search on? (R63)
 11. (Raised while writing this pass.) Should a mapping to MIxS be `exactMatch` when MIxS defines the property of a sample and BERVO the property in general? The mapping file uses `closeMatch` for those.
+12. (Raised while reviewing this pass, R69.) Should `Measurement` be a subclass of `QuantityValue`, inheriting `numeric_value`, the minimum and maximum, and `unit`, and keeping NMDC's value structure? That treats a measurement as a kind of value. The first pass treats it as a record about a property that carries a value, with the value slots on `Measurement` and no `QuantityValue` class.
 
 ## Known gaps and deferred work
 
