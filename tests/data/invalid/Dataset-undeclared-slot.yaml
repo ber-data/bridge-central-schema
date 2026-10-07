@@ -1,0 +1,10 @@
+# A Feature with an undeclared slot; the feature model's classes are closed.
+features:
+  - feature_id: example:cds_1
+    seqid: example:contig_1
+    type: CDS
+    start: 1
+    end: 30
+    coordinate_system: contig
+    strand: "+"
+    gene_symbol: abcD
