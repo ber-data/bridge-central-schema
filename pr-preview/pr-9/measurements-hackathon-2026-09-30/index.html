@@ -460,6 +460,11 @@
 <td>Most GOLD and EMSL properties have no BERVO term yet (R38)</td>
 </tr>
 <tr>
+<td>(not in 0.2.0)</td>
+<td>Not taken: <code>Measurement</code> as a subclass of a <code>QuantityValue</code> class</td>
+<td>Open question 12 (R69). The first pass puts the value slots on <code>Measurement</code> directly instead</td>
+</tr>
+<tr>
 <td><code>exact_mappings</code> to <code>nmdc:QuantityValue</code> and <code>nmdc:AttributeValue</code></td>
 <td><code>close_mappings</code>, slot by slot</td>
 <td>NMDC requires a unit from a closed list and has min/max; this module does not require a unit (issue 4, point 6)</td>
@@ -547,6 +552,7 @@
 <li>A QA class, or is one <code>quality_flag</code> enough for now? (R64)</li>
 <li>What do people want to search on? (R63)</li>
 <li>(Raised while writing this pass.) Should a mapping to MIxS be <code>exactMatch</code> when MIxS defines the property of a sample and BERVO the property in general? The mapping file uses <code>closeMatch</code> for those.</li>
+<li>(Raised while reviewing this pass, R69.) Should <code>Measurement</code> be a subclass of <code>QuantityValue</code>, inheriting <code>numeric_value</code>, the minimum and maximum, and <code>unit</code>, and keeping NMDC's value structure? That treats a measurement as a kind of value. The first pass treats it as a record about a property that carries a value, with the value slots on <code>Measurement</code> and no <code>QuantityValue</code> class.</li>
 </ol>
 <h2 id="known-gaps-and-deferred-work">Known gaps and deferred work</h2>
 <ul>

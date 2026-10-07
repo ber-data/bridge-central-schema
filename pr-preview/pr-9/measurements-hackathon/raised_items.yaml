@@ -457,3 +457,9 @@ items:
     source: recap
     disposition: deferred
     where: the valid examples here show one record per source; mapping worksheets per source come next
+  - id: R69
+    point: Measurement could be a subclass of QuantityValue, inheriting the number, range and unit slots and keeping NMDC's value structure.
+    raised_by: ["@turbomam"]
+    source: review
+    disposition: open_question
+    where: not taken in the first pass; the value slots sit on Measurement and there is no QuantityValue class

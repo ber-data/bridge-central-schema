@@ -870,7 +870,7 @@ classes:
           required: true
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-10-07T17:51:50'
+source_file_date: '2026-10-07T17:53:18'
 source_file_size: 1176
-generation_date: '2026-10-07T17:52:01'
+generation_date: '2026-10-07T17:53:26'
 
