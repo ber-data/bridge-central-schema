@@ -1,7 +1,7 @@
 id: https://w3id.org/ber-data/gff-feature-model
 name: ber-feature-model
 title: BER unified feature model (draft)
-version: 0.1.0-bridge.1
+version: 0.1.0-bridge.2
 description: >-
   Draft LinkML model for genome and metagenome sequence features across BER data sources
   (NMDC, JGI IMG, KBase).
@@ -15,6 +15,8 @@ notes:
     defines its own name; the EDAM.DATA prefix is EDAM_DATA; and note, dbxref, ontology_term and
     taxonomic_lineage are ordered, with the '.' strand described as not stranded
     (https://github.com/turbomam/feature-table-corpus/pull/172, after v0.1.0).
+  - 0.1.0-bridge.2 adds Feature.method and MethodEnum, from
+    https://github.com/turbomam/feature-table-corpus/pull/169.
 license: https://creativecommons.org/publicdomain/zero/1.0/
 
 prefixes:
