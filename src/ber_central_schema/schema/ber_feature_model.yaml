@@ -441,8 +441,9 @@ slots:
         The IMG per-method converter forms a hit's feature_id as <source ID>|<method>|<type>, and
         when method is set on such a hit it equals that middle part, except for TMHMM and SignalP
         hits, whose feature_id carries the IMG file suffixes tmh and cleavage_sites while method
-        is tmhmm or signalp. Other data, such as tests/data/valid/Dataset-002.yaml, uses
-        <source ID>_<method>.
+        is tmhmm or signalp. Other data, such as tests/data/valid/Dataset-002.yaml, ends hit IDs
+        in source-specific suffixes such as _pfam and _cath, which are not always MethodEnum
+        values (_cath is cath_funfam), so a method taken from a feature_id needs mapping.
       - Added so one table can hold every method's hits and still be filtered or partitioned by
         method. Before it, the method was only inside feature_id, and two converters spelled
         SUPERFAMILY hits differently (supfam and superfamily).
