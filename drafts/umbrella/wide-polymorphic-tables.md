@@ -1,6 +1,6 @@
 # Wide polymorphic tables (draft)
 
-This note answers a question @turbomam raised at the Samples, Projects and Processes squad meeting on 2026-10-28: do we want a small number of wide tables, each holding several kinds of record and telling them apart with a `type` column, or a large number of narrow tables, one per kind? It is a proposal to argue with, not an agreed position. NMDC (the National Microbiome Data Collaborative) is the worked example because @turbomam was able to measure both its schema and its data. Each point is made in plain words first and then backed by a measurement, with the method and the date.
+This note answers a question @turbomam raised at the Samples, Projects and Processes squad meeting on 2026-10-28: do we want a small number of wide tables, each holding several kinds of record and telling them apart with a `type` column, or a large number of narrow tables, one per kind? It is a proposal for the squad to comment on, not an agreed position. NMDC (the National Microbiome Data Collaborative) is the worked example because @turbomam was able to measure both its schema and its data. Each point is made in plain words first and then backed by a measurement, with the method and the date.
 
 ## The short version
 

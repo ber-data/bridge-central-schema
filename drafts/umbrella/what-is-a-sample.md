@@ -1,6 +1,6 @@
 # What is a sample (draft)
 
-This note is a proposal for the Samples, Projects and Processes squad to argue with, not an agreed definition. It writes down what @turbomam said at the squad meeting on 2026-10-28 about what the draft `Sample` class in `src/ber_central_schema/schema/umbrella.yaml` means and what it leaves out. Each point is made in plain words first and then backed by a definition from a published ontology or standard. Every quoted definition was read on 2026-10-28 from the sources listed at the end.
+This note is a proposal for the Samples, Projects and Processes squad to comment on, not an agreed definition. It writes down what @turbomam said at the squad meeting on 2026-10-28 about what the draft `Sample` class in `src/ber_central_schema/schema/umbrella.yaml` means and what it leaves out. Each point is made in plain words first and then backed by a definition from a published ontology or standard. Every quoted definition was read on 2026-10-28 from the sources listed at the end.
 
 ## The short version
 
