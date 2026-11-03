@@ -9,7 +9,7 @@ description: >-
   the source supports them. See docs/measurements-hackathon-2026-09-30.md for
   what was raised at the hackathon and where each item went.
 license: BSD-3
-version: 0.4.0
+version: 0.5.0
 
 prefixes:
   bridge: https://w3id.org/ber-data/bridge-measurements/
@@ -153,10 +153,13 @@ slots:
   observed_property:
     range: uriorcurie
     description: >-
-      The property that was measured. Use a BERVO term when BERVO has one;
-      otherwise a BRIDGE-issued property identifier. Correspondences to MIxS
-      and other vocabularies are recorded in
-      mappings/observed_property.sssom.tsv, not here.
+      The property that was measured, as a BRIDGE property identifier
+      (bridge_property:). Each identifier has a label and definition in
+      terms/bridge_property.tsv, and its correspondences to BERVO, MIxS and
+      other vocabularies are recorded in mappings/observed_property.sssom.tsv,
+      not here. New identifiers are added by pull request, and an identifier
+      is never renamed; its label can change.
+    pattern: "^bridge_property:[a-z0-9_]+$"
     exact_mappings:
       - sosa:observedProperty
     aliases:
@@ -166,7 +169,7 @@ slots:
   property_label:
     description: >-
       The name of the measured property as free text, for values whose
-      property has no BERVO or BRIDGE identifier yet. Use observed_property
+      property has no BRIDGE identifier yet. Use observed_property
       instead whenever an identifier exists.
     close_mappings:
       - nmdc:has_attribute_label

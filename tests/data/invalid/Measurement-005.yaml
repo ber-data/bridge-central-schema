@@ -1,5 +1,5 @@
 # Counter-example: comparator must come from ComparatorEnum, not a symbol.
-observed_property: bervo:BERVO_8000168
+observed_property: bridge_property:nitrate_concentration
 raw_value: "<0.01 mg/L"
 numeric_value: 0.01
 comparator: "<"

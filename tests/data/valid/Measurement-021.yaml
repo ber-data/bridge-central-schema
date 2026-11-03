@@ -2,7 +2,7 @@
 # detection limit, with the source's own measurement identifier and the
 # instrument named.
 measurement_id: bridge:example-nitrate-0001
-observed_property: bervo:BERVO_8000168  # Nitrate
+observed_property: bridge_property:nitrate_concentration  # Nitrate
 raw_value: "<0.01 mg/L"
 numeric_value: 0.01
 comparator: less_than

@@ -2,7 +2,7 @@
 # would carry the same source_system, source_record_id and source_field, and
 # the schema has no snapshot or version slot to tell them apart (raised item
 # R44).
-observed_property: bervo:BERVO_8000261  # pH
+observed_property: bridge_property:ph  # pH
 raw_value: "6.8"
 numeric_value: 6.8
 source_system: ber_registry:schema-nmdc-schema

@@ -125,8 +125,8 @@ A source cell can hold more than one value. The parser splits it into one record
 ```mermaid
 flowchart LR
     cell["GOLD Go0120212, organism_pressure:<br/>0–30 MPa (Optimal 10MPa)"]
-    cell --> a["Measurement<br/>observed_property: bervo:BERVO_8000518 (Pressure)<br/>minimum_numeric_value: 0<br/>maximum_numeric_value: 30<br/>unit: MPa<br/>value_qualifier: tolerated"]
-    cell --> b["Measurement<br/>observed_property: bervo:BERVO_8000518 (Pressure)<br/>numeric_value: 10<br/>unit: MPa<br/>value_qualifier: optimum"]
+    cell --> a["Measurement<br/>observed_property: bridge_property:pressure<br/>minimum_numeric_value: 0<br/>maximum_numeric_value: 30<br/>unit: MPa<br/>value_qualifier: tolerated"]
+    cell --> b["Measurement<br/>observed_property: bridge_property:pressure<br/>numeric_value: 10<br/>unit: MPa<br/>value_qualifier: optimum"]
 ```
 
 Values that cannot be parsed are kept, not dropped:
@@ -144,20 +144,25 @@ flowchart TD
 
 ## How a record names its property
 
-BERVO first, then a BRIDGE-issued identifier, then free text. Mappings to MIxS, METPO and other vocabularies live in `src/ber_central_schema/mappings/observed_property.sssom.tsv`, not on each record. BERVO (release 2026-09-25) carries a MIxS cross-reference on only 4 of its terms, so BRIDGE asserts most of these mappings itself.
+Every record uses a BRIDGE property identifier (`bridge_property:`), or free text when no identifier exists yet. Each identifier has a label and definition in `src/ber_central_schema/terms/bridge_property.tsv`. Mappings to BERVO, MIxS, METPO and other vocabularies live in `src/ber_central_schema/mappings/observed_property.sssom.tsv`, not on each record. New identifiers are added by pull request, and an identifier is never renamed. When BERVO lacks a term, it is requested from BERVO (for example https://github.com/bioepic-data/bervo/issues/207).
 
 ```mermaid
 flowchart LR
-    p["Property of a source value"] --> b{"In BERVO?"}
-    b -- yes --> bv["observed_property: bervo:BERVO_..."]
-    b -- no --> i{"BRIDGE-issued ID agreed?"}
+    p["Property of a source value"] --> i{"BRIDGE property ID exists?"}
     i -- yes --> bp["observed_property: bridge_property:..."]
     i -- no --> l["property_label: free text"]
-    bv --> m["observed_property.sssom.tsv<br/>MIXS: and METPO: mappings"]
-    bp --> m
+    bp --> m["observed_property.sssom.tsv<br/>bervo:, MIXS: and METPO: mappings"]
 ```
 
+Each source's own table, from its field names to `bridge_property:` IDs and from its unit spellings to UCUM codes, belongs with that source (as SSSOM in the source's repository), linked from the source's entry in https://github.com/doe-bridge/lakehouse-registry, rather than in this repository.
+
 `property_label` is the catch-all for values that fit nowhere else. It plays the same part as MIxS `misc_param` (`MIXS:0000752`), NMDC's `PropertyAssertion`, BERtron's `Attribute` and the feature model's `Attribute`. All four allow a free-text key when no identifier exists. `tests/data/valid/Measurement-020.yaml` is the MIxS and NMDC `misc_param` example (bicarbonate) as a `Measurement`.
+
+## What changed in 0.5.0
+
+| 0.4.0 | 0.5.0 | Why |
+|---|---|---|
+| `observed_property` a BERVO term when BERVO has one, otherwise a `bridge_property:` ID | Always a `bridge_property:` ID, mapped to BERVO and others in `observed_property.sssom.tsv`, with labels and definitions in `terms/bridge_property.tsv` | @valerie-autumn-skye's review (open question 4). Matching source property names against BERVO labels finds a term for a minority of them, mostly BERVO Concepts, so most records needed a `bridge_property:` ID anyway |
 
 ## What changed in 0.4.0
 
@@ -217,8 +222,8 @@ The first pass makes a provisional choice where it can. Each needs a group decis
 
 1. Is a measurement a kind of observation, and when does an Observation class earn its place? (R03) Provisional: no Observation class. @valerie-autumn-skye: a measurement is an observation, and an interpretation such as "strain X is mesophilic" is an observation supported by measurements such as "strain X grows at 28 C" (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273800445).
 2. Should `raw_value` be required? (R22) Provisional: recommended. A record needs some value or a reason it has none. @valerie-autumn-skye leans against requiring it, since it could add a lot of redundancy to large data sets or carry unintended meaning downstream (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273685294).
-3. UCUM required, a closed unit list, or QUDT? (R30, R31) Provisional: UCUM code in printable ASCII, no list. @dschristianson asks what happens when there is no UCUM term (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230751366), notes that ESS-DIVE uses QUDT, most of whose units map to UCUM (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230965424), and that ESS-DIVE has a forthcoming `unit_basis` that further qualifies a unit, sometimes expressible in UCUM and sometimes not (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230956454). 0.4.0 says what to do when a unit cannot be written in UCUM and adds an optional `unit_basis`. @valerie-autumn-skye recommends `bridge_unit:` identifiers mapped to UCUM terms and, where needed, other vocabularies, so the schema is not tied to one (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273699901, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273505382).
-4. How are BRIDGE property IDs issued, and under what prefix? (R38) Provisional: `bridge_property:`, not agreed. Related: should `observed_property` hold a BERVO ID when BERVO has the term, as this pass does, or always a `bridge_property:` ID mapped to BERVO and other vocabularies, as @valerie-autumn-skye recommends (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273386207, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273779118)?
+3. UCUM required, a closed unit list, or QUDT? (R30, R31) Provisional: UCUM code in printable ASCII, no list. @dschristianson asks what happens when there is no UCUM term (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230751366), notes that ESS-DIVE uses QUDT, most of whose units map to UCUM (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230965424), and that ESS-DIVE has a forthcoming `unit_basis` that further qualifies a unit, sometimes expressible in UCUM and sometimes not (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230956454). 0.4.0 says what to do when a unit cannot be written in UCUM and adds an optional `unit_basis`. @valerie-autumn-skye recommends `bridge_unit:` identifiers mapped to UCUM terms and, where needed, other vocabularies, so the schema is not tied to one (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273699901, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273505382). 0.5.0 keeps UCUM codes, since UCUM can write most units directly; a `bridge_unit:` ID would be added only for a unit UCUM has no unit for (such as PSU or FNU), and none of the examples needs one yet.
+4. How are BRIDGE property IDs issued, and under what prefix? (R38) 0.5.0: `bridge_property:` for every property, added by pull request with a label, a definition and mapping rows; the prefix does not resolve yet. Earlier question: should `observed_property` hold a BERVO ID when BERVO has the term, as this pass does, or always a `bridge_property:` ID mapped to BERVO and other vocabularies, as @valerie-autumn-skye recommends (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273386207, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273779118)?
 5. Do measurements get BRIDGE-minted IDs on ingest? (R42) Provisional: `measurement_id` is optional. @dschristianson asks why it isn't just `id` (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230719718). The central schema's `id` is an identifier, which LinkML makes required, so reusing it would make every measurement need one.
 6. How are related records grouped: a mean with its SD, replicates, the parts of one cell? (R52) Provisional: shared `source_record_id` and `source_field`.
 7. Who assigns `value_term` for a scientist's label such as mesophilic, and how is it reviewed? (R18) @valerie-autumn-skye suggests an optional provenance field, such as `source: PMID:29182670` or `curation: GOLD` (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273734035).
