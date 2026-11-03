@@ -426,6 +426,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#comments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#identifier-and-mapping-information" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -497,7 +508,7 @@
 
 
 <h1 id="slot-observed_property">Slot: observed_property</h1>
-<p><em>The property that was measured, as a BRIDGE property identifier (bridge_property:). Each identifier has a label and definition in terms/bridge_property.tsv, and its correspondences to BERVO, MIxS and other vocabularies are recorded in mappings/observed_property.sssom.tsv, not here. New identifiers are added by pull request, and an identifier is never renamed; its label can change.</em></p>
+<p><em>The property that was measured, as a BRIDGE property identifier (bridge_property:).</em></p>
 <div>
 <p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/observed_property">bridge_central_schema:observed_property</a></p>
 <!-- no inheritance hierarchy -->
@@ -572,6 +583,10 @@
 <li>measurement_type</li>
 <li>variable</li>
 </ul>
+<h2 id="comments">Comments</h2>
+<ul>
+<li>Each bridge_property: term has an ID, a label and a definition in terms/bridge_property.tsv, and mappings to BERVO, MIxS and other vocabularies in mappings/observed_property.sssom.tsv. New terms are added by pull request. A term's ID does not change once merged; its label and definition can be edited.</li>
+</ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
 <ul>
@@ -604,10 +619,11 @@
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">observed_property</span>
 <span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The property that was measured, as a BRIDGE property identifier (bridge_property:).</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">Each identifier has a label and definition in terms/bridge_property.tsv, and its</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">correspondences to BERVO, MIxS and other vocabularies are recorded in mappings/observed_property.sssom.tsv,</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">not here. New identifiers are added by pull request, and an identifier is never</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">renamed; its label can change.</span>
+<span class="nt">comments</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;Each</span><span class="nv"> </span><span class="s">bridge_property:</span><span class="nv"> </span><span class="s">term</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">ID,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">label</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">definition</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">terms/bridge_property.tsv,</span>
+<span class="w">  </span><span class="s">and</span><span class="nv"> </span><span class="s">mappings</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">BERVO,</span><span class="nv"> </span><span class="s">MIxS</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">other</span><span class="nv"> </span><span class="s">vocabularies</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">mappings/observed_property.sssom.tsv.</span>
+<span class="w">  </span><span class="s">New</span><span class="nv"> </span><span class="s">terms</span><span class="nv"> </span><span class="s">are</span><span class="nv"> </span><span class="s">added</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">pull</span><span class="nv"> </span><span class="s">request.</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">term</span><span class="se">&#39;&#39;</span><span class="s">s</span><span class="nv"> </span><span class="s">ID</span><span class="nv"> </span><span class="s">does</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">change</span><span class="nv"> </span><span class="s">once</span><span class="nv"> </span><span class="s">merged;</span><span class="nv"> </span><span class="s">its</span>
+<span class="w">  </span><span class="s">label</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">definition</span><span class="nv"> </span><span class="s">can</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">edited.&#39;</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
 <span class="nt">aliases</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measurement_type</span>

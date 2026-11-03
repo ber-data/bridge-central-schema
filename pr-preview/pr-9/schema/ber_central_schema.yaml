@@ -295,8 +295,10 @@ types:
     name: PartialDateTime
     definition_uri: https://w3id.org/ber-data/bridge-measurements/PartialDateTime
     description: An ISO 8601 year, year-month, date, or date-time. A date-time must
-      carry a UTC offset or Z; a date or coarser carries none. The pattern checks
-      each part's range but not whether a day exists in its month, so 2021-02-31 passes.
+      carry a UTC offset or Z; a date or coarser carries none.
+    comments:
+    - The pattern checks each part's range but not whether a day exists in its month,
+      so 2021-02-31 passes.
     from_schema: https://w3id.org/ber-data/bridge-measurements
     typeof: string
     base: str
@@ -345,7 +347,7 @@ enums:
       standard_deviation:
         text: standard_deviation
         description: numeric_value is itself a standard deviation, for sources that
-          report it as its own record.
+          report it as its own value.
       sum:
         text: sum
         description: The total of the readings, such as a daily precipitation total.
@@ -471,10 +473,11 @@ slots:
     name: observed_property
     definition_uri: https://w3id.org/ber-data/bridge-measurements/observed_property
     description: The property that was measured, as a BRIDGE property identifier (bridge_property:).
-      Each identifier has a label and definition in terms/bridge_property.tsv, and
-      its correspondences to BERVO, MIxS and other vocabularies are recorded in mappings/observed_property.sssom.tsv,
-      not here. New identifiers are added by pull request, and an identifier is never
-      renamed; its label can change.
+    comments:
+    - 'Each bridge_property: term has an ID, a label and a definition in terms/bridge_property.tsv,
+      and mappings to BERVO, MIxS and other vocabularies in mappings/observed_property.sssom.tsv.
+      New terms are added by pull request. A term''s ID does not change once merged;
+      its label and definition can be edited.'
     from_schema: https://w3id.org/ber-data/bridge-measurements
     aliases:
     - measurement_type
@@ -814,10 +817,11 @@ slots:
     name: Measurement_observed_property
     definition_uri: https://w3id.org/ber-data/bridge-measurements/observed_property
     description: The property that was measured, as a BRIDGE property identifier (bridge_property:).
-      Each identifier has a label and definition in terms/bridge_property.tsv, and
-      its correspondences to BERVO, MIxS and other vocabularies are recorded in mappings/observed_property.sssom.tsv,
-      not here. New identifiers are added by pull request, and an identifier is never
-      renamed; its label can change.
+    comments:
+    - 'Each bridge_property: term has an ID, a label and a definition in terms/bridge_property.tsv,
+      and mappings to BERVO, MIxS and other vocabularies in mappings/observed_property.sssom.tsv.
+      New terms are added by pull request. A term''s ID does not change once merged;
+      its label and definition can be edited.'
     from_schema: https://w3id.org/ber-data/bridge-measurements
     aliases:
     - measurement_type
@@ -878,10 +882,10 @@ classes:
       present. The 2026-09-30 hackathon chose to start with this single class and
       add an Observation class only when data shows a need for one.
     comments:
-    - A record must carry at least one of raw_value, numeric_value, minimum_numeric_value,
+    - A measurement must carry at least one of raw_value, numeric_value, minimum_numeric_value,
       maximum_numeric_value, value_term or missing_value_reason, so an empty measurement
       fails validation.
-    - A record names its property with exactly one of observed_property (an identifier)
+    - A measurement names its property with exactly one of observed_property (an identifier)
       or property_label (free text). property_label is the catch-all for values whose
       property has no identifier yet, as MIxS misc_param, NMDC PropertyAssertion and
       BERtron Attribute allow.
@@ -892,7 +896,7 @@ classes:
       value_role, value_qualifier and missing_value_reason say something about that
       value.'
     - A source cell that holds several values (for example a width and a length) becomes
-      several Measurement records that share source_record_id and source_field.
+      several measurements that share source_record_id and source_field.
     from_schema: https://w3id.org/ber-data/bridge-measurements
     close_mappings:
     - sosa:Observation
@@ -970,7 +974,7 @@ classes:
           required: true
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-11-03T18:01:51'
+source_file_date: '2026-11-03T22:58:11'
 source_file_size: 1180
-generation_date: '2026-11-03T18:01:57'
+generation_date: '2026-11-03T22:58:25'
 

@@ -374,6 +374,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#comments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#identifier-and-mapping-information" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -439,7 +450,7 @@
 <p>search:
   boost: 1.0
 ---# Type: PartialDateTime </p>
-<p><em>An ISO 8601 year, year-month, date, or date-time. A date-time must carry a UTC offset or Z; a date or coarser carries none. The pattern checks each part's range but not whether a day exists in its month, so 2021-02-31 passes.</em></p>
+<p><em>An ISO 8601 year, year-month, date, or date-time. A date-time must carry a UTC offset or Z; a date or coarser carries none.</em></p>
 <div>
 <p>URI: <a href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a></p>
 <h2 id="type-properties">Type Properties</h2>
@@ -483,6 +494,10 @@
 </tr>
 </tbody>
 </table>
+<h2 id="comments">Comments</h2>
+<ul>
+<li>The pattern checks each part's range but not whether a day exists in its month, so 2021-02-31 passes.</li>
+</ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
 <ul>
