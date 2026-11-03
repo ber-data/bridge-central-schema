@@ -12,6 +12,8 @@ prefixes:
   schema: http://schema.org/
   nmdc: https://w3id.org/nmdc/
   basalt_schema: https://emsl-computing.github.io/BASALT-Schema/elements/
+  # Same expansion as in nmdc-schema.
+  gold: "https://bioregistry.io/gold:"
 default_prefix: bridge_central_schema
 default_range: string
 
