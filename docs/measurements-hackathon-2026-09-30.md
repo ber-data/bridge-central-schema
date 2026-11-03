@@ -1,6 +1,6 @@
 # BRIDGE Measurements hackathon, 2026-09-30: synthesis and first-pass module
 
-At the 2026-09-30 BRIDGE Data Modeling hackathon on measurements, the group agreed to build a straw-person schema from the transcript, the brainstorm drawing and the draft module, then see whether each source can map up to it. This page is that synthesis. The schema is `src/ber_central_schema/schema/measurements.yaml` version 0.4.0, which revises 0.3.0 after review (see "What changed in 0.4.0"). The full list of what was raised, with where each item went, is [measurements-hackathon/raised-items.md](measurements-hackathon/raised-items.md).
+At the 2026-09-30 BRIDGE Data Modeling hackathon on measurements, the group agreed to build a straw-person schema from the transcript, the brainstorm drawing and the draft module, then see whether each source can map up to it. This page is that synthesis. The schema is `src/ber_central_schema/schema/measurements.yaml` version 0.5.0 (see "What changed in 0.5.0" and "What changed in 0.4.0"). The full list of what was raised, with where each item went, is [measurements-hackathon/raised-items.md](measurements-hackathon/raised-items.md).
 
 Inputs:
 
@@ -24,9 +24,25 @@ The meeting transcript was not available when this was written, and none had bee
 - Parse and normalize once after ingest, rather than leaving it to every agent on every query (@ialarmedalien, with agreement from @sierra-moxon and @dschristianson in the chat). That is an ETL decision; the schema gives the parsed values a place to go.
 - Make the schema, then map each source up to it, with a feedback loop up to a cutoff date (@corilo, @turbomam).
 
+## Terms
+
+This page, the schema and review replies use these terms with these meanings.
+
+- Measurement: one value of one property of one thing, as a source reported it. It is the `Measurement` class. A measurement may carry a number, a range, a term, only the source text, or a reason no value is present.
+- Observation: the SOSA class `sosa:Observation`, which `Measurement` is close-mapped to. This page uses "observation" only for that class and in open question 1, which asks how a measurement relates to an observation. There is no Observation class in this schema yet.
+  - https://www.w3.org/TR/vocab-ssn/#SOSAObservation
+- Attribute: the `Attribute` class proposed in https://github.com/doe-bridge/bridge-central-schema/pull/12, a source's key and value attached to another record. How `Measurement` relates to `Attribute` is open in https://github.com/doe-bridge/bridge-central-schema/issues/11.
+- Entity-attribute-value (EAV) model: each value is its own record that names the thing described and the property given, rather than a slot named for the property on a class for that thing. `Measurement` follows this model.
+  - https://en.wikipedia.org/wiki/Entity%E2%80%93attribute%E2%80%93value_model
+- Feature of interest: the thing whose property was measured, in `feature_of_interest`.
+  - https://www.w3.org/TR/vocab-ssn/#SOSAFeatureOfInterest
+- Observed property: the property that was measured, in `observed_property`, as a `bridge_property:` term. The name follows SOSA's `sosa:observedProperty`; a measured property is the same thing.
+  - https://www.w3.org/TR/vocab-ssn/#SOSAobservedProperty
+- Term: one entry in `src/ber_central_schema/terms/bridge_property.tsv`, with an ID, a label and a definition. The ID does not change once merged; the label and definition can be edited.
+
 ## The first-pass model
 
-One class, `Measurement`. Every slot except the property is optional, but a record must name its property and carry at least one value or a reason it has none.
+One class, `Measurement`. Every slot except the property is optional, but a measurement must name its property and carry at least one value or a reason it has none.
 
 ```mermaid
 classDiagram
@@ -118,7 +134,7 @@ The rules the schema enforces, each with a counter-example in `tests/data/invali
 | `standard_deviation` is not negative | `Measurement-007` |
 | `observed_time` and the start and end times are ISO 8601 at year, month, date or date-time resolution, and a time of day carries a UTC offset; months, days, hours and minutes must be in range | `Measurement-010`, `Measurement-011`, `Measurement-012` |
 
-## How a messy source value becomes records
+## How a messy source value becomes measurements
 
 A source cell can hold more than one value. The parser splits it into one record per value, every record keeps the whole original cell in `raw_value`, and they share `source_record_id` and `source_field`. This GOLD pressure cell is `tests/data/valid/Measurement-005.yaml` and `Measurement-006.yaml`:
 
@@ -142,9 +158,9 @@ flowchart TD
     q1 -- "no" --> f["raw_value + quality_flag: needs_review"]
 ```
 
-## How a record names its property
+## How a measurement names its property
 
-Every record uses a BRIDGE property identifier (`bridge_property:`), or free text when no identifier exists yet. Each identifier has a label and definition in `src/ber_central_schema/terms/bridge_property.tsv`. Mappings to BERVO, MIxS, METPO and other vocabularies live in `src/ber_central_schema/mappings/observed_property.sssom.tsv`, not on each record. New identifiers are added by pull request, and an identifier is never renamed. When BERVO lacks a term, it is requested from BERVO (for example https://github.com/bioepic-data/bervo/issues/207).
+Every measurement names its observed property with a `bridge_property:` term ID, or with free text in `property_label` when no term exists yet. Each term has an ID, a label and a definition in `src/ber_central_schema/terms/bridge_property.tsv`. Mappings to BERVO, MIxS, METPO and other vocabularies live in `src/ber_central_schema/mappings/observed_property.sssom.tsv`, not on each measurement. New terms are added by pull request, and a term's ID does not change once merged. When BERVO lacks a term, it is requested from BERVO (for example https://github.com/bioepic-data/bervo/issues/207).
 
 ```mermaid
 flowchart LR
@@ -162,7 +178,7 @@ Each source's own table, from its field names to `bridge_property:` IDs and from
 
 | 0.4.0 | 0.5.0 | Why |
 |---|---|---|
-| `observed_property` a BERVO term when BERVO has one, otherwise a `bridge_property:` ID | Always a `bridge_property:` ID, mapped to BERVO and others in `observed_property.sssom.tsv`, with labels and definitions in `terms/bridge_property.tsv` | @valerie-autumn-skye's review (open question 4). Matching source property names against BERVO labels finds a term for a minority of them, mostly BERVO Concepts, so most records needed a `bridge_property:` ID anyway |
+| `observed_property` a BERVO term when BERVO has one, otherwise a `bridge_property:` ID | Always a `bridge_property:` ID, mapped to BERVO and others in `observed_property.sssom.tsv`, with labels and definitions in `terms/bridge_property.tsv` | @valerie-autumn-skye's review (open question 4). Matching source property names against BERVO labels finds a term for a minority of them, mostly BERVO Concepts, so most measurements needed a `bridge_property:` ID anyway |
 
 ## What changed in 0.4.0
 
@@ -183,7 +199,7 @@ After the first reviews of https://github.com/doe-bridge/bridge-central-schema/p
 | 0.2.0 | 0.3.0 | Why |
 |---|---|---|
 | `Observation`, with `Measurement` under it | `Measurement` only | One class to start (R01, R02) |
-| Values in a separate `MeasurementValue` / `QuantityValue` object under `result` | Value slots directly on `Measurement` | The 10/07 notes list type, value, raw value and unit as slots of one class; one flat record per value also loads as one table row |
+| Values in a separate `MeasurementValue` / `QuantityValue` object under `result` | Value slots directly on `Measurement` | The 10/07 notes list type, value, raw value and unit as slots of one class; one measurement per value also loads as one table row |
 | `observed_property` must match `^bervo:BERVO_\d{7}$` | Any identifier, or `property_label` | Most GOLD and EMSL properties have no BERVO term yet (R38) |
 | (not in 0.2.0) | Not taken: `Measurement` as a subclass of a `QuantityValue` class | Open question 12 (R69). The first pass puts the value slots on `Measurement` directly instead |
 | `exact_mappings` to `nmdc:QuantityValue` and `nmdc:AttributeValue` | `close_mappings`, slot by slot | NMDC requires a unit from a closed list and has min/max; this module does not require a unit (issue 4, point 6) |
@@ -200,7 +216,7 @@ Names were chosen to avoid the feature model's global slots in https://github.co
 | JGI GOLD | `Measurement-004` to `-013` | molar range, range plus optimum in one cell, mean ± SD with n, a category, not determined, two dimensions in one cell, unit taken from the column name, an unparseable value |
 | EMSL MONet | `Measurement-014`, `-015` | 0.0 plus a below-detection flag (recorded as missing, not zero), an outlier kept with its flag |
 | ORNL APPL | `Measurement-016`, `-017` | a derived value with its method, a placeholder instead of a value |
-| BASALT | `Measurement-018` | one record per analyte column of a wide table |
+| BASALT | `Measurement-018` | one measurement per analyte column of a wide table |
 | BASIN-3D | `Measurement-019` | a mean with its time (the averaging window is not recorded; see known gaps) |
 | MIxS / NMDC `misc_param` | `Measurement-020` | the free-text catch-all |
 | none (illustrative) | `Measurement-021` to `-026` | an identifier, instrument and `less_than` comparator; a categorical `value_term`; a treatment, unit basis, month-only time and start and end times; a raw value containing a colon; `unknown` as the missing value reason; a year-only time |
@@ -213,7 +229,7 @@ Read from the files in the hackathon shared drive on 2026-10-07:
 
 - GOLD: 48,308 of 530,610 organism rows (9.1%) carry any measurement value, which matches the roughly 9% given at the hackathon. Micrometres are written at least five ways (`um`, `µm`, `μm`, `&#956;m`, `micrometres`); 24 rows in the diameter and length columns use the HTML entity.
 - EMSL MONet: below-detection values are stored as `0.0` with a flag in a parallel `flag_*` column. A parser that ignores the flag reads them as real zeros, which is why `Measurement-014` records no number.
-- ORNL APPL: the unit, method and statistic sit on the variable definition, not on each value, so a loader has to copy them onto each record.
+- ORNL APPL: the unit, method and statistic sit on the variable definition, not on each value, so a loader has to copy them onto each measurement.
 - NMDC: the export flags 29,719 values with no raw value and 196 with a minimum greater than the maximum. Those counts come from the NMDC export's own `problems` column, not from this module.
 
 ## Open questions for the group
@@ -221,7 +237,7 @@ Read from the files in the hackathon shared drive on 2026-10-07:
 The first pass makes a provisional choice where it can. Each needs a group decision.
 
 1. Is a measurement a kind of observation, and when does an Observation class earn its place? (R03) Provisional: no Observation class. @valerie-autumn-skye: a measurement is an observation, and an interpretation such as "strain X is mesophilic" is an observation supported by measurements such as "strain X grows at 28 C" (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273800445).
-2. Should `raw_value` be required? (R22) Provisional: recommended. A record needs some value or a reason it has none. @valerie-autumn-skye leans against requiring it, since it could add a lot of redundancy to large data sets or carry unintended meaning downstream (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273685294).
+2. Should `raw_value` be required? (R22) Provisional: recommended. A measurement needs some value or a reason it has none. @valerie-autumn-skye leans against requiring it, since it could add a lot of redundancy to large data sets or carry unintended meaning downstream (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273685294).
 3. UCUM required, a closed unit list, or QUDT? (R30, R31) Provisional: UCUM code in printable ASCII, no list. @dschristianson asks what happens when there is no UCUM term (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230751366), notes that ESS-DIVE uses QUDT, most of whose units map to UCUM (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230965424), and that ESS-DIVE has a forthcoming `unit_basis` that further qualifies a unit, sometimes expressible in UCUM and sometimes not (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230956454). 0.4.0 says what to do when a unit cannot be written in UCUM and adds an optional `unit_basis`. @valerie-autumn-skye recommends `bridge_unit:` identifiers mapped to UCUM terms and, where needed, other vocabularies, so the schema is not tied to one (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273699901, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273505382). 0.5.0 keeps UCUM codes, since UCUM can write most units directly; a `bridge_unit:` ID would be added only for a unit UCUM has no unit for (such as PSU or FNU), and none of the examples needs one yet.
 4. How are BRIDGE property IDs issued, and under what prefix? (R38) 0.5.0: `bridge_property:` for every property, added by pull request with a label, a definition and mapping rows; the prefix does not resolve yet. Earlier question: should `observed_property` hold a BERVO ID when BERVO has the term, as this pass does, or always a `bridge_property:` ID mapped to BERVO and other vocabularies, as @valerie-autumn-skye recommends (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273386207, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273779118)?
 5. Do measurements get BRIDGE-minted IDs on ingest? (R42) Provisional: `measurement_id` is optional. @dschristianson asks why it isn't just `id` (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230719718). The central schema's `id` is an identifier, which LinkML makes required, so reusing it would make every measurement need one.
@@ -234,12 +250,12 @@ The first pass makes a provisional choice where it can. Each needs a group decis
 12. (Raised while reviewing this pass, R69.) Should `Measurement` be a subclass of `QuantityValue`, inheriting `numeric_value`, the minimum and maximum, and `unit`, and keeping NMDC's value structure? That treats a measurement as a kind of value. The first pass treats it as a record about a property that carries a value, with the value slots on `Measurement` and no `QuantityValue` class. @valerie-autumn-skye asks whether that would imply every measurement is numeric (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273745478); it would, and categorical values (`value_term`) are one reason the first pass did not do it.
 
 13. Is the line between a value and facts about a value clear? @dschristianson read `value_term` as the parsed form of a non-numeric value, like `numeric_value` for numbers, and asked how it relates to `value_role` and `value_qualifier` (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230783915). That reading is right; 0.4.0 says so in the class comments and slot descriptions.
-14. Statistics come in kinds: temporal, spatial and measurement. Should `statistic` become a structure (type, statistic, number), possibly repeated on one record, with `sample_size` renamed (for example `statistic_sample_number`)? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230798043 and https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230841807) The same structure could carry the period a value represents (daily, monthly, yearly), which observed time cannot always show (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#pullrequestreview-5519748477), or a separate `sampling_period` field could (@valerie-autumn-skye, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273300055).
+14. Statistics come in kinds: temporal, spatial and measurement. Should `statistic` become a structure (type, statistic, number), possibly repeated on one measurement, with `sample_size` renamed (for example `statistic_sample_number`)? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230798043 and https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230841807) The same structure could carry the period a value represents (daily, monthly, yearly), which observed time cannot always show (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#pullrequestreview-5519748477), or a separate `sampling_period` field could (@valerie-autumn-skye, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273300055).
 15. Which `value_role` fits a spatial mean of several measurements, which an earth scientist would call measured? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4231116532) 0.4.0: `measured`, with the summary in `statistic`; `derived` is for a value of one property computed from others.
 16. `observed_time` is a full date-time. ESS-DIVE needs year, year-month and date resolutions, and records UTC only when a time is present. (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230984199) 0.4.0 accepts all four resolutions and adds start and end times (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4272389263).
 17. For ESS-DIVE, `source_record_id` would likely combine a dataset DOI and a file PID. How should identifiers like that be combined and documented? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4231015041)
 18. Should a generic attribute/value representation come first, with features and measurements built on it, as in bertron-schema's `AttributeValue`? (@ialarmedalien, https://github.com/doe-bridge/bridge-central-schema/issues/11) This module is flat on purpose, following the 10/07 notes; that issue would decide nested or flat for the feature model and measurements together.
-19. For a sample-based measurement, the collection time often matters more than the lab measurement time. How should a record show that? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4272389263) This overlaps the Project/Sample/Study/Processing working group.
+19. For a sample-based measurement, the collection time often matters more than the lab measurement time. How should a measurement show that? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4272389263) This overlaps the Project/Sample/Study/Processing working group.
 20. Should the material measured (water, air, soil) be its own slot or part of the observed property? ESS-DIVE keeps it separate; CF Conventions fold it in (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#pullrequestreview-5519748477). BERVO release 2026-09-25 has both a plain Temperature and Air temperature and Soil temperature terms.
 21. Should time series go in this class or a separate one? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#pullrequestreview-5519748477)
 22. `gold:` may be too narrow for JGI identifiers in general (@valerie-autumn-skye, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273817438).
@@ -249,7 +265,7 @@ Also from that review, all taken in 0.4.0: `missing_value_reason` probably needs
 ## Known gaps and deferred work
 
 - Time series (R50): `tests/data/problem/invalid/Measurement-001.yaml` fails today.
-- A standard deviation reported as its own record (R15) and growth derived from several OD readings (R53) have no link to the records they belong with.
+- A standard deviation reported as its own measurement (R15) and growth derived from several OD readings (R53) have no link to the measurements they belong with.
 - Nothing enforces `maximum_numeric_value` >= `minimum_numeric_value`; plain LinkML cannot compare one slot with another, and NMDC's export has 196 inverted ranges. `tests/data/problem/valid/Measurement-004.yaml` validates anyway.
 - A mean records no averaging window (hourly, daily), so `Measurement-019` cannot say it is a daily mean (open question 14).
 - Source lineage cannot tell revisions of the same source record apart; there is no snapshot or version slot yet (R44, `tests/data/problem/valid/Measurement-005.yaml`).

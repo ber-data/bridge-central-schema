@@ -37,9 +37,11 @@ types:
     base: str
     description: >-
       An ISO 8601 year, year-month, date, or date-time. A date-time must
-      carry a UTC offset or Z; a date or coarser carries none. The pattern
-      checks each part's range but not whether a day exists in its month, so
-      2021-02-31 passes.
+      carry a UTC offset or Z; a date or coarser carries none.
+    comments:
+      - >-
+        The pattern checks each part's range but not whether a day exists in
+        its month, so 2021-02-31 passes.
     pattern: "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01])(T([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9](\\.[0-9]+)?)?(Z|[+-]([01][0-9]|2[0-3]):[0-5][0-9]))?)?)?$"
 
 classes:
@@ -117,11 +119,11 @@ classes:
             required: true
     comments:
       - >-
-        A record must carry at least one of raw_value, numeric_value,
+        A measurement must carry at least one of raw_value, numeric_value,
         minimum_numeric_value, maximum_numeric_value, value_term or
         missing_value_reason, so an empty measurement fails validation.
       - >-
-        A record names its property with exactly one of observed_property (an
+        A measurement names its property with exactly one of observed_property (an
         identifier) or property_label (free text). property_label is the
         catch-all for values whose property has no identifier yet, as MIxS
         misc_param, NMDC PropertyAssertion and BERtron Attribute allow.
@@ -134,7 +136,7 @@ classes:
         value_qualifier and missing_value_reason say something about that value.
       - >-
         A source cell that holds several values (for example a width and a
-        length) becomes several Measurement records that share source_record_id
+        length) becomes several measurements that share source_record_id
         and source_field.
 
 slots:
@@ -154,11 +156,14 @@ slots:
     range: uriorcurie
     description: >-
       The property that was measured, as a BRIDGE property identifier
-      (bridge_property:). Each identifier has a label and definition in
-      terms/bridge_property.tsv, and its correspondences to BERVO, MIxS and
-      other vocabularies are recorded in mappings/observed_property.sssom.tsv,
-      not here. New identifiers are added by pull request, and an identifier
-      is never renamed; its label can change.
+      (bridge_property:).
+    comments:
+      - >-
+        Each bridge_property: term has an ID, a label and a definition in
+        terms/bridge_property.tsv, and mappings to BERVO, MIxS and other
+        vocabularies in mappings/observed_property.sssom.tsv. New terms are
+        added by pull request. A term's ID does not change once merged; its
+        label and definition can be edited.
     pattern: "^bridge_property:[a-z0-9_]+$"
     exact_mappings:
       - sosa:observedProperty
@@ -375,7 +380,7 @@ enums:
       standard_deviation:
         description: >-
           numeric_value is itself a standard deviation, for sources that report
-          it as its own record.
+          it as its own value.
       sum:
         description: The total of the readings, such as a daily precipitation total.
 
