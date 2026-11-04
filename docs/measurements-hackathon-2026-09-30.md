@@ -58,7 +58,7 @@ classDiagram
         maximum_numeric_value : double
         unit : UCUM code, ASCII
         unit_basis : string
-        value_term : uriorcurie
+        coded_value : uriorcurie
         comparator : ComparatorEnum
         statistic : StatisticEnum
         standard_deviation : double
@@ -126,7 +126,7 @@ The rules the schema enforces, each with a counter-example in `tests/data/invali
 | Rule | Counter-example |
 |---|---|
 | Name the property with exactly one of `observed_property` or `property_label` | `Measurement-001`, `Measurement-008`, `Measurement-009` |
-| Carry at least one of `raw_value`, `numeric_value`, `minimum_numeric_value`, `maximum_numeric_value`, `value_term` or `missing_value_reason` | `Measurement-003` |
+| Carry at least one of `raw_value`, `numeric_value`, `minimum_numeric_value`, `maximum_numeric_value`, `coded_value` or `missing_value_reason` | `Measurement-003` |
 | `unit` is printable ASCII (`um`, not `µm`) | `Measurement-002` |
 | `numeric_value` is a number | `Measurement-004` |
 | `comparator` comes from its enum | `Measurement-005` |
@@ -153,7 +153,7 @@ flowchart TD
     q1 -- "a number" --> n["numeric_value + unit"]
     q1 -- "a range" --> r["minimum_numeric_value + maximum_numeric_value + unit"]
     q1 -- "mean, SD, n" --> s["numeric_value + statistic + standard_deviation + sample_size"]
-    q1 -- "a category" --> c["raw_value + value_role: interpreted (+ value_term when a reviewed term exists)"]
+    q1 -- "a category" --> c["raw_value + value_role: interpreted (+ coded_value when a reviewed term exists)"]
     q1 -- "says there is no value" --> m["raw_value + missing_value_reason"]
     q1 -- "no" --> f["raw_value + quality_flag: needs_review"]
 ```
@@ -219,7 +219,7 @@ Names were chosen to avoid the feature model's global slots in https://github.co
 | BASALT | `Measurement-018` | one measurement per analyte column of a wide table |
 | BASIN-3D | `Measurement-019` | a mean with its time (the averaging window is not recorded; see known gaps) |
 | MIxS / NMDC `misc_param` | `Measurement-020` | the free-text catch-all |
-| none (illustrative) | `Measurement-021` to `-026` | an identifier, instrument and `less_than` comparator; a categorical `value_term`; a treatment, unit basis, month-only time and start and end times; a raw value containing a colon; `unknown` as the missing value reason; a year-only time |
+| none (illustrative) | `Measurement-021` to `-026` | an identifier, instrument and `less_than` comparator; a categorical `coded_value`; a treatment, unit basis, month-only time and start and end times; a raw value containing a colon; `unknown` as the missing value reason; a year-only time |
 
 Each example's header says where it came from. Most cite a source file and row; `Measurement-004` cites the GOLD organism ID, `Measurement-019` is carried over from the 0.2.0 module, and `Measurement-020` repeats the MIxS and NMDC `misc_param` examples. Those values were copied from their sources. `Measurement-021` to `-025`, and the problem examples `Measurement-004` and `-005`, were written to show a slot or a gap and say so in their headers.
 
@@ -242,14 +242,14 @@ The first pass makes a provisional choice where it can. Each needs a group decis
 4. How are BRIDGE property IDs issued, and under what prefix? (R38) 0.5.0: `bridge_property:` for every property, added by pull request with a label, a definition and mapping rows; the prefix does not resolve yet. Earlier question: should `observed_property` hold a BERVO ID when BERVO has the term, as this pass does, or always a `bridge_property:` ID mapped to BERVO and other vocabularies, as @valerie-autumn-skye recommends (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273386207, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273779118)?
 5. Do measurements get BRIDGE-minted IDs on ingest? (R42) Provisional: `measurement_id` is optional. @dschristianson asks why it isn't just `id` (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230719718). The central schema's `id` is an identifier, which LinkML makes required, so reusing it would make every measurement need one.
 6. How are related records grouped: a mean with its SD, replicates, the parts of one cell? (R52) Provisional: shared `source_record_id` and `source_field`.
-7. Who assigns `value_term` for a scientist's label such as mesophilic, and how is it reviewed? (R18) @valerie-autumn-skye suggests an optional provenance field, such as `source: PMID:29182670` or `curation: GOLD` (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273734035).
+7. Who assigns `coded_value` for a scientist's label such as mesophilic, and how is it reviewed? (R18) @valerie-autumn-skye suggests an optional provenance field, such as `source: PMID:29182670` or `curation: GOLD` (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273734035).
 8. Numbers that are not quantities, such as grading scales and coefficients. (R24)
 9. A QA class, or is one `quality_flag` enough for now? (R64) @valerie-autumn-skye: `quality_flag` is enough for now (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273737869).
 10. What do people want to search on? (R63) @valerie-autumn-skye considers this out of scope here and a question for the User Research team (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273756898).
 11. (Raised while writing this pass.) Should a mapping to MIxS be `exactMatch` when MIxS defines the property of a sample and BERVO the property in general? The mapping file uses `closeMatch` for those.
-12. (Raised while reviewing this pass, R69.) Should `Measurement` be a subclass of `QuantityValue`, inheriting `numeric_value`, the minimum and maximum, and `unit`, and keeping NMDC's value structure? That treats a measurement as a kind of value. The first pass treats it as a record about a property that carries a value, with the value slots on `Measurement` and no `QuantityValue` class. @valerie-autumn-skye asks whether that would imply every measurement is numeric (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273745478); it would, and categorical values (`value_term`) are one reason the first pass did not do it.
+12. (Raised while reviewing this pass, R69.) Should `Measurement` be a subclass of `QuantityValue`, inheriting `numeric_value`, the minimum and maximum, and `unit`, and keeping NMDC's value structure? That treats a measurement as a kind of value. The first pass treats it as a record about a property that carries a value, with the value slots on `Measurement` and no `QuantityValue` class. @valerie-autumn-skye asks whether that would imply every measurement is numeric (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273745478); it would, and categorical values (`coded_value`) are one reason the first pass did not do it.
 
-13. Is the line between a value and facts about a value clear? @dschristianson read `value_term` as the parsed form of a non-numeric value, like `numeric_value` for numbers, and asked how it relates to `value_role` and `value_qualifier` (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230783915). That reading is right; 0.4.0 says so in the class comments and slot descriptions.
+13. Is the line between a value and facts about a value clear? @dschristianson read `coded_value` (then named `value_term`) as the parsed form of a non-numeric value, like `numeric_value` for numbers, and asked how it relates to `value_role` and `value_qualifier` (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230783915). That reading is right; 0.4.0 says so in the class comments and slot descriptions.
 14. Statistics come in kinds: temporal, spatial and measurement. Should `statistic` become a structure (type, statistic, number), possibly repeated on one measurement, with `sample_size` renamed (for example `statistic_sample_number`)? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230798043 and https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230841807) The same structure could carry the period a value represents (daily, monthly, yearly), which observed time cannot always show (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#pullrequestreview-5519748477), or a separate `sampling_period` field could (@valerie-autumn-skye, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273300055).
 15. Which `value_role` fits a spatial mean of several measurements, which an earth scientist would call measured? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4231116532) 0.4.0: `measured`, with the summary in `statistic`; `derived` is for a value of one property computed from others.
 16. `observed_time` is a full date-time. ESS-DIVE needs year, year-month and date resolutions, and records UTC only when a time is present. (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230984199) 0.4.0 accepts all four resolutions and adds start and end times (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4272389263).

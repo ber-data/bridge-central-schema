@@ -48,8 +48,8 @@ pie showData
 | R12 | Split ranges into high and low fields. | JGI | Report Out tab | minimum_numeric_value, maximum_numeric_value |
 | R13 | Two dimensions in one field (cell diameter and cell length), or are these two measurements? | @valerie-autumn-skye | Zoom chat | two Measurement records sharing source_record_id and source_field (valid Measurement-010, -011) |
 | R14 | Uncertainty, such as 1.870 +/- 0.568 um (mean +/- standard deviation for 63 cells). | @valerie-autumn-skye | Zoom chat | statistic, standard_deviation, sample_size (valid Measurement-007) |
-| R16 | Qualitative values, such as circumneutral pH. | @valerie-autumn-skye | Zoom chat | raw_value plus value_role interpreted; value_term for an ontology term (valid Measurement-008) |
-| R17 | Instantiate categorical values (mesophilic) as observations. | @turbomam | brainstorm drawing | value_term on Measurement, since there is one class |
+| R16 | Qualitative values, such as circumneutral pH. | @valerie-autumn-skye | Zoom chat | raw_value plus value_role interpreted; coded_value for an ontology term (valid Measurement-008) |
+| R17 | Instantiate categorical values (mesophilic) as observations. | @turbomam | brainstorm drawing | coded_value on Measurement, since there is one class |
 | R19 | Context attached to a value, such as Optimal 10MPa or "for optimal growth". | @valerie-autumn-skye | Zoom chat | value_qualifier (optimum, tolerated) (valid Measurement-005, -006) |
 | R20 | Split non-measurement qualifiers (such as "optimal") into their own field. | JGI | Report Out tab | value_qualifier |
 | R21 | Are some of these experimental settings rather than measurements (grew at 5 degrees for 2 hours)? Things measured versus things intended. | @turbomam | brainstorm drawing | value_role setting (valid Measurement-003) |
@@ -73,7 +73,7 @@ pie showData
 | R49 | Time, with UTC offsets. | @dschristianson | Hackathon Notes | observed_time, observed_start_time, observed_end_time (ISO 8601; an offset whenever a time of day is given) |
 | R54 | Derived measurement columns (APPL visual transformer outputs); measurements are modalities. | @pranjan77 | Hackathon Notes | value_role derived (valid Measurement-016); modality is deferred to the Phenotype/genotype/strain working group (new in the 2026-11-03 BRIDGE DM notes) |
 | R55 | Complicated experimental conditions entered under "other", such as "prescribed burn every 3-4 years". | @bmeluch | Zoom chat | fire_return_interval as a range, with treatment for the prescribed part (valid Measurement-027). The burn events themselves are not measurements |
-| R61 | METPO for categorical microbial traits. | @caufieldjh, @turbomam | Zoom chat | value_term accepts METPO terms; METPO is a mapping target for cell length and growth temperature |
+| R61 | METPO for categorical microbial traits. | @caufieldjh, @turbomam | Zoom chat | coded_value accepts METPO terms; METPO is a mapping target for cell length and growth temperature |
 | R62 | Every element should have a text description, and something should check that the description agrees with the schema and the data. | not recorded | Hackathon Notes | every class, slot, enum and value in measurements.yaml has a description; the agreement check is not built |
 
 ## Known gap, shown by a problem example (4)
@@ -90,7 +90,7 @@ pie showData
 | ID | Point | Raised by | Source | Where it went |
 |---|---|---|---|---|
 | R03 | Is a measurement a type of observation? | @dschristianson | brainstorm drawing | Measurement has close_mappings to sosa:Observation; no Observation class until data needs one |
-| R18 | A scientist-assigned label may not mean what the ontology term means (their mesophilic is not necessarily the term Mesophilic). | @caufieldjh | Zoom chat | value_role interpreted marks such values; who assigns value_term, and how it is reviewed, is undecided |
+| R18 | A scientist-assigned label may not mean what the ontology term means (their mesophilic is not necessarily the term Mesophilic). | @caufieldjh | Zoom chat | value_role interpreted marks such values; who assigns coded_value, and how it is reviewed, is undecided |
 | R22 | Should raw_value be required, or may a record have a property but no result? | @caufieldjh | Zoom chat | raw_value is recommended, not required; a record needs some value or a missing_value_reason. Replies "I think we need it" (@mslarae13) and "Makes sense to me to have it too" (@dschristianson) followed at 15:25, but the chat does not show which question they answered |
 | R24 | Numbers that are not quantities (latitude/longitude, grading scales, coefficients). | @caufieldjh | Zoom chat | numeric_value without a unit is allowed; latitude/longitude belong to a location model, not here |
 | R30 | UCUM required or preferred? A closed list like NMDC's 136-code UnitEnum, or any valid UCUM string? | @sierra-moxon | intro slides | unit is described as UCUM and checked only for ASCII; no list yet |

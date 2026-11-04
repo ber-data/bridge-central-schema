@@ -69,7 +69,7 @@ classes:
       - maximum_numeric_value
       - unit
       - unit_basis
-      - value_term
+      - coded_value
       - comparator
       - statistic
       - standard_deviation
@@ -113,7 +113,7 @@ classes:
           maximum_numeric_value:
             required: true
       - slot_conditions:
-          value_term:
+          coded_value:
             required: true
       - slot_conditions:
           missing_value_reason:
@@ -121,7 +121,7 @@ classes:
     comments:
       - >-
         A measurement must carry at least one of raw_value, numeric_value,
-        minimum_numeric_value, maximum_numeric_value, value_term or
+        minimum_numeric_value, maximum_numeric_value, coded_value or
         missing_value_reason, so an empty measurement fails validation.
       - >-
         A measurement names its property with exactly one of observed_property (an
@@ -130,9 +130,9 @@ classes:
         misc_param, NMDC PropertyAssertion and BERtron Attribute allow.
       - >-
         The value slots come in two groups. raw_value, numeric_value,
-        minimum_numeric_value, maximum_numeric_value, unit and value_term hold
+        minimum_numeric_value, maximum_numeric_value, unit and coded_value hold
         the value itself: raw_value as the source wrote it, the others as parsed
-        from it (numeric_value for a number, value_term for a category).
+        from it (numeric_value for a number, coded_value for a category).
         comparator, statistic, standard_deviation, sample_size, value_role,
         value_qualifier and missing_value_reason say something about that value.
       - >-
@@ -240,12 +240,13 @@ slots:
       annotations (mg{C}/L); this slot is for those that do not. Free text
       until examples settle a vocabulary.
 
-  value_term:
+  coded_value:
     range: uriorcurie
     description: >-
-      An ontology term for a categorical value, parsed from raw_value the way
-      numeric_value is parsed for a number, such as METPO:1000615
-      (mesophilic). The source wording stays in raw_value.
+      A categorical value as a code from an ontology or controlled
+      vocabulary, parsed from raw_value the way numeric_value is parsed for a
+      number, such as METPO:1000615 (mesophilic). The source wording stays in
+      raw_value.
 
   comparator:
     range: ComparatorEnum
