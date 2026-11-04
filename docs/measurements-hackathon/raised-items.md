@@ -81,8 +81,8 @@ pie showData
 | ID | Point | Raised by | Source | Where it went |
 |---|---|---|---|---|
 | R15 | ESS-DIVE reports a mean and a standard deviation as separate records tied by timestamp and property. | ESS-DIVE | brainstorm drawing | statistic standard_deviation exists, but nothing ties the two records (problem/valid Measurement-003) |
-| R44 | Source lineage (source system, record ID, field, snapshot) so raw text stays traceable. | @valerie-autumn-skye | issue 4 | source_system, source_record_id, source_field; no snapshot or version slot yet (problem/valid Measurement-005) |
-| R50 | Time series (loggers at 10 Hz reported per minute or per 5 minutes). Is a TimeseriesMeasurement needed on day one? | ESS-DIVE, @sierra-moxon | brainstorm drawing | one value per record only (problem/invalid Measurement-001) |
+| R44 | Source lineage (source system, record ID, field, snapshot) so raw text stays traceable. | @valerie-autumn-skye | issue 4 | source_system, source_record_id, source_field. No snapshot or version slot yet (problem/valid Measurement-005), tracked in https://github.com/doe-bridge/bridge-central-schema/issues/23 |
+| R50 | Time series (loggers at 10 Hz reported per minute or per 5 minutes). Is a TimeseriesMeasurement needed on day one? | ESS-DIVE, @sierra-moxon | brainstorm drawing | one value per record only (problem/invalid Measurement-001), tracked in https://github.com/doe-bridge/bridge-central-schema/issues/25 |
 | R53 | Is growth an observation, with OD as its measurement? OD measures turbidity, which says something about growth; growth is a difference between observations. | @janakagithub, @turbomam, @ialarmedalien | Zoom chat | OD readings are Measurements (BERVO Optical density); a growth value derived from several of them has no link back |
 
 ## Open question for the group (12)

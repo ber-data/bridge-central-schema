@@ -264,9 +264,9 @@ Also from that review, all taken in 0.4.0: `missing_value_reason` probably needs
 
 ## Known gaps and deferred work
 
-- Time series (R50): `tests/data/problem/invalid/Measurement-001.yaml` fails today.
+- Time series (R50): `tests/data/problem/invalid/Measurement-001.yaml` fails today. Tracked in https://github.com/doe-bridge/bridge-central-schema/issues/25.
 - A standard deviation reported as its own measurement (R15) and growth derived from several OD readings (R53) have no link to the measurements they belong with.
-- Nothing enforces `maximum_numeric_value` >= `minimum_numeric_value`; plain LinkML cannot compare one slot with another, and NMDC's export has 196 inverted ranges. `tests/data/problem/valid/Measurement-004.yaml` validates anyway.
-- A mean records no averaging window (hourly, daily), so `Measurement-019` cannot say it is a daily mean (open question 14).
-- Source lineage cannot tell revisions of the same source record apart; there is no snapshot or version slot yet (R44, `tests/data/problem/valid/Measurement-005.yaml`).
+- Nothing enforces `maximum_numeric_value` >= `minimum_numeric_value`. LinkML's `equals_expression` can state the comparison, but neither `linkml-validate` nor `gen-sqltables` checks it (LinkML 1.11.1, tested 2026-11-04), and NMDC's export has 196 inverted ranges. `tests/data/problem/valid/Measurement-004.yaml` validates anyway. Tracked in https://github.com/doe-bridge/bridge-central-schema/issues/24.
+- A mean records no averaging window (hourly, daily), so `Measurement-019` cannot say it is a daily mean (open question 14). Tracked in https://github.com/doe-bridge/bridge-central-schema/issues/14.
+- Source lineage cannot tell revisions of the same source record apart. There is no snapshot or version slot yet (R44, `tests/data/problem/valid/Measurement-005.yaml`). Tracked in https://github.com/doe-bridge/bridge-central-schema/issues/23.
 - Sample, site and organism classes, replicates, and instrument records belong to the Samples, Projects, and Processes Modelling Squad (https://doe-bridge.slack.com/archives/C0CAYBJ7CAF) (R40, R48, R51).

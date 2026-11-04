@@ -303,7 +303,7 @@ items:
     raised_by: ["@valerie-autumn-skye"]
     source: issue4
     disposition: known_gap
-    where: source_system, source_record_id, source_field; no snapshot or version slot yet (problem/valid Measurement-005)
+    where: source_system, source_record_id, source_field. No snapshot or version slot yet (problem/valid Measurement-005), tracked in https://github.com/doe-bridge/bridge-central-schema/issues/23
   - id: R45
     point: Review the exact_mappings to NMDC QuantityValue and AttributeValue until the constraints match; add NMDC's minimum and maximum fields.
     raised_by: ["@valerie-autumn-skye"]
@@ -342,7 +342,7 @@ items:
     raised_by: ["ESS-DIVE", "@sierra-moxon"]
     source: drawing
     disposition: known_gap
-    where: one value per record only (problem/invalid Measurement-001)
+    where: one value per record only (problem/invalid Measurement-001), tracked in https://github.com/doe-bridge/bridge-central-schema/issues/25
   - id: R51
     point: Replicates; EMSL has replicates and ranges, mostly not captured.
     raised_by: ["not recorded"]
