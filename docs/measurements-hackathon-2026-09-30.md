@@ -1,6 +1,6 @@
 # BRIDGE Measurements hackathon, 2026-09-30: synthesis and first-pass module
 
-At the 2026-09-30 BRIDGE Data Modeling hackathon on measurements, the group agreed to build a straw-person schema from the transcript, the brainstorm drawing and the draft module, then see whether each source can map up to it. This page is that synthesis. The schema is `src/ber_central_schema/schema/measurements.yaml` version 0.5.0 (see "What changed in 0.5.0" and "What changed in 0.4.0"). The full list of what was raised, with where each item went, is [measurements-hackathon/raised-items.md](measurements-hackathon/raised-items.md).
+At the 2026-09-30 BRIDGE Data Modeling - Measurement Metadata Hackathon, the group agreed to build a straw-person schema from the transcript, the brainstorm drawing and the draft module, then see whether each source can map up to it. This page is that synthesis. The schema is `src/ber_central_schema/schema/measurements.yaml` version 0.5.0 (see "What changed in 0.5.0" and "What changed in 0.4.0"). The full list of what was raised, with where each item went, is [measurements-hackathon/raised-items.md](measurements-hackathon/raised-items.md).
 
 Inputs:
 
@@ -203,7 +203,7 @@ After the first reviews of https://github.com/doe-bridge/bridge-central-schema/p
 | `observed_property` must match `^bervo:BERVO_\d{7}$` | Any identifier, or `property_label` | Most GOLD and EMSL properties have no BERVO term yet (R38) |
 | (not in 0.2.0) | Not taken: `Measurement` as a subclass of a `QuantityValue` class | Open question 12 (R69). The first pass puts the value slots on `Measurement` directly instead |
 | `exact_mappings` to `nmdc:QuantityValue` and `nmdc:AttributeValue` | `close_mappings`, slot by slot | NMDC requires a unit from a closed list and has min/max; this module does not require a unit (issue 4, point 6) |
-| `feature_of_interest` commented out | A reference slot only | GOLD values cannot be told apart without the organism (issue 4, point 1); the classes it points to stay with the Sample working group |
+| `feature_of_interest` commented out | A reference slot only | GOLD values cannot be told apart without the organism (issue 4, point 1); the classes it points to stay with the Samples, Projects, and Processes Modelling Squad |
 | Example BERVO IDs `BERVO_0000001`, `BERVO_0000915`, `BERVO_0000123` | Real terms or BRIDGE-issued IDs | In BERVO release 2026-09-25 those three IDs are Ecosystem net radiation, Total phosphorus drainage below root zone, and an FePO4 equilibrium constant, not nitrate, total carbon and water temperature |
 
 Names were chosen to avoid the feature model's global slots in https://github.com/doe-bridge/bridge-central-schema/pull/5 (`method`, `type`, `source`, `note`), hence `measurement_method` and `source_system`. Both modules define `numeric_value`; this one uses `double`, and the feature model's `Attribute.numeric_value` is `float`, which should be made to match before both are merged.
@@ -255,12 +255,12 @@ The first pass makes a provisional choice where it can. Each needs a group decis
 16. `observed_time` is a full date-time. ESS-DIVE needs year, year-month and date resolutions, and records UTC only when a time is present. (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230984199) 0.4.0 accepts all four resolutions and adds start and end times (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4272389263).
 17. For ESS-DIVE, `source_record_id` would likely combine a dataset DOI and a file PID. How should identifiers like that be combined and documented? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4231015041)
 18. Should a generic attribute/value representation come first, with features and measurements built on it, as in bertron-schema's `AttributeValue`? (@ialarmedalien, https://github.com/doe-bridge/bridge-central-schema/issues/11) This module is flat on purpose, following the 10/07 notes; that issue would decide nested or flat for the feature model and measurements together.
-19. For a sample-based measurement, the collection time often matters more than the lab measurement time. How should a measurement show that? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4272389263) This overlaps the Project/Sample/Study/Processing working group.
+19. For a sample-based measurement, the collection time often matters more than the lab measurement time. How should a measurement show that? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4272389263) This overlaps the work of the Samples, Projects, and Processes Modelling Squad (https://doe-bridge.slack.com/archives/C0CAYBJ7CAF).
 20. Should the material measured (water, air, soil) be its own slot or part of the observed property? ESS-DIVE keeps it separate; CF Conventions fold it in (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#pullrequestreview-5519748477). BERVO release 2026-09-25 has both a plain Temperature and Air temperature and Soil temperature terms.
 21. Should time series go in this class or a separate one? (@dschristianson, https://github.com/doe-bridge/bridge-central-schema/pull/9#pullrequestreview-5519748477)
 22. `gold:` may be too narrow for JGI identifiers in general (@valerie-autumn-skye, https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273817438).
 
-Also from that review, all taken in 0.4.0: `missing_value_reason` probably needs an `unknown` option (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4231040002); `feature_of_interest` targets for ESS-DIVE would come from the Landscape/Physical Features working group (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230737215); and the `property_label` fallback was welcomed (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4231133180).
+Also from that review, all taken in 0.4.0: `missing_value_reason` probably needs an `unknown` option (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4231040002); `feature_of_interest` targets for ESS-DIVE would come from what @dschristianson called the Landscape/Physical Features working group, a module proposed in the 2026-10-07 BRIDGE DM notes (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230737215); and the `property_label` fallback was welcomed (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4231133180).
 
 ## Known gaps and deferred work
 
@@ -270,4 +270,4 @@ Also from that review, all taken in 0.4.0: `missing_value_reason` probably needs
 - A mean records no averaging window (hourly, daily), so `Measurement-019` cannot say it is a daily mean (open question 14).
 - Source lineage cannot tell revisions of the same source record apart; there is no snapshot or version slot yet (R44, `tests/data/problem/valid/Measurement-005.yaml`).
 - Recurring conditions such as "prescribed burn every 3-4 years" (R55) store only as text and a range.
-- Sample, site and organism classes, replicates, and instrument records belong to the Project/Sample/Study/Processing working group (R40, R48, R51).
+- Sample, site and organism classes, replicates, and instrument records belong to the Samples, Projects, and Processes Modelling Squad (https://doe-bridge.slack.com/archives/C0CAYBJ7CAF) (R40, R48, R51).

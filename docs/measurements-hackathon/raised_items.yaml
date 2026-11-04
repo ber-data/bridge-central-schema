@@ -273,13 +273,13 @@ items:
     raised_by: ["@sierra-moxon", "@valerie-autumn-skye"]
     source: notes
     disposition: in_schema
-    where: feature_of_interest as a reference only; the classes it points to are deferred to the Project/Sample/Study/Processing working group
+    where: feature_of_interest as a reference only; the classes it points to are deferred to the Samples, Projects, and Processes Modelling Squad
   - id: R40
     point: Is a sample a collection of observations, or a physical thing (dirt, a leaf)? Samples and locations are named things.
     raised_by: ["@ialarmedalien", "@dschristianson", "@turbomam", "@mslarae13"]
     source: chat
     disposition: deferred
-    where: Project/Sample/Study/Processing working group
+    where: Samples, Projects, and Processes Modelling Squad
   - id: R41
     point: Not all observations are tied to a sample (air temperature at a field site).
     raised_by: ["@mslarae13"]
@@ -369,7 +369,7 @@ items:
     raised_by: ["@pranjan77"]
     source: notes
     disposition: in_schema
-    where: value_role derived (valid Measurement-016); modality is deferred to the Phenotype working group
+    where: value_role derived (valid Measurement-016); modality is deferred to the Phenotype/genotype/strain working group (new in the 2026-11-03 BRIDGE DM notes)
   - id: R55
     point: Complicated experimental conditions entered under "other", such as "prescribed burn every 3-4 years".
     raised_by: ["@bmeluch"]
@@ -384,7 +384,7 @@ items:
     raised_by: ["@ialarmedalien", "@sierra-moxon", "@dschristianson"]
     source: chat
     disposition: out_of_scope
-    where: ETL working group; data tiers draft
+    where: ETL, outside the schema; @sierra-moxon's BRIDGE Data Tiers draft of 2026-10-05
   - id: R57
     point: In practice agents mediate lakehouse access and handle measurement nuance ("let the agents deal with it").
     raised_by: ["@ialarmedalien"]
@@ -398,7 +398,7 @@ items:
     disposition: out_of_scope
     where: recorded as a position
   - id: R59
-    point: About 9% of 500k GOLD organism records have measurement metadata; standardizing it may fall to the JGI Advanced Analysis Data Modeling team, and changing the GOLD schema has met resistance.
+    point: About 9% of 500k GOLD organism records have measurement metadata; standardizing it may fall to what @valerie-autumn-skye called the "JGI Advanced Analysis Data Modeling team" (JGI's Advanced Analysis group), and changing the GOLD schema has met resistance.
     raised_by: ["@valerie-autumn-skye"]
     source: chat
     disposition: out_of_scope

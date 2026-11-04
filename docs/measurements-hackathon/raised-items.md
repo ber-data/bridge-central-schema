@@ -64,14 +64,14 @@ pie showData
 | R35 | Map to other vocabularies with SKOS-style mappings rather than importing terms (MIREOT). | @caufieldjh | Zoom chat | mappings/observed_property.sssom.tsv |
 | R36 | Where does MIxS fit, in BERVO mappings? | @sierra-moxon | intro slides | MIxS terms are mapping targets in mappings/observed_property.sssom.tsv, never the observed_property value |
 | R37 | KBase defined a measurement as the value of a variable_id (from a controlled vocabulary) under specified conditions. | @ialarmedalien | Zoom chat | observed_property (alias variable); conditions through value_role and value_qualifier |
-| R39 | Feature of interest (plot of land, sample, organism) and its type; there are nested features. | @sierra-moxon, @valerie-autumn-skye | Hackathon Notes | feature_of_interest as a reference only; the classes it points to are deferred to the Project/Sample/Study/Processing working group |
+| R39 | Feature of interest (plot of land, sample, organism) and its type; there are nested features. | @sierra-moxon, @valerie-autumn-skye | Hackathon Notes | feature_of_interest as a reference only; the classes it points to are deferred to the Samples, Projects, and Processes Modelling Squad |
 | R41 | Not all observations are tied to a sample (air temperature at a field site). | @mslarae13 | Zoom chat | feature_of_interest accepts any identifier, or none (valid Measurement-017) |
 | R43 | If each measurement is a specific event, it is not a NamedThing; NamedThing works against a domain hierarchy. | @caufieldjh, @turbomam | Zoom chat | Measurement does not inherit from NamedThing |
 | R45 | Review the exact_mappings to NMDC QuantityValue and AttributeValue until the constraints match; add NMDC's minimum and maximum fields. | @valerie-autumn-skye | issue 4 | mappings to nmdc are close_mappings; minimum and maximum added |
 | R46 | Method. NMDC pairs some slots with a method slot (ph with ph_meth, but no temp_meth); ESS-DIVE plans to add method; where does "how" live? | @bmeluch, @dschristianson, @sierra-moxon | Zoom chat | measurement_method (named to avoid the feature model's method slot) |
 | R47 | BASALT has an instrument class. | @bmeluch | Zoom chat | instrument (text for now) |
 | R49 | Time, with UTC offsets. | @dschristianson | Hackathon Notes | observed_time, observed_start_time, observed_end_time (ISO 8601; an offset whenever a time of day is given) |
-| R54 | Derived measurement columns (APPL visual transformer outputs); measurements are modalities. | @pranjan77 | Hackathon Notes | value_role derived (valid Measurement-016); modality is deferred to the Phenotype working group |
+| R54 | Derived measurement columns (APPL visual transformer outputs); measurements are modalities. | @pranjan77 | Hackathon Notes | value_role derived (valid Measurement-016); modality is deferred to the Phenotype/genotype/strain working group (new in the 2026-11-03 BRIDGE DM notes) |
 | R61 | METPO for categorical microbial traits. | @caufieldjh, @turbomam | Zoom chat | value_term accepts METPO terms; METPO is a mapping target for cell length and growth temperature |
 | R62 | Every element should have a text description, and something should check that the description agrees with the schema and the data. | not recorded | Hackathon Notes | every class, slot, enum and value in measurements.yaml has a description; the agreement check is not built |
 
@@ -106,7 +106,7 @@ pie showData
 
 | ID | Point | Raised by | Source | Where it went |
 |---|---|---|---|---|
-| R40 | Is a sample a collection of observations, or a physical thing (dirt, a leaf)? Samples and locations are named things. | @ialarmedalien, @dschristianson, @turbomam, @mslarae13 | Zoom chat | Project/Sample/Study/Processing working group |
+| R40 | Is a sample a collection of observations, or a physical thing (dirt, a leaf)? Samples and locations are named things. | @ialarmedalien, @dschristianson, @turbomam, @mslarae13 | Zoom chat | Samples, Projects, and Processes Modelling Squad |
 | R48 | Instrument resolution, such as a stated 2 standard deviations for everything from one machine. | ESS-DIVE | brainstorm drawing | belongs on an instrument record, not on each value |
 | R51 | Replicates; EMSL has replicates and ranges, mostly not captured. | not recorded | brainstorm drawing | sample_size covers a summarized count; replicate structure belongs with the sample and processing model |
 | R68 | Each source schema provides a mapping to the central schema; people need examples of how. | BRIDGE DM team | DM notes 10/07 | the valid examples here show one record per source; mapping worksheets per source come next |
@@ -116,10 +116,10 @@ pie showData
 | ID | Point | Raised by | Source | Where it went |
 |---|---|---|---|---|
 | R33 | Can unit normalization be handed to an AI agent, or triaged with a decision model first? | @caufieldjh | Zoom chat | curation tooling, not schema |
-| R56 | Parse and normalize once, in a QA/QC step after ingest, instead of every agent doing it on every query. | @ialarmedalien, @sierra-moxon, @dschristianson | Zoom chat | ETL working group; data tiers draft |
+| R56 | Parse and normalize once, in a QA/QC step after ingest, instead of every agent doing it on every query. | @ialarmedalien, @sierra-moxon, @dschristianson | Zoom chat | ETL, outside the schema; @sierra-moxon's BRIDGE Data Tiers draft of 2026-10-05 |
 | R57 | In practice agents mediate lakehouse access and handle measurement nuance ("let the agents deal with it"). | @ialarmedalien | Zoom chat | recorded as a position; the schema supplies the structure agents query |
 | R58 | Structured metadata helps ensure metadata exists, so users' agents do not invent it. | @dschristianson | Zoom chat | recorded as a position |
-| R59 | About 9% of 500k GOLD organism records have measurement metadata; standardizing it may fall to the JGI Advanced Analysis Data Modeling team, and changing the GOLD schema has met resistance. | @valerie-autumn-skye | Zoom chat | JGI organization |
+| R59 | About 9% of 500k GOLD organism records have measurement metadata; standardizing it may fall to what @valerie-autumn-skye called the "JGI Advanced Analysis Data Modeling team" (JGI's Advanced Analysis group), and changing the GOLD schema has met resistance. | @valerie-autumn-skye | Zoom chat | JGI organization |
 | R60 | Add more fire-related terms to BERVO. | @caufieldjh | Zoom chat | BERVO development |
 | R65 | The ESS-DIVE example on the slides may reflect user input rather than BASIN-3D storage. | not recorded | Hackathon Notes | correction to the slide example |
 | R66 | Is the KBase upload validator a public API? Only as a platform app; its configuration is public. | @turbomam, KBase participant | Zoom chat | https://github.com/kbase/sample_service_validator_config/blob/master/metadata_validation.tsv |

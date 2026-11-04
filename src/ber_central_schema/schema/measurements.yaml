@@ -186,9 +186,10 @@ slots:
     description: >-
       A reference to the thing whose property was measured: a sample, an
       organism, a site or plot, a stream. Only a reference: classes for
-      samples belong to the Project/Sample/Study/Processing working group, and
-      classes for sites, plots and other landscape features to the
-      Landscape/Physical Features working group.
+      samples belong to the Samples, Projects, and Processes Modelling
+      Squad, and classes for sites, plots and other landscape
+      features to the Landscape/Physical Features module proposed in the
+      2026-10-07 BRIDGE DM notes.
     exact_mappings:
       - sosa:hasFeatureOfInterest
 
