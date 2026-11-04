@@ -243,7 +243,7 @@ items:
     raised_by: ["@sierra-moxon", "@caufieldjh"]
     source: chat
     disposition: in_schema
-    where: observed_property uses BERVO when BERVO has the term, otherwise a bridge_property identifier
+    where: observed_property is always a bridge_property identifier, mapped to BERVO when BERVO has the term
   - id: R35
     point: Map to other vocabularies with SKOS-style mappings rather than importing terms (MIREOT).
     raised_by: ["@caufieldjh"]
