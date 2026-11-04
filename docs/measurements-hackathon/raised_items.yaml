@@ -374,8 +374,8 @@ items:
     point: Complicated experimental conditions entered under "other", such as "prescribed burn every 3-4 years".
     raised_by: ["@bmeluch"]
     source: chat
-    disposition: known_gap
-    where: storable as raw text with a range, but recurrence and the event are lost (problem/valid Measurement-002)
+    disposition: in_schema
+    where: fire_return_interval as a range, with treatment for the prescribed part (valid Measurement-027). The burn events themselves are not measurements
 
   # --- outside the schema --------------------------------------------------------------
 

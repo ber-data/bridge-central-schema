@@ -9,8 +9,8 @@
 ```mermaid
 pie showData
     title Raised items by disposition
-    "Handled in measurements.yaml" : 39
-    "Known gap, shown by a problem example" : 5
+    "Handled in measurements.yaml" : 40
+    "Known gap, shown by a problem example" : 4
     "Open question for the group" : 12
     "Deferred to a later module or working group" : 4
     "Not a schema matter" : 9
@@ -31,7 +31,7 @@ pie showData
     "first-pass review" : 2
 ```
 
-## Handled in measurements.yaml (39)
+## Handled in measurements.yaml (40)
 
 | ID | Point | Raised by | Source | Where it went |
 |---|---|---|---|---|
@@ -72,10 +72,11 @@ pie showData
 | R47 | BASALT has an instrument class. | @bmeluch | Zoom chat | instrument (text for now) |
 | R49 | Time, with UTC offsets. | @dschristianson | Hackathon Notes | observed_time, observed_start_time, observed_end_time (ISO 8601; an offset whenever a time of day is given) |
 | R54 | Derived measurement columns (APPL visual transformer outputs); measurements are modalities. | @pranjan77 | Hackathon Notes | value_role derived (valid Measurement-016); modality is deferred to the Phenotype/genotype/strain working group (new in the 2026-11-03 BRIDGE DM notes) |
+| R55 | Complicated experimental conditions entered under "other", such as "prescribed burn every 3-4 years". | @bmeluch | Zoom chat | fire_return_interval as a range, with treatment for the prescribed part (valid Measurement-027). The burn events themselves are not measurements |
 | R61 | METPO for categorical microbial traits. | @caufieldjh, @turbomam | Zoom chat | value_term accepts METPO terms; METPO is a mapping target for cell length and growth temperature |
 | R62 | Every element should have a text description, and something should check that the description agrees with the schema and the data. | not recorded | Hackathon Notes | every class, slot, enum and value in measurements.yaml has a description; the agreement check is not built |
 
-## Known gap, shown by a problem example (5)
+## Known gap, shown by a problem example (4)
 
 | ID | Point | Raised by | Source | Where it went |
 |---|---|---|---|---|
@@ -83,7 +84,6 @@ pie showData
 | R44 | Source lineage (source system, record ID, field, snapshot) so raw text stays traceable. | @valerie-autumn-skye | issue 4 | source_system, source_record_id, source_field; no snapshot or version slot yet (problem/valid Measurement-005) |
 | R50 | Time series (loggers at 10 Hz reported per minute or per 5 minutes). Is a TimeseriesMeasurement needed on day one? | ESS-DIVE, @sierra-moxon | brainstorm drawing | one value per record only (problem/invalid Measurement-001) |
 | R53 | Is growth an observation, with OD as its measurement? OD measures turbidity, which says something about growth; growth is a difference between observations. | @janakagithub, @turbomam, @ialarmedalien | Zoom chat | OD readings are Measurements (BERVO Optical density); a growth value derived from several of them has no link back |
-| R55 | Complicated experimental conditions entered under "other", such as "prescribed burn every 3-4 years". | @bmeluch | Zoom chat | storable as raw text with a range, but recurrence and the event are lost (problem/valid Measurement-002) |
 
 ## Open question for the group (12)
 

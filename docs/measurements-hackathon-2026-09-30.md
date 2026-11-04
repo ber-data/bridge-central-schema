@@ -269,5 +269,4 @@ Also from that review, all taken in 0.4.0: `missing_value_reason` probably needs
 - Nothing enforces `maximum_numeric_value` >= `minimum_numeric_value`; plain LinkML cannot compare one slot with another, and NMDC's export has 196 inverted ranges. `tests/data/problem/valid/Measurement-004.yaml` validates anyway.
 - A mean records no averaging window (hourly, daily), so `Measurement-019` cannot say it is a daily mean (open question 14).
 - Source lineage cannot tell revisions of the same source record apart; there is no snapshot or version slot yet (R44, `tests/data/problem/valid/Measurement-005.yaml`).
-- Recurring conditions such as "prescribed burn every 3-4 years" (R55) store only as text and a range.
 - Sample, site and organism classes, replicates, and instrument records belong to the Samples, Projects, and Processes Modelling Squad (https://doe-bridge.slack.com/archives/C0CAYBJ7CAF) (R40, R48, R51).
