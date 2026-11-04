@@ -283,6 +283,8 @@
 <pre class="mermaid"><code> classDiagram
     class Measurement
     click Measurement href "../Measurement/"
+      Measurement : coded_value
+
       Measurement : comparator
 
 
@@ -382,8 +384,6 @@
 
 
 
-      Measurement : value_term
-
 </code></pre>
 <!-- no inheritance hierarchy -->
 <h2 id="slots">Slots</h2>
@@ -458,9 +458,9 @@
 <td>direct</td>
 </tr>
 <tr>
-<td><a href="../value_term/">value_term</a></td>
+<td><a href="../coded_value/">coded_value</a></td>
 <td>0..1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>An ontology term for a categorical value, parsed from raw_value the way numer...</td>
+<td>A categorical value as a code from an ontology or controlled vocabulary, pars...</td>
 <td>direct</td>
 </tr>
 <tr>
@@ -585,7 +585,7 @@ The class must satisfy at least one of:
   'slot_conditions': {'maximum_numeric_value': SlotDefinition({'name': 'maximum_numeric_value', 'required': True})}
 })
 - AnonymousClassExpression({
-  'slot_conditions': {'value_term': SlotDefinition({'name': 'value_term', 'required': True})}
+  'slot_conditions': {'coded_value': SlotDefinition({'name': 'coded_value', 'required': True})}
 })
 - AnonymousClassExpression({
   'slot_conditions': {'missing_value_reason': SlotDefinition({'name': 'missing_value_reason', 'required': True})}
@@ -603,9 +603,9 @@ The class must satisfy exactly one of:
 </details>
 <h2 id="comments">Comments</h2>
 <ul>
-<li>A measurement must carry at least one of raw_value, numeric_value, minimum_numeric_value, maximum_numeric_value, value_term or missing_value_reason, so an empty measurement fails validation.</li>
+<li>A measurement must carry at least one of raw_value, numeric_value, minimum_numeric_value, maximum_numeric_value, coded_value or missing_value_reason, so an empty measurement fails validation.</li>
 <li>A measurement names its property with exactly one of observed_property (an identifier) or property_label (free text). property_label is the catch-all for values whose property has no identifier yet, as MIxS misc_param, NMDC PropertyAssertion and BERtron Attribute allow.</li>
-<li>The value slots come in two groups. raw_value, numeric_value, minimum_numeric_value, maximum_numeric_value, unit and value_term hold the value itself: raw_value as the source wrote it, the others as parsed from it (numeric_value for a number, value_term for a category). comparator, statistic, standard_deviation, sample_size, value_role, value_qualifier and missing_value_reason say something about that value.</li>
+<li>The value slots come in two groups. raw_value, numeric_value, minimum_numeric_value, maximum_numeric_value, unit and coded_value hold the value itself: raw_value as the source wrote it, the others as parsed from it (numeric_value for a number, coded_value for a category). comparator, statistic, standard_deviation, sample_size, value_role, value_qualifier and missing_value_reason say something about that value.</li>
 <li>A source cell that holds several values (for example a width and a length) becomes several measurements that share source_record_id and source_field.</li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
@@ -648,15 +648,15 @@ The class must satisfy exactly one of:
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">when data shows a need for one.</span>
 <span class="nt">comments</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A measurement must carry at least one of raw_value, numeric_value, minimum_numeric_value,</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">maximum_numeric_value, value_term or missing_value_reason, so an empty measurement</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">maximum_numeric_value, coded_value or missing_value_reason, so an empty measurement</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">fails validation.</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A measurement names its property with exactly one of observed_property (an identifier)</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">or property_label (free text). property_label is the catch-all for values whose</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">property has no identifier yet, as MIxS misc_param, NMDC PropertyAssertion and BERtron</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">Attribute allow.</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'The</span><span class="nv"> </span><span class="s">value</span><span class="nv"> </span><span class="s">slots</span><span class="nv"> </span><span class="s">come</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">two</span><span class="nv"> </span><span class="s">groups.</span><span class="nv"> </span><span class="s">raw_value,</span><span class="nv"> </span><span class="s">numeric_value,</span><span class="nv"> </span><span class="s">minimum_numeric_value,</span>
-<span class="w">  </span><span class="s">maximum_numeric_value,</span><span class="nv"> </span><span class="s">unit</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">value_term</span><span class="nv"> </span><span class="s">hold</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">value</span><span class="nv"> </span><span class="s">itself:</span><span class="nv"> </span><span class="s">raw_value</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">the</span>
-<span class="w">  </span><span class="s">source</span><span class="nv"> </span><span class="s">wrote</span><span class="nv"> </span><span class="s">it,</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">others</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">parsed</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">it</span><span class="nv"> </span><span class="s">(numeric_value</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">number,</span><span class="nv"> </span><span class="s">value_term</span>
+<span class="w">  </span><span class="s">maximum_numeric_value,</span><span class="nv"> </span><span class="s">unit</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">coded_value</span><span class="nv"> </span><span class="s">hold</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">value</span><span class="nv"> </span><span class="s">itself:</span><span class="nv"> </span><span class="s">raw_value</span><span class="nv"> </span><span class="s">as</span>
+<span class="w">  </span><span class="s">the</span><span class="nv"> </span><span class="s">source</span><span class="nv"> </span><span class="s">wrote</span><span class="nv"> </span><span class="s">it,</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">others</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">parsed</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">it</span><span class="nv"> </span><span class="s">(numeric_value</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">number,</span><span class="nv"> </span><span class="s">coded_value</span>
 <span class="w">  </span><span class="s">for</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">category).</span><span class="nv"> </span><span class="s">comparator,</span><span class="nv"> </span><span class="s">statistic,</span><span class="nv"> </span><span class="s">standard_deviation,</span><span class="nv"> </span><span class="s">sample_size,</span><span class="nv"> </span><span class="s">value_role,</span>
 <span class="w">  </span><span class="s">value_qualifier</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">missing_value_reason</span><span class="nv"> </span><span class="s">say</span><span class="nv"> </span><span class="s">something</span><span class="nv"> </span><span class="s">about</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">value.'</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A source cell that holds several values (for example a width and a length) becomes</span>
@@ -676,7 +676,7 @@ The class must satisfy exactly one of:
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">maximum_numeric_value</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unit</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unit_basis</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value_term</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coded_value</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">comparator</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statistic</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">standard_deviation</span>
@@ -719,8 +719,8 @@ The class must satisfy exactly one of:
 <span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">maximum_numeric_value</span>
 <span class="w">      </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">slot_conditions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">value_term</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value_term</span>
+<span class="w">    </span><span class="nt">coded_value</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coded_value</span>
 <span class="w">      </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">slot_conditions</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">missing_value_reason</span><span class="p">:</span>
@@ -747,15 +747,15 @@ The class must satisfy exactly one of:
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">when data shows a need for one.</span>
 <span class="nt">comments</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A measurement must carry at least one of raw_value, numeric_value, minimum_numeric_value,</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">maximum_numeric_value, value_term or missing_value_reason, so an empty measurement</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">maximum_numeric_value, coded_value or missing_value_reason, so an empty measurement</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">fails validation.</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A measurement names its property with exactly one of observed_property (an identifier)</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">or property_label (free text). property_label is the catch-all for values whose</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">property has no identifier yet, as MIxS misc_param, NMDC PropertyAssertion and BERtron</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">Attribute allow.</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'The</span><span class="nv"> </span><span class="s">value</span><span class="nv"> </span><span class="s">slots</span><span class="nv"> </span><span class="s">come</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">two</span><span class="nv"> </span><span class="s">groups.</span><span class="nv"> </span><span class="s">raw_value,</span><span class="nv"> </span><span class="s">numeric_value,</span><span class="nv"> </span><span class="s">minimum_numeric_value,</span>
-<span class="w">  </span><span class="s">maximum_numeric_value,</span><span class="nv"> </span><span class="s">unit</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">value_term</span><span class="nv"> </span><span class="s">hold</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">value</span><span class="nv"> </span><span class="s">itself:</span><span class="nv"> </span><span class="s">raw_value</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">the</span>
-<span class="w">  </span><span class="s">source</span><span class="nv"> </span><span class="s">wrote</span><span class="nv"> </span><span class="s">it,</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">others</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">parsed</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">it</span><span class="nv"> </span><span class="s">(numeric_value</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">number,</span><span class="nv"> </span><span class="s">value_term</span>
+<span class="w">  </span><span class="s">maximum_numeric_value,</span><span class="nv"> </span><span class="s">unit</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">coded_value</span><span class="nv"> </span><span class="s">hold</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">value</span><span class="nv"> </span><span class="s">itself:</span><span class="nv"> </span><span class="s">raw_value</span><span class="nv"> </span><span class="s">as</span>
+<span class="w">  </span><span class="s">the</span><span class="nv"> </span><span class="s">source</span><span class="nv"> </span><span class="s">wrote</span><span class="nv"> </span><span class="s">it,</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">others</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">parsed</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">it</span><span class="nv"> </span><span class="s">(numeric_value</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">number,</span><span class="nv"> </span><span class="s">coded_value</span>
 <span class="w">  </span><span class="s">for</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">category).</span><span class="nv"> </span><span class="s">comparator,</span><span class="nv"> </span><span class="s">statistic,</span><span class="nv"> </span><span class="s">standard_deviation,</span><span class="nv"> </span><span class="s">sample_size,</span><span class="nv"> </span><span class="s">value_role,</span>
 <span class="w">  </span><span class="s">value_qualifier</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">missing_value_reason</span><span class="nv"> </span><span class="s">say</span><span class="nv"> </span><span class="s">something</span><span class="nv"> </span><span class="s">about</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">value.'</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A source cell that holds several values (for example a width and a length) becomes</span>
@@ -912,11 +912,11 @@ The class must satisfy exactly one of:
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">value_term</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value_term</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">An ontology term for a categorical value, parsed from raw_value the</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">way numeric_value is parsed for a number, such as METPO:1000615 (mesophilic).</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">The source wording stays in raw_value.</span>
+<span class="w">  </span><span class="nt">coded_value</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coded_value</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A categorical value as a code from an ontology or controlled vocabulary,</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">parsed from raw_value the way numeric_value is parsed for a number, such as</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">METPO:1000615 (mesophilic). The source wording stays in raw_value.</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
@@ -1122,8 +1122,8 @@ The class must satisfy exactly one of:
 <span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">maximum_numeric_value</span>
 <span class="w">      </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">slot_conditions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">value_term</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value_term</span>
+<span class="w">    </span><span class="nt">coded_value</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coded_value</span>
 <span class="w">      </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">slot_conditions</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">missing_value_reason</span><span class="p">:</span>

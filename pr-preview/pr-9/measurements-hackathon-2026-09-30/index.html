@@ -357,7 +357,7 @@
         maximum_numeric_value : double
         unit : UCUM code, ASCII
         unit_basis : string
-        value_term : uriorcurie
+        coded_value : uriorcurie
         comparator : ComparatorEnum
         statistic : StatisticEnum
         standard_deviation : double
@@ -432,7 +432,7 @@
 <td><code>Measurement-001</code>, <code>Measurement-008</code>, <code>Measurement-009</code></td>
 </tr>
 <tr>
-<td>Carry at least one of <code>raw_value</code>, <code>numeric_value</code>, <code>minimum_numeric_value</code>, <code>maximum_numeric_value</code>, <code>value_term</code> or <code>missing_value_reason</code></td>
+<td>Carry at least one of <code>raw_value</code>, <code>numeric_value</code>, <code>minimum_numeric_value</code>, <code>maximum_numeric_value</code>, <code>coded_value</code> or <code>missing_value_reason</code></td>
 <td><code>Measurement-003</code></td>
 </tr>
 <tr>
@@ -473,7 +473,7 @@
     q1 -- "a number" --&gt; n["numeric_value + unit"]
     q1 -- "a range" --&gt; r["minimum_numeric_value + maximum_numeric_value + unit"]
     q1 -- "mean, SD, n" --&gt; s["numeric_value + statistic + standard_deviation + sample_size"]
-    q1 -- "a category" --&gt; c["raw_value + value_role: interpreted (+ value_term when a reviewed term exists)"]
+    q1 -- "a category" --&gt; c["raw_value + value_role: interpreted (+ coded_value when a reviewed term exists)"]
     q1 -- "says there is no value" --&gt; m["raw_value + missing_value_reason"]
     q1 -- "no" --&gt; f["raw_value + quality_flag: needs_review"]</code></pre>
 <h2 id="how-a-measurement-names-its-property">How a measurement names its property</h2>
@@ -646,7 +646,7 @@
 <tr>
 <td>none (illustrative)</td>
 <td><code>Measurement-021</code> to <code>-026</code></td>
-<td>an identifier, instrument and <code>less_than</code> comparator; a categorical <code>value_term</code>; a treatment, unit basis, month-only time and start and end times; a raw value containing a colon; <code>unknown</code> as the missing value reason; a year-only time</td>
+<td>an identifier, instrument and <code>less_than</code> comparator; a categorical <code>coded_value</code>; a treatment, unit basis, month-only time and start and end times; a raw value containing a colon; <code>unknown</code> as the missing value reason; a year-only time</td>
 </tr>
 </tbody>
 </table>
@@ -668,16 +668,16 @@
 <li>How are BRIDGE property IDs issued, and under what prefix? (R38) 0.5.0: <code>bridge_property:</code> for every property, added by pull request with a label, a definition and mapping rows; the prefix does not resolve yet. Earlier question: should <code>observed_property</code> hold a BERVO ID when BERVO has the term, as this pass does, or always a <code>bridge_property:</code> ID mapped to BERVO and other vocabularies, as @valerie-autumn-skye recommends (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273386207">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273386207</a>, <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273779118">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273779118</a>)?</li>
 <li>Do measurements get BRIDGE-minted IDs on ingest? (R42) Provisional: <code>measurement_id</code> is optional. @dschristianson asks why it isn't just <code>id</code> (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230719718">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230719718</a>). The central schema's <code>id</code> is an identifier, which LinkML makes required, so reusing it would make every measurement need one.</li>
 <li>How are related records grouped: a mean with its SD, replicates, the parts of one cell? (R52) Provisional: shared <code>source_record_id</code> and <code>source_field</code>.</li>
-<li>Who assigns <code>value_term</code> for a scientist's label such as mesophilic, and how is it reviewed? (R18) @valerie-autumn-skye suggests an optional provenance field, such as <code>source: PMID:29182670</code> or <code>curation: GOLD</code> (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273734035">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273734035</a>).</li>
+<li>Who assigns <code>coded_value</code> for a scientist's label such as mesophilic, and how is it reviewed? (R18) @valerie-autumn-skye suggests an optional provenance field, such as <code>source: PMID:29182670</code> or <code>curation: GOLD</code> (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273734035">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273734035</a>).</li>
 <li>Numbers that are not quantities, such as grading scales and coefficients. (R24)</li>
 <li>A QA class, or is one <code>quality_flag</code> enough for now? (R64) @valerie-autumn-skye: <code>quality_flag</code> is enough for now (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273737869">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273737869</a>).</li>
 <li>What do people want to search on? (R63) @valerie-autumn-skye considers this out of scope here and a question for the User Research team (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273756898">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273756898</a>).</li>
 <li>(Raised while writing this pass.) Should a mapping to MIxS be <code>exactMatch</code> when MIxS defines the property of a sample and BERVO the property in general? The mapping file uses <code>closeMatch</code> for those.</li>
 <li>
-<p>(Raised while reviewing this pass, R69.) Should <code>Measurement</code> be a subclass of <code>QuantityValue</code>, inheriting <code>numeric_value</code>, the minimum and maximum, and <code>unit</code>, and keeping NMDC's value structure? That treats a measurement as a kind of value. The first pass treats it as a record about a property that carries a value, with the value slots on <code>Measurement</code> and no <code>QuantityValue</code> class. @valerie-autumn-skye asks whether that would imply every measurement is numeric (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273745478">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273745478</a>); it would, and categorical values (<code>value_term</code>) are one reason the first pass did not do it.</p>
+<p>(Raised while reviewing this pass, R69.) Should <code>Measurement</code> be a subclass of <code>QuantityValue</code>, inheriting <code>numeric_value</code>, the minimum and maximum, and <code>unit</code>, and keeping NMDC's value structure? That treats a measurement as a kind of value. The first pass treats it as a record about a property that carries a value, with the value slots on <code>Measurement</code> and no <code>QuantityValue</code> class. @valerie-autumn-skye asks whether that would imply every measurement is numeric (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273745478">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273745478</a>); it would, and categorical values (<code>coded_value</code>) are one reason the first pass did not do it.</p>
 </li>
 <li>
-<p>Is the line between a value and facts about a value clear? @dschristianson read <code>value_term</code> as the parsed form of a non-numeric value, like <code>numeric_value</code> for numbers, and asked how it relates to <code>value_role</code> and <code>value_qualifier</code> (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230783915">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230783915</a>). That reading is right; 0.4.0 says so in the class comments and slot descriptions.</p>
+<p>Is the line between a value and facts about a value clear? @dschristianson read <code>coded_value</code> (then named <code>value_term</code>) as the parsed form of a non-numeric value, like <code>numeric_value</code> for numbers, and asked how it relates to <code>value_role</code> and <code>value_qualifier</code> (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230783915">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230783915</a>). That reading is right; 0.4.0 says so in the class comments and slot descriptions.</p>
 </li>
 <li>Statistics come in kinds: temporal, spatial and measurement. Should <code>statistic</code> become a structure (type, statistic, number), possibly repeated on one measurement, with <code>sample_size</code> renamed (for example <code>statistic_sample_number</code>)? (@dschristianson, <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230798043">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230798043</a> and <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230841807">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230841807</a>) The same structure could carry the period a value represents (daily, monthly, yearly), which observed time cannot always show (@dschristianson, <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#pullrequestreview-5519748477">https://github.com/doe-bridge/bridge-central-schema/pull/9#pullrequestreview-5519748477</a>), or a separate <code>sampling_period</code> field could (@valerie-autumn-skye, <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273300055">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273300055</a>).</li>
 <li>Which <code>value_role</code> fits a spatial mean of several measurements, which an earth scientist would call measured? (@dschristianson, <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4231116532">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4231116532</a>) 0.4.0: <code>measured</code>, with the summary in <code>statistic</code>; <code>derived</code> is for a value of one property computed from others.</li>

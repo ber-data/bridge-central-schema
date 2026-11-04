@@ -129,19 +129,19 @@ items:
     raised_by: ["@valerie-autumn-skye"]
     source: chat
     disposition: in_schema
-    where: raw_value plus value_role interpreted; value_term for an ontology term (valid Measurement-008)
+    where: raw_value plus value_role interpreted; coded_value for an ontology term (valid Measurement-008)
   - id: R17
     point: Instantiate categorical values (mesophilic) as observations.
     raised_by: ["@turbomam"]
     source: drawing
     disposition: in_schema
-    where: value_term on Measurement, since there is one class
+    where: coded_value on Measurement, since there is one class
   - id: R18
     point: A scientist-assigned label may not mean what the ontology term means (their mesophilic is not necessarily the term Mesophilic).
     raised_by: ["@caufieldjh"]
     source: chat
     disposition: open_question
-    where: value_role interpreted marks such values; who assigns value_term, and how it is reviewed, is undecided
+    where: value_role interpreted marks such values; who assigns coded_value, and how it is reviewed, is undecided
   - id: R19
     point: Context attached to a value, such as Optimal 10MPa or "for optimal growth".
     raised_by: ["@valerie-autumn-skye"]
@@ -414,7 +414,7 @@ items:
     raised_by: ["@caufieldjh", "@turbomam"]
     source: chat
     disposition: in_schema
-    where: value_term accepts METPO terms; METPO is a mapping target for cell length and growth temperature
+    where: coded_value accepts METPO terms; METPO is a mapping target for cell length and growth temperature
   - id: R62
     point: Every element should have a text description, and something should check that the description agrees with the schema and the data.
     raised_by: ["not recorded"]

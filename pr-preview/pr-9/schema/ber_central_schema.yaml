@@ -603,14 +603,14 @@ slots:
     domain_of:
     - Measurement
     range: string
-  value_term:
-    name: value_term
-    definition_uri: https://w3id.org/ber-data/bridge-central-schema/value_term
-    description: An ontology term for a categorical value, parsed from raw_value the
-      way numeric_value is parsed for a number, such as METPO:1000615 (mesophilic).
-      The source wording stays in raw_value.
+  coded_value:
+    name: coded_value
+    definition_uri: https://w3id.org/ber-data/bridge-central-schema/coded_value
+    description: A categorical value as a code from an ontology or controlled vocabulary,
+      parsed from raw_value the way numeric_value is parsed for a number, such as
+      METPO:1000615 (mesophilic). The source wording stays in raw_value.
     from_schema: https://w3id.org/ber-data/bridge-central-schema/measurements
-    slot_uri: bridge_central_schema:value_term
+    slot_uri: bridge_central_schema:coded_value
     owner: Measurement
     domain_of:
     - Measurement
@@ -883,16 +883,16 @@ classes:
       add an Observation class only when data shows a need for one.
     comments:
     - A measurement must carry at least one of raw_value, numeric_value, minimum_numeric_value,
-      maximum_numeric_value, value_term or missing_value_reason, so an empty measurement
+      maximum_numeric_value, coded_value or missing_value_reason, so an empty measurement
       fails validation.
     - A measurement names its property with exactly one of observed_property (an identifier)
       or property_label (free text). property_label is the catch-all for values whose
       property has no identifier yet, as MIxS misc_param, NMDC PropertyAssertion and
       BERtron Attribute allow.
     - 'The value slots come in two groups. raw_value, numeric_value, minimum_numeric_value,
-      maximum_numeric_value, unit and value_term hold the value itself: raw_value
+      maximum_numeric_value, unit and coded_value hold the value itself: raw_value
       as the source wrote it, the others as parsed from it (numeric_value for a number,
-      value_term for a category). comparator, statistic, standard_deviation, sample_size,
+      coded_value for a category). comparator, statistic, standard_deviation, sample_size,
       value_role, value_qualifier and missing_value_reason say something about that
       value.'
     - A source cell that holds several values (for example a width and a length) becomes
@@ -912,7 +912,7 @@ classes:
     - maximum_numeric_value
     - unit
     - unit_basis
-    - value_term
+    - coded_value
     - comparator
     - statistic
     - standard_deviation
@@ -956,8 +956,8 @@ classes:
           name: maximum_numeric_value
           required: true
     - slot_conditions:
-        value_term:
-          name: value_term
+        coded_value:
+          name: coded_value
           required: true
     - slot_conditions:
         missing_value_reason:
@@ -974,7 +974,7 @@ classes:
           required: true
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-11-04T16:48:03'
+source_file_date: '2026-11-04T17:06:51'
 source_file_size: 1180
-generation_date: '2026-11-04T16:48:12'
+generation_date: '2026-11-04T17:07:00'
 
