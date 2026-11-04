@@ -811,12 +811,30 @@ classes:
   Sample:
     name: Sample
     definition_uri: https://w3id.org/ber-data/bridge-central-schema/Sample
-    description: A physical material that can be characterized by an experiment.
+    description: A material entity taken from a larger body, or derived from another
+      sample, so that measurements or observations on it can be read as claims about
+      that body.
     comments:
     - 'Concrete sample types stay in the source schemas: nmdc:Biosample and nmdc:OrganismSample,
       and the 18 direct BASALT Sample subclasses (SoilSample, WaterSample, ...).'
+    - Samples chain. A DNA extract is a sample of the soil core it was extracted from,
+      and an incubated subsample (for example a stable-isotope-labeled incubation)
+      is a sample of the material it started from. The MaterialProcessing step that
+      produced it points at it with has_output, so following the steps back reaches
+      the body that was sampled.
+    - 'A sample meets three conditions, each with a source: it is material (nmdc:MaterialEntity),
+      it is representative of the body it was taken from (OBI:0000744 material sampling
+      process, sosa:isSampleOf), and it was collected as an input to measurement (OBI:0100051
+      specimen). The reasoning is in drafts/umbrella/what-is-a-sample.md.'
+    - 'These are not samples: a subject observed in its own right, such as a phenotyped
+      plant or a patient; an observation, such as a plant at a time point under a
+      treatment; a station or site; and an information artifact, such as a MAG bin
+      or a construct design. Material drawn from a subject, such as a leaf disc, is
+      a sample.'
     - BASALT records collection on a separate SamplingActivity class; NMDC records
-      it on the sample. This draft leaves the sampling event out.
+      it on the sample. This draft leaves the sampling event out. Representativeness
+      is a property of that event, so the event, or at least the source, needs a home
+      before this class is agreed.
     - There is no separate class for processed samples. A sample produced by a processing
       step is a Sample, and sample_category says what kind of sample it is.
     from_schema: https://w3id.org/ber-data/bridge-central-schema/umbrella
@@ -918,7 +936,7 @@ classes:
     class_uri: bridge_central_schema:ProcessingSampleLink
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-11-04T20:30:05'
+source_file_date: '2026-11-04T20:34:09'
 source_file_size: 733
-generation_date: '2026-11-04T20:30:15'
+generation_date: '2026-11-04T20:34:17'
 
