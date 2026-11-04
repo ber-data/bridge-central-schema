@@ -14,6 +14,9 @@ prefixes:
   basalt_schema: https://emsl-computing.github.io/BASALT-Schema/elements/
   # Same expansion as in nmdc-schema.
   gold: "https://bioregistry.io/gold:"
+  # AmeriFlux site IDs (for example US-Ha1). Bioregistry has no prefix for
+  # them (checked 2026-11-04), so this one is declared only in this schema.
+  ameriflux: https://ameriflux.lbl.gov/sites/siteinfo/
 default_prefix: bridge_central_schema
 default_range: string
 
