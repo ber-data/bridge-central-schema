@@ -1,0 +1,1071 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://sierra-moxon.github.io/ber-central-schema/identifiers/">
+      
+      
+        <link rel="prev" href="../elements/">
+      
+      
+        <link rel="next" href="../about/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Identifiers - ber-central-schema</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+
+      
+    
+<script src="../assets/pymdownx-extras/material-extra-theme-2ek1P7jT.js" type="text/javascript"></script>
+<script src="../assets/pymdownx-extras/material-extra-3rdparty-BUCF4rjN.js" type="text/javascript"></script>
+
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+      <link rel="stylesheet" href="../assets/pymdownx-extras/extra-c6ab11540a.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#identifiers-across-the-bridge-central-model" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header" data-md-component="header">
+  <nav
+    class="md-header__inner md-grid"
+    aria-label="header.title"
+  >
+    <a
+      href="https://sierra-moxon.github.io/ber-central-schema/"
+      title="ber-central-schema"
+      class="md-header__button md-logo"
+      aria-label="ber-central-schema"
+    >
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 2-5 4.5v11l5-4.5zM6.5 5C4.55 5 2.45 5.4 1 6.5v14.66c0 .25.25.5.5.5.1 0 .15-.07.25-.07 1.35-.65 3.3-1.09 4.75-1.09 1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.31 4.75 1.06.1.05.15.03.25.03.25 0 .5-.25.5-.5V6.5c-.6-.45-1.25-.75-2-1V19c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6.5C10.55 5.4 8.45 5 6.5 5"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ber-central-schema
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Identifiers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="md-header__options">
+      <div class="md-header-nav__scheme md-header-nav__button md-source__icon md-icon">
+          <a
+            href="javascript:toggleScheme();"
+            title="Light mode"
+            class="light-mode"
+          >
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+          </a>
+          <a
+            href="javascript:toggleScheme();"
+            title="Dark mode"
+            class="dark-mode"
+          >
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+          </a>
+          <a
+            href="javascript:toggleScheme();"
+            title="System preference"
+            class="system-mode"
+          >
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07zm-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13zm-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35zm4.33-2.7 1.15-2.77 2.2 2.54zm1.15-4.96-1.14-2.78 3.34.24zM9.63 18.93l2.77 1.15-2.53 2.19z"/></svg>
+          </a>
+           <a
+            href="javascript:toggleScheme();"
+            title="Unknown scheme"
+            class="unknown-mode"
+          >
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m15.07 11.25-.9.92C13.45 12.89 13 13.5 13 15h-2v-.5c0-1.11.45-2.11 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8a4 4 0 0 1 4-4 4 4 0 0 1 4 4 3.2 3.2 0 0 1-.93 2.25M13 19h-2v-2h2M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"/></svg>
+          </a>
+      </div>
+    </div>
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sierra-moxon/ber-central-schema" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ber-central-schema" class="md-nav__button md-logo" aria-label="ber-central-schema" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 2-5 4.5v11l5-4.5zM6.5 5C4.55 5 2.45 5.4 1 6.5v14.66c0 .25.25.5.5.5.1 0 .15-.07.25-.07 1.35-.65 3.3-1.09 4.75-1.09 1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.31 4.75 1.06.1.05.15.03.25.03.25 0 .5-.25.5-.5V6.5c-.6-.45-1.25-.75-2-1V19c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6.5C10.55 5.4 8.45 5 6.5 5"/></svg>
+
+    </a>
+    ber-central-schema
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sierra-moxon/ber-central-schema" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Identifiers
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Identifiers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-an-id-is-in-this-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What an id is in this schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-each-tables-id-comes-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where each table's id comes from
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#which-ids-bridge-would-make-and-manage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which ids BRIDGE would make and manage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prefixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prefixes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Patterns
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-naming-rule-for-key-slots-as-a-proposal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A naming rule for key slots, as a proposal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-an-id-is-in-this-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What an id is in this schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-each-tables-id-comes-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where each table's id comes from
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#which-ids-bridge-would-make-and-manage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which ids BRIDGE would make and manage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prefixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prefixes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Patterns
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-naming-rule-for-key-slots-as-a-proposal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A naming rule for key slots, as a proposal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+                  
+
+
+  
+  
+
+
+<h1 id="identifiers-across-the-bridge-central-model">Identifiers across the BRIDGE central model</h1>
+<p>This page records the state on 2026-11-04. The classes are on open pull requests rather than on <code>main</code>, and each row names its pull request. Nothing here is a decision. The last section lists the questions.</p>
+<h2 id="what-an-id-is-in-this-schema">What an id is in this schema</h2>
+<p><code>core.yaml</code> on <a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a> defines one <code>id</code> slot: <code>identifier: true</code>, range <code>uriorcurie</code>, no pattern. Every class that <code>is_a: NamedThing</code> inherits it, and LinkML treats an identifier slot as required. The feature model (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/5">https://github.com/doe-bridge/bridge-central-schema/pull/5</a>) and the measurements first pass (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9">https://github.com/doe-bridge/bridge-central-schema/pull/9</a>) predate that file and name their identifiers differently.</p>
+<p>No identifier slot on the open pull requests carries a pattern. The two single-prefix patterns are on reference slots. <code>observed_property</code> on <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9">https://github.com/doe-bridge/bridge-central-schema/pull/9</a> has range <code>uriorcurie</code> and pattern <code>^bridge_property:[a-z0-9_]+$</code>, and the terms it points at are rows of <code>src/ber_central_schema/terms/bridge_property.tsv</code> on that branch, added by pull request with a label and a definition. The hackathon page there says a term's id does not change once merged. <code>taxon</code> on <a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a> has range <code>uriorcurie</code> and pattern <code>^NCBITaxon:\d+$</code>.</p>
+<p>A follow-up pull request is planned after the measurements pull request. In words, since none of it is public yet: the <code>bridge_property:</code> terms become rows of an <code>ObservedProperty</code> table, a <code>Unit</code> table gets <code>bridge_unit:</code> ids whose local part is derived from the UCUM code, <code>Measurement</code> gets a required <code>id</code> that the loader builds from <code>source_system</code>, <code>source_record_id</code> and <code>source_field</code> when a row arrives without one, a <code>SourceMapping</code> table gets an id built the same way from <code>source_system</code> and <code>source_field</code>, the two SSSOM mapping tables stay keyed by <code>subject_id</code>, <code>predicate_id</code> and <code>object_id</code> with no id of their own, and tests require that each table's identifier is named <code>id</code>, has range <code>curie</code>, and carries a pattern that opens with prefixes the schema declares. The rows below are the state before that work.</p>
+<h2 id="where-each-tables-id-comes-from">Where each table's id comes from</h2>
+<p>Read from each pull request head on 2026-11-04: <a href="https://github.com/doe-bridge/bridge-central-schema/pull/5">https://github.com/doe-bridge/bridge-central-schema/pull/5</a> at 15b0e06, <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9">https://github.com/doe-bridge/bridge-central-schema/pull/9</a> at e431b4c, <a href="https://github.com/doe-bridge/bridge-central-schema/pull/12">https://github.com/doe-bridge/bridge-central-schema/pull/12</a> at bd6c14d, <a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a> at ced63d4 and <a href="https://github.com/doe-bridge/bridge-central-schema/pull/21">https://github.com/doe-bridge/bridge-central-schema/pull/21</a> at 7359746. Examples are from <code>tests/data/valid/</code> on the same branch. An example marked placeholder is illustrative and not a source record.</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Pull request</th>
+<th>Identifier slot</th>
+<th>Range</th>
+<th>Id made by</th>
+<th>Example</th>
+<th>Pattern</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Study</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a></td>
+<td><code>id</code></td>
+<td><code>uriorcurie</code></td>
+<td>source system</td>
+<td><code>gold:Gs0114820</code></td>
+<td>no</td>
+<td>A real GOLD study. <code>nmdc:sty-11-example</code> is a placeholder in the shape of nmdc-schema's <code>Study</code> pattern.</td>
+</tr>
+<tr>
+<td><code>Site</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a></td>
+<td><code>id</code></td>
+<td><code>uriorcurie</code></td>
+<td>source system</td>
+<td>none</td>
+<td>no</td>
+<td>No example data yet. A flux tower network such as AmeriFlux is a likely source, and its site ids have no registered prefix (see the prefix table).</td>
+</tr>
+<tr>
+<td><code>Organism</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a></td>
+<td><code>id</code></td>
+<td><code>uriorcurie</code></td>
+<td>source system</td>
+<td><code>gold:Go0459731</code></td>
+<td>no</td>
+<td>A real GOLD organism. <code>nmdc:orgn-11-example</code> is a placeholder in the shape of nmdc-schema's <code>Organism</code> pattern.</td>
+</tr>
+<tr>
+<td><code>Sample</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a></td>
+<td><code>id</code></td>
+<td><code>uriorcurie</code></td>
+<td>source system</td>
+<td><code>gold:Gb0239762</code></td>
+<td>no</td>
+<td>A real GOLD biosample. <code>nmdc:bsm-11-example</code> and <code>nmdc:procsm-11-example</code> are placeholders, and both kinds sit in the one <code>Sample</code> table.</td>
+</tr>
+<tr>
+<td><code>MaterialProcessing</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a></td>
+<td><code>id</code></td>
+<td><code>uriorcurie</code></td>
+<td>source system</td>
+<td><code>nmdc:extrp-11-example</code> (placeholder)</td>
+<td>no</td>
+<td>Abstract, so no example file of its own. The example is the <code>processing</code> value in <code>ProcessingSampleLink-nmdc-input.yaml</code>.</td>
+</tr>
+<tr>
+<td><code>ProcessingSampleLink</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a></td>
+<td>none</td>
+<td>not applicable</td>
+<td>nobody</td>
+<td>none</td>
+<td>not applicable</td>
+<td>A join row: <code>processing</code>, <code>sample</code>, <code>role</code>. No <code>id</code> and no <code>unique_keys</code>.</td>
+</tr>
+<tr>
+<td><code>Person</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/21">https://github.com/doe-bridge/bridge-central-schema/pull/21</a></td>
+<td><code>id</code></td>
+<td><code>uriorcurie</code></td>
+<td>undecided</td>
+<td>none</td>
+<td>no</td>
+<td>Inherits <code>id</code> through <code>Agent</code>. <code>orcid</code> is a separate slot with range <code>uriorcurie</code>. The branch has no example data. What <code>id</code> a person without an ORCID gets is open in <a href="https://github.com/doe-bridge/bridge-central-schema/issues/17">https://github.com/doe-bridge/bridge-central-schema/issues/17</a>.</td>
+</tr>
+<tr>
+<td><code>Organization</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/21">https://github.com/doe-bridge/bridge-central-schema/pull/21</a></td>
+<td><code>id</code></td>
+<td><code>uriorcurie</code></td>
+<td>undecided</td>
+<td>none</td>
+<td>no</td>
+<td>Inherits <code>id</code> through <code>Agent</code>. <code>ror</code> is a separate slot with range <code>uriorcurie</code>. No example data.</td>
+</tr>
+<tr>
+<td><code>CreditAssociation</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/21">https://github.com/doe-bridge/bridge-central-schema/pull/21</a></td>
+<td>none</td>
+<td>not applicable</td>
+<td>nobody</td>
+<td>none</td>
+<td>not applicable</td>
+<td>A join row: <code>applies_to_agent</code>, <code>applied_roles</code>, <code>applies_to_study</code>. No <code>id</code> and no <code>unique_keys</code>. The branch also shows a nested form inside <code>Study</code>.</td>
+</tr>
+<tr>
+<td><code>Measurement</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/9">https://github.com/doe-bridge/bridge-central-schema/pull/9</a></td>
+<td><code>measurement_id</code>, optional</td>
+<td><code>uriorcurie</code></td>
+<td>source system, or BRIDGE on ingest</td>
+<td><code>example:nitrate-0001</code> (placeholder)</td>
+<td>no</td>
+<td>Not an identifier slot. The slot comment says <code>id</code> was avoided because LinkML would make it required and most measurements have none.</td>
+</tr>
+<tr>
+<td><code>Contig</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/5">https://github.com/doe-bridge/bridge-central-schema/pull/5</a></td>
+<td><code>contig_id</code></td>
+<td><code>string</code></td>
+<td>source system</td>
+<td><code>insdc:NC_001422.1</code></td>
+<td>no</td>
+<td>Not named <code>id</code>, range is the default <code>string</code>. <code>nmdc:wfmgas-11-19jh9v28.1_scf_10_c1</code> is an NMDC contig. Neither <code>ber_feature_model.yaml</code> nor <code>ber_central_schema.yaml</code> on that branch declares <code>insdc</code>.</td>
+</tr>
+<tr>
+<td><code>ContigCollection</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/5">https://github.com/doe-bridge/bridge-central-schema/pull/5</a></td>
+<td><code>collection_id</code></td>
+<td><code>string</code></td>
+<td>source system</td>
+<td><code>nmdc:wfmgas-11-19jh9v28.1</code></td>
+<td>no</td>
+<td>The slot note says to use a CURIE when the identifier has one.</td>
+</tr>
+<tr>
+<td><code>Feature</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/5">https://github.com/doe-bridge/bridge-central-schema/pull/5</a></td>
+<td><code>feature_id</code></td>
+<td><code>string</code></td>
+<td>source file, or the converter</td>
+<td><code>insdc:NC_001422.1:feature-1</code></td>
+<td>no</td>
+<td>Unique only within one <code>Dataset</code>. The slot note says it is a file-local key, not a persistent identifier, and that authority-assigned ids go in <code>stable_identifiers</code>.</td>
+</tr>
+<tr>
+<td><code>Dataset</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/5">https://github.com/doe-bridge/bridge-central-schema/pull/5</a></td>
+<td>none</td>
+<td>not applicable</td>
+<td>nobody</td>
+<td>none</td>
+<td>not applicable</td>
+<td>A document holding contigs, collections and features. No identifier slot.</td>
+</tr>
+<tr>
+<td><code>Attribute</code></td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/12">https://github.com/doe-bridge/bridge-central-schema/pull/12</a></td>
+<td>none</td>
+<td>not applicable</td>
+<td>nobody</td>
+<td>none</td>
+<td>not applicable</td>
+<td>Nested in the record it describes. Its note says a key is not an identifier. <code>attribute_cv_id</code> is an optional <code>uriorcurie</code> for the key.</td>
+</tr>
+</tbody>
+</table>
+<p>Two things the table shows without any decision. First, the <code>NamedThing</code> tables hold ids from more than one source in one column: <code>gold:</code> and <code>nmdc:</code> in <code>Study</code>, <code>Sample</code> and <code>Organism</code>. Second, nothing yet says which prefixes an <code>id</code> column may hold.</p>
+<h2 id="which-ids-bridge-would-make-and-manage">Which ids BRIDGE would make and manage</h2>
+<p>Ids from a source system (<code>gold:</code>, <code>nmdc:</code>, <code>insdc:</code>) cost BRIDGE nothing to make, and the source decides whether they persist. Two kinds would be BRIDGE's own.</p>
+<p>Curated vocabularies: the <code>bridge_property:</code> terms already on <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9">https://github.com/doe-bridge/bridge-central-schema/pull/9</a>, and the planned <code>bridge_unit:</code> terms. A term is added by pull request, its id never changes, and its label and definition can be edited. The term is the thing the id names, so the id has to outlive any one load.</p>
+<p>Keys built from data: the planned <code>Measurement</code> and <code>SourceMapping</code> ids. The loader builds the id from the row's own fields when the row arrives without one. Nothing has to be stored to make the id again, and a second load of the same source row builds the same id. These ids name a row in a BRIDGE table and nothing outside it.</p>
+<p>Two colleagues have spoken to this. @mslarae13 asked in <a href="https://github.com/doe-bridge/bertron-schema/issues/37">https://github.com/doe-bridge/bertron-schema/issues/37</a> that an attribute's id be optional but a CURIE when given, and on 2025-07-31 wrote "making the attribute ID optional means we don't need fake IDs" (<a href="https://github.com/doe-bridge/bertron-schema/issues/37#issuecomment-3140659081">https://github.com/doe-bridge/bertron-schema/issues/37#issuecomment-3140659081</a>). Her example was <code>FAKE:####</code> for an attribute no standard defines, which in this model is a <code>bridge_property:</code> term. On 2025-08-14 she added "Make label required, make ID recommended. If your attribute is from an ontology or standard the ID should ALWAYS be provided." @dschristianson asked of <code>measurement_id</code> on <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9">https://github.com/doe-bridge/bridge-central-schema/pull/9</a> "why not just "id"?" (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230719718">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230719718</a>) and on 2026-10-21 wrote "We could give ESS-DIVE measurement_ids or ids (if I understand the identifier rules correctly) upon ETL but probably no guarantee that they would be stable between versions or persistent outside of the lakehouse." (<a href="https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4339981188">https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4339981188</a>)</p>
+<h2 id="prefixes">Prefixes</h2>
+<p>Any URL can be condensed to a CURIE by declaring a prefix for the part before the local id. The question is who vouches for the prefix. The order proposed here, open for discussion:</p>
+<ol>
+<li>The namespace owner's own prefix, registered in a registry such as Bioregistry (<a href="https://bioregistry.io">https://bioregistry.io</a>).</li>
+<li>A prefix BRIDGE registers in Bioregistry for a namespace whose owner has not. Bioregistry takes requests through an issue form (<code>new-prefix.yml</code> in <a href="https://github.com/biopragmatics/bioregistry">https://github.com/biopragmatics/bioregistry</a>).</li>
+<li>A prefix declared only in this schema.</li>
+</ol>
+<p>Checked against <a href="https://bioregistry.io/api/registry/">https://bioregistry.io/api/registry/</a> on 2026-11-04, one prefix per row:</p>
+<table>
+<thead>
+<tr>
+<th>Prefix</th>
+<th>In Bioregistry</th>
+<th>Where it appears</th>
+<th>What it is used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gold</code></td>
+<td>yes</td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a></td>
+<td><code>Study</code>, <code>Sample</code> and <code>Organism</code> ids</td>
+</tr>
+<tr>
+<td><code>nmdc</code></td>
+<td>yes</td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a> and <a href="https://github.com/doe-bridge/bridge-central-schema/pull/5">https://github.com/doe-bridge/bridge-central-schema/pull/5</a></td>
+<td>placeholder <code>NamedThing</code> ids, and <code>Contig</code>, <code>ContigCollection</code> and <code>Feature</code> ids</td>
+</tr>
+<tr>
+<td><code>insdc</code></td>
+<td>yes</td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/5">https://github.com/doe-bridge/bridge-central-schema/pull/5</a></td>
+<td><code>Contig</code> and <code>Feature</code> ids, not declared in the schema</td>
+</tr>
+<tr>
+<td><code>emsl.project</code></td>
+<td>yes</td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a></td>
+<td>an <code>external_identifiers</code> example, not declared in the schema</td>
+</tr>
+<tr>
+<td><code>orcid</code></td>
+<td>yes</td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/21">https://github.com/doe-bridge/bridge-central-schema/pull/21</a></td>
+<td><code>orcid</code> slot values, no example yet</td>
+</tr>
+<tr>
+<td><code>ror</code></td>
+<td>yes</td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/21">https://github.com/doe-bridge/bridge-central-schema/pull/21</a></td>
+<td><code>ror</code> slot values, no example yet</td>
+</tr>
+<tr>
+<td><code>ncbitaxon</code></td>
+<td>yes</td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a></td>
+<td><code>taxon</code> values, declared as <code>NCBITaxon</code></td>
+</tr>
+<tr>
+<td><code>ameriflux</code></td>
+<td>no</td>
+<td>nowhere</td>
+<td>checked as a possible <code>Site</code> source</td>
+</tr>
+<tr>
+<td><code>ameriflux.site</code></td>
+<td>no</td>
+<td>nowhere</td>
+<td>checked as a possible <code>Site</code> source</td>
+</tr>
+<tr>
+<td><code>essdive</code></td>
+<td>no</td>
+<td>nowhere</td>
+<td>checked as a possible measurement source</td>
+</tr>
+<tr>
+<td><code>ess.dive</code></td>
+<td>no</td>
+<td>nowhere</td>
+<td>checked as a possible measurement source</td>
+</tr>
+<tr>
+<td><code>bridge_property</code></td>
+<td>no</td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/9">https://github.com/doe-bridge/bridge-central-schema/pull/9</a></td>
+<td><code>observed_property</code> values</td>
+</tr>
+<tr>
+<td><code>ber_registry</code></td>
+<td>no</td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/9">https://github.com/doe-bridge/bridge-central-schema/pull/9</a></td>
+<td><code>source_system</code> values</td>
+</tr>
+<tr>
+<td><code>bfm</code></td>
+<td>no</td>
+<td><a href="https://github.com/doe-bridge/bridge-central-schema/pull/5">https://github.com/doe-bridge/bridge-central-schema/pull/5</a></td>
+<td>the feature model's own namespace</td>
+</tr>
+<tr>
+<td><code>bridge_unit</code></td>
+<td>no</td>
+<td>planned follow-up</td>
+<td><code>Unit</code> ids</td>
+</tr>
+<tr>
+<td><code>bridge_measurement</code></td>
+<td>no</td>
+<td>planned follow-up</td>
+<td><code>Measurement</code> ids</td>
+</tr>
+<tr>
+<td><code>bridge_source_mapping</code></td>
+<td>no</td>
+<td>planned follow-up</td>
+<td><code>SourceMapping</code> ids</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>bridge_*</code> prefixes, <code>ber_registry</code> and <code>bfm</code> are the third kind. All of them expand under <a href="https://w3id.org/ber-data/">https://w3id.org/ber-data/</a>, which returned 404 on 2026-11-04. <a href="https://github.com/doe-bridge/bridge-central-schema/issues/26">https://github.com/doe-bridge/bridge-central-schema/issues/26</a> proposes registering that path with one redirect per prefix. One prefix per table means one redirect per table.</p>
+<h2 id="patterns">Patterns</h2>
+<p>The planned follow-up gives each table BRIDGE owns a pattern that opens with one prefix, as <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9">https://github.com/doe-bridge/bridge-central-schema/pull/9</a> already does for <code>observed_property</code>. That works because BRIDGE is the only authority for those tables. <code>NamedThing</code>'s <code>id</code> has no pattern, and its tables hold ids from several sources. <code>feature_of_interest</code> on <code>Measurement</code> points at any of four of those tables. Four choices, none preferred here:</p>
+<ol>
+<li>A pattern that lists the allowed prefixes, such as <code>^(nmdc|gold):[A-Za-z0-9]+$</code>. Every new source adds to the list.</li>
+<li>A general CURIE pattern plus a test that every prefix in the data is declared. nmdc-schema's base <code>id</code> slot uses <code>^[a-zA-Z0-9][a-zA-Z0-9_\.]+:[a-zA-Z0-9_][a-zA-Z0-9_\-\/\.,]*$</code>, read from <code>src/schema/basic_slots.yaml</code> in <a href="https://github.com/microbiomedata/nmdc-schema">https://github.com/microbiomedata/nmdc-schema</a> on 2026-11-04. The pattern then says nothing about which table an id belongs to.</li>
+<li>A pattern on the local part, as nmdc-schema does per class: <code>{id_nmdc_prefix}:sty-{id_shoulder}-{id_blade}</code> for <code>Study</code> and <code>{id_nmdc_prefix}:bsm-{id_shoulder}-{id_blade}</code> for <code>Biosample</code>, with <code>id_shoulder</code> set to <code>([0-9][a-z]{0,6}[0-9])</code> and <code>id_blade</code> to <code>([A-Za-z0-9]{1,})</code>. A reference slot lists the type codes it accepts, as <code>has_input</code> does with <code>(bsm|procsm)</code>. In this schema the type code would overlap a slot that says which table a reference joins to. This works only for ids BRIDGE issues. A <code>gold:</code> id has its own shape.</li>
+<li>One BRIDGE prefix with a type code in the local part, as nmdc-schema does with <code>nmdc:</code> (type code, shoulder, blade: its own example is <code>nmdc:sty-11-076c9980</code>), compared with one prefix per table (<code>bridge_property:</code>, <code>bridge_unit:</code>, <code>bridge_measurement:</code>, <code>bridge_source_mapping:</code>). Four points of comparison:<ul>
+<li>What the id says about its table. Under one prefix per table the prefix names the table. Under one prefix with a type code the first segment of the local part names it. Both say it, in different places.</li>
+<li>How many w3id paths to register. One prefix per table is one path per table: four on the open pull requests (<code>bridge_central_schema</code>, <code>bridge_property</code>, <code>ber_registry</code>, <code>bfm</code>) and seven with the planned ones. One prefix is one path, and the redirect rule can branch on the type code.</li>
+<li>How readable the curated terms are. <code>bridge_property:air_temperature</code> carries its meaning. nmdc-schema's identifier page asks that ids be opaque, and its blades are random, so a term in that form would carry its label only in the row. A type code with a readable local part is also possible and is not what nmdc-schema does.</li>
+<li>What minting needs. NMDC's minter is in nmdc-runtime (<a href="https://github.com/microbiomedata/nmdc-runtime">https://github.com/microbiomedata/nmdc-runtime</a>, <code>nmdc_runtime/minter/</code>, served at <code>/pids/mint</code>): it reads each class's type code from the schema's id pattern, holds the shoulder <code>11</code> for the central minting service, and generates a random blade, so it has to record what it issued. Curated terms and keys built from data need no service: a pull request or the loader makes them, and tests can check uniqueness across tables.</li>
+</ul>
+</li>
+</ol>
+<h2 id="a-naming-rule-for-key-slots-as-a-proposal">A naming rule for key slots, as a proposal</h2>
+<p>The open pull requests already follow most of this rule. Writing it down would make the rest follow. Ranges below were read from each pull request head on 2026-11-04.</p>
+<ol>
+<li><code>id</code> is used only for a row's own primary key.</li>
+<li>A foreign key is named for the thing it points to, with no <code>_id</code>: <code>associated_studies</code> (<code>Study</code>), <code>collected_at</code> (<code>Site</code>), <code>organism</code> (<code>Organism</code>), <code>processing</code> (<code>MaterialProcessing</code>) and <code>sample</code> (<code>Sample</code>) on <a href="https://github.com/doe-bridge/bridge-central-schema/pull/16">https://github.com/doe-bridge/bridge-central-schema/pull/16</a>, <code>observed_property</code> (<code>uriorcurie</code>, constrained to <code>bridge_property:</code>) and <code>feature_of_interest</code> (<code>uriorcurie</code>) on <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9">https://github.com/doe-bridge/bridge-central-schema/pull/9</a>, and <code>member_of</code> (<code>ContigCollection</code>), <code>parent</code> (<code>Feature</code>) and <code>seqid</code> (<code>Contig</code> or <code>Feature</code>) on <a href="https://github.com/doe-bridge/bridge-central-schema/pull/5">https://github.com/doe-bridge/bridge-central-schema/pull/5</a>. The exception is a name an outside standard fixes: the planned mapping tables keep SSSOM's <code>subject_id</code>, so they can be written out as SSSOM files.</li>
+<li><code>_id</code> marks an identifier from outside, kept as data, with no table here to join to: <code>attribute_cv_id</code> (<code>uriorcurie</code>, <a href="https://github.com/doe-bridge/bridge-central-schema/pull/12">https://github.com/doe-bridge/bridge-central-schema/pull/12</a>), <code>target_id</code> (<code>string</code>, <a href="https://github.com/doe-bridge/bridge-central-schema/pull/5">https://github.com/doe-bridge/bridge-central-schema/pull/5</a>), <code>source_record_id</code> (<code>string</code>) and the source's own measurement identifier <code>measurement_id</code> (<code>uriorcurie</code>), both on <a href="https://github.com/doe-bridge/bridge-central-schema/pull/9">https://github.com/doe-bridge/bridge-central-schema/pull/9</a>. In the planned mapping tables <code>object_id</code> is the other vocabulary's term and <code>predicate_id</code> is an enum value, not a key.</li>
+</ol>
+<p>Under this rule the feature model's <code>contig_id</code>, <code>collection_id</code> and <code>feature_id</code> would become <code>id</code>. That rename waits on a rule for making a CURIE for a feature, since <code>feature_id</code> today is unique only within one <code>Dataset</code>.</p>
+<h2 id="open-questions">Open questions</h2>
+<ol>
+<li>Do ids the loader builds from a row's own fields, as planned for <code>Measurement</code> and <code>SourceMapping</code>, count as the "fake IDs" @mslarae13 described, or does a key that any loader can rebuild stand apart from an invented one?</li>
+<li>Is an id built from source fields stable enough to be <code>Measurement</code>'s primary key, given what @dschristianson said about ESS-DIVE ids between versions, or should the optional <code>measurement_id</code> with a generated row id stay?</li>
+<li>For the tables that hold ids from several sources, which of the four pattern choices above should the <code>id</code> slot carry?</li>
+<li>Should BRIDGE use one prefix with a type code, or one prefix per table, for the ids it makes itself?</li>
+<li>What <code>id</code> does a <code>Person</code> without an ORCID, or an <code>Organization</code> without a ROR, get?</li>
+<li>Should <code>ProcessingSampleLink</code> and <code>CreditAssociation</code> declare a unique key, get an id, or stay as they are?</li>
+<li>Should the schema declare <code>insdc</code> and <code>emsl.project</code>, which the example data already uses?</li>
+<li>Does the naming rule above hold, and if so, when do the feature model's three identifier slots become <code>id</code>?</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+  
+
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        
+
+<footer class="md-footer">
+  
+    <nav
+      class="md-footer__inner md-grid"
+      aria-label="footer.title"
+    >
+      
+        <a
+          href="../elements/"
+          class="md-footer__link md-footer__link--prev"
+          rel="prev"
+        >
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Schema
+            </div>
+          </div>
+        </a>
+      
+      
+        <a
+          href="../about/"
+          class="md-footer__link md-footer__link--next"
+          rel="next"
+        >
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              About
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        with emoji by
+        <a href="https://github.com/twitter/twemoji" target="_blank" rel="noopener">
+          Twemoji
+        </a>
+      </div>
+      
+<div class="md-social">
+  
+</div>
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.tabs.link", "header.autohide", "navigation.expand", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "search.suggest", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../assets/pymdownx-extras/extra-loader-B5CKpNQx.js"></script>
+      
+    
+  </body>
+</html>
