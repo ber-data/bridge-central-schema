@@ -60,7 +60,7 @@ pie showData
 | R28 | Retain original values (NMDC TextValue approach) while parsing typed numbers. | @valerie-autumn-skye | Hackathon Notes | raw_value beside the parsed slots |
 | R29 | Allow non-Latin characters in units? um, µm and &#956; all appear. Require or coerce to UTF-8? Normalize with reasonable effort. | @turbomam, @caufieldjh, @valerie-autumn-skye | Zoom chat | raw_value keeps the source bytes; unit must be printable ASCII (invalid Measurement-002) |
 | R32 | Separate the unit description from a unit ontology code. | JGI | Report Out tab | unit holds the code; the source's description stays in raw_value |
-| R34 | BERVO as the dictionary of measured properties; BERVO term coverage for plant phenotypes is partial. | @sierra-moxon, @caufieldjh | Zoom chat | observed_property uses BERVO when BERVO has the term, otherwise a bridge_property identifier |
+| R34 | BERVO as the dictionary of measured properties; BERVO term coverage for plant phenotypes is partial. | @sierra-moxon, @caufieldjh | Zoom chat | observed_property is always a bridge_property identifier, mapped to BERVO when BERVO has the term |
 | R35 | Map to other vocabularies with SKOS-style mappings rather than importing terms (MIREOT). | @caufieldjh | Zoom chat | mappings/observed_property.sssom.tsv |
 | R36 | Where does MIxS fit, in BERVO mappings? | @sierra-moxon | intro slides | MIxS terms are mapping targets in mappings/observed_property.sssom.tsv, never the observed_property value |
 | R37 | KBase defined a measurement as the value of a variable_id (from a controlled vocabulary) under specified conditions. | @ialarmedalien | Zoom chat | observed_property (alias variable); conditions through value_role and value_qualifier |
