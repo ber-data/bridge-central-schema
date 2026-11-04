@@ -74,7 +74,7 @@ features:
     value: ATG
   - key: genemark_agreement
     value: GeneMark called the identical 104-853 boundary independently (score 66.84 vs Prodigal's 85.0);
-      not instantiated as a separate Feature here since the coordinates are identical, not a competing
+      not instantiated as a separate SequenceFeature here since the coordinates are identical, not a competing
       claim
   - key: phylogeny_subject_gene_ids
     value: 2698062542;2695420919
