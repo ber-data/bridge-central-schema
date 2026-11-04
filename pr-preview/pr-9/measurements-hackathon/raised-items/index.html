@@ -208,19 +208,19 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#handled-in-measurementsyaml-39">
+<a class="md-nav__link" href="#handled-in-measurementsyaml-40">
 <span class="md-ellipsis">
       
-        Handled in measurements.yaml (39)
+        Handled in measurements.yaml (40)
       
     </span>
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#known-gap-shown-by-a-problem-example-5">
+<a class="md-nav__link" href="#known-gap-shown-by-a-problem-example-4">
 <span class="md-ellipsis">
       
-        Known gap, shown by a problem example (5)
+        Known gap, shown by a problem example (4)
       
     </span>
 </a>
@@ -265,8 +265,8 @@
 <h2 id="where-the-items-went">Where the items went</h2>
 <pre class="mermaid"><code>pie showData
     title Raised items by disposition
-    "Handled in measurements.yaml" : 39
-    "Known gap, shown by a problem example" : 5
+    "Handled in measurements.yaml" : 40
+    "Known gap, shown by a problem example" : 4
     "Open question for the group" : 12
     "Deferred to a later module or working group" : 4
     "Not a schema matter" : 9</code></pre>
@@ -281,7 +281,7 @@
     "Report Out tab" : 3
     "issue 4" : 3
     "first-pass review" : 2</code></pre>
-<h2 id="handled-in-measurementsyaml-39">Handled in measurements.yaml (39)</h2>
+<h2 id="handled-in-measurementsyaml-40">Handled in measurements.yaml (40)</h2>
 <table>
 <thead>
 <tr>
@@ -553,6 +553,13 @@
 <td>value_role derived (valid Measurement-016); modality is deferred to the Phenotype/genotype/strain working group (new in the 2026-11-03 BRIDGE DM notes)</td>
 </tr>
 <tr>
+<td>R55</td>
+<td>Complicated experimental conditions entered under "other", such as "prescribed burn every 3-4 years".</td>
+<td>@bmeluch</td>
+<td>Zoom chat</td>
+<td>fire_return_interval as a range, with treatment for the prescribed part (valid Measurement-027). The burn events themselves are not measurements</td>
+</tr>
+<tr>
 <td>R61</td>
 <td>METPO for categorical microbial traits.</td>
 <td>@caufieldjh, @turbomam</td>
@@ -568,7 +575,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="known-gap-shown-by-a-problem-example-5">Known gap, shown by a problem example (5)</h2>
+<h2 id="known-gap-shown-by-a-problem-example-4">Known gap, shown by a problem example (4)</h2>
 <table>
 <thead>
 <tr>
@@ -592,14 +599,14 @@
 <td>Source lineage (source system, record ID, field, snapshot) so raw text stays traceable.</td>
 <td>@valerie-autumn-skye</td>
 <td>issue 4</td>
-<td>source_system, source_record_id, source_field; no snapshot or version slot yet (problem/valid Measurement-005)</td>
+<td>source_system, source_record_id, source_field. No snapshot or version slot yet (problem/valid Measurement-005), tracked in <a href="https://github.com/doe-bridge/bridge-central-schema/issues/23">https://github.com/doe-bridge/bridge-central-schema/issues/23</a></td>
 </tr>
 <tr>
 <td>R50</td>
 <td>Time series (loggers at 10 Hz reported per minute or per 5 minutes). Is a TimeseriesMeasurement needed on day one?</td>
 <td>ESS-DIVE, @sierra-moxon</td>
 <td>brainstorm drawing</td>
-<td>one value per record only (problem/invalid Measurement-001)</td>
+<td>one value per record only (problem/invalid Measurement-001), tracked in <a href="https://github.com/doe-bridge/bridge-central-schema/issues/25">https://github.com/doe-bridge/bridge-central-schema/issues/25</a></td>
 </tr>
 <tr>
 <td>R53</td>
@@ -607,13 +614,6 @@
 <td>@janakagithub, @turbomam, @ialarmedalien</td>
 <td>Zoom chat</td>
 <td>OD readings are Measurements (BERVO Optical density); a growth value derived from several of them has no link back</td>
-</tr>
-<tr>
-<td>R55</td>
-<td>Complicated experimental conditions entered under "other", such as "prescribed burn every 3-4 years".</td>
-<td>@bmeluch</td>
-<td>Zoom chat</td>
-<td>storable as raw text with a range, but recurrence and the event are lost (problem/valid Measurement-002)</td>
 </tr>
 </tbody>
 </table>
