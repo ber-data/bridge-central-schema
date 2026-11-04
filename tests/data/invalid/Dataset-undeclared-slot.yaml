@@ -1,4 +1,4 @@
-# A Feature with an undeclared slot; the feature model's classes are closed.
+# A SequenceFeature with an undeclared slot; the feature model's classes are closed.
 features:
   - feature_id: example:cds_1
     seqid: example:contig_1
