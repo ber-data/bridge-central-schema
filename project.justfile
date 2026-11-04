@@ -6,4 +6,4 @@
 
 # Regenerate docs/measurements-hackathon/raised-items.md from raised_items.yaml
 raised-items:
-  uv run python scripts/render_raised_items.py
+  uv run python -m ber_central_schema.render_raised_items

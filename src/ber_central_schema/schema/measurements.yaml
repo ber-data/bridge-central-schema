@@ -1,4 +1,4 @@
-id: https://w3id.org/ber-data/bridge-measurements
+id: https://w3id.org/ber-data/bridge-central-schema/measurements
 name: measurements
 title: BRIDGE Measurements Module
 description: >-
@@ -8,11 +8,11 @@ description: >-
   (number, range, unit, statistic, qualifier, missing-value reason) only when
   the source supports them. See docs/measurements-hackathon-2026-09-30.md for
   what was raised at the hackathon and where each item went.
-license: BSD-3
+license: Apache-2.0
 version: 0.5.0
 
 prefixes:
-  bridge: https://w3id.org/ber-data/bridge-measurements/
+  bridge_central_schema: https://w3id.org/ber-data/bridge-central-schema/
   linkml: https://w3id.org/linkml/
   bervo: https://w3id.org/bervo/
   nmdc: https://w3id.org/nmdc/
@@ -21,9 +21,10 @@ prefixes:
   MIXS: https://w3id.org/mixs/
   gold: "https://bioregistry.io/gold:"
   bridge_property: https://w3id.org/ber-data/bridge-property/
+  example: https://example.org/
   ber_registry: https://w3id.org/ber-data/ber-data-registry/
 
-default_prefix: bridge
+default_prefix: bridge_central_schema
 default_range: string
 
 imports:
