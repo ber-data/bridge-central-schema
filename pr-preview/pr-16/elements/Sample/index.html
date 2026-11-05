@@ -463,7 +463,7 @@
 <li>A sample meets three conditions, each with a source: it is material (nmdc:MaterialEntity), it is representative of the body it was taken from (OBI:0000744 material sampling process, sosa:isSampleOf), and it was collected as an input to measurement (OBI:0100051 specimen). The reasoning is in drafts/umbrella/what-is-a-sample.md.</li>
 <li>These are not samples: a subject observed in its own right, such as a phenotyped plant or a patient; an observation, such as a plant at a time point under a treatment; a station or site; and an information artifact, such as a MAG bin or a construct design. Material drawn from a subject, such as a leaf disc, is a sample.</li>
 <li>BASALT records collection on a separate SamplingActivity class; NMDC records it on the sample. This draft leaves the sampling event out. Representativeness is a property of that event, so the event, or at least the source, needs a home before this class is agreed.</li>
-<li>There is no separate class for processed samples. A sample produced by a processing step is a Sample, and sample_category says what kind of sample it is.</li>
+<li>There is no separate class for processed samples. A sample produced by a processing step is a Sample, and that step's has_output points at it. sample_category says where the material came from, not whether it was processed, so a soil DNA extract is still environmental.</li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
@@ -525,7 +525,9 @@
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">property of that event, so the event, or at least the source, needs a home before</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">this class is agreed.</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">There is no separate class for processed samples. A sample produced by a processing</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">step is a Sample, and sample_category says what kind of sample it is.</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">step is a Sample, and that step's has_output points at it. sample_category says</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">where the material came from, not whether it was processed, so a soil DNA extract</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">is still environmental.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
 <span class="nt">exact_mappings</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:Sample</span>
@@ -567,7 +569,9 @@
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">property of that event, so the event, or at least the source, needs a home before</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">this class is agreed.</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">There is no separate class for processed samples. A sample produced by a processing</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">step is a Sample, and sample_category says what kind of sample it is.</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">step is a Sample, and that step's has_output points at it. sample_category says</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">where the material came from, not whether it was processed, so a soil DNA extract</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">is still environmental.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
 <span class="nt">exact_mappings</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:Sample</span>

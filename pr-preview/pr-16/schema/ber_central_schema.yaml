@@ -836,7 +836,9 @@ classes:
       is a property of that event, so the event, or at least the source, needs a home
       before this class is agreed.
     - There is no separate class for processed samples. A sample produced by a processing
-      step is a Sample, and sample_category says what kind of sample it is.
+      step is a Sample, and that step's has_output points at it. sample_category says
+      where the material came from, not whether it was processed, so a soil DNA extract
+      is still environmental.
     from_schema: https://w3id.org/ber-data/bridge-central-schema/umbrella
     exact_mappings:
     - nmdc:Sample
@@ -936,7 +938,7 @@ classes:
     class_uri: bridge_central_schema:ProcessingSampleLink
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-11-04T20:34:09'
+source_file_date: '2026-11-05T19:47:33'
 source_file_size: 733
-generation_date: '2026-11-04T20:34:17'
+generation_date: '2026-11-05T19:47:41'
 
