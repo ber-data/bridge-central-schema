@@ -110,8 +110,9 @@ classes:
         least the source, needs a home before this class is agreed.
       - >-
         There is no separate class for processed samples. A sample produced by
-        a processing step is a Sample, and sample_category says what kind of
-        sample it is.
+        a processing step is a Sample, and that step's has_output points at
+        it. sample_category says where the material came from, not whether it
+        was processed, so a soil DNA extract is still environmental.
 
   PlannedProcess:
     is_a: NamedThing
