@@ -1,4 +1,4 @@
-id: https://w3id.org/ber-data/attributes
+id: https://w3id.org/ber-data/bridge-central-schema/attributes
 name: attributes
 title: Reusable attributes (draft)
 version: 0.1.0
@@ -17,6 +17,7 @@ imports:
   - linkml:types
 classes:
   Attribute:
+    class_uri: bridge_central_schema:Attribute
     title: Attribute
     description: One named value attached to a record by a consuming model.
     notes:
@@ -31,11 +32,13 @@ classes:
         this pair can be projected onto later. key and value keep the source's text.
     attributes:
       key:
+        slot_uri: bridge_central_schema:key
         title: Key
         range: string
         required: true
         description: Source-reported attribute name, unnormalized (for example a GFF tag or metadata key).
       value:
+        slot_uri: bridge_central_schema:value
         title: Value
         range: string
         required: true
@@ -43,6 +46,7 @@ classes:
           The source's text for one value, as a string: not typed or normalized, with any escaping
           the source format defines decoded (a GFF3 %2C is stored as a comma).
       attribute_cv_id:
+        slot_uri: bridge_central_schema:attribute_cv_id
         title: Attribute CV ID
         range: uriorcurie
         description: >-
@@ -52,8 +56,9 @@ classes:
         exact_mappings:
           - kb_cdm:attribute_cv_id
       numeric_value:
+        slot_uri: bridge_central_schema:numeric_value
         title: Numeric value
-        range: float
+        range: double
         description: >-
           value read as a number, only for keys known to be numeric. value
           keeps the source text, so 3.4e-28 and 3.40E-28 stay distinguishable.
