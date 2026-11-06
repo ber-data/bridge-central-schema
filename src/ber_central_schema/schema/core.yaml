@@ -12,8 +12,13 @@ prefixes:
   schema: http://schema.org/
   nmdc: https://w3id.org/nmdc/
   basalt_schema: https://emsl-computing.github.io/BASALT-Schema/elements/
-  # Same expansion as in nmdc-schema.
+  # Same expansion as in nmdc-schema. Bioregistry's uri_format is the GOLD
+  # resolver, https://gold.jgi.doe.gov/resolver?id=; which one to use is asked in
+  # https://github.com/doe-bridge/bridge-central-schema/issues/15
   gold: "https://bioregistry.io/gold:"
+  # EMSL project ids, from Bioregistry's uri_format (checked 2026-11-06).
+  # nmdc-schema expands it to https://bioregistry.io/emsl.project: instead.
+  emsl.project: "https://sc-data.emsl.pnnl.gov/?projectId="
   # AmeriFlux site IDs (for example US-Ha1). Bioregistry has no prefix for
   # them (checked 2026-11-04), so this one is declared only in this schema.
   ameriflux: https://ameriflux.lbl.gov/sites/siteinfo/
