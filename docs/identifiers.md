@@ -18,6 +18,8 @@ A CURIE is the compact form of a URI, `prefix:local_part`, where the schema decl
 10. `id` is a CURIE with a pattern: range `curie`, and a pattern that opens with the prefixes the schema declares for that table. Every CURIE in a slot of range `uriorcurie` or `curie` uses a declared prefix, checked by `test_data_prefixes_are_declared`. Other string slots can hold source text as written, such as a GenBank `db_xref` value, and are not checked.
 11. Curated terms keep readable ids for now: `bridge_property:air_temperature`, `bridge_unit:mm2`. Readable versus opaque is decided again in the follow-up to https://github.com/doe-bridge/bridge-central-schema/issues/30; see the alternatives below.
 12. These rules cover what https://github.com/turbomam/gold-schema and https://github.com/turbomam/feature-table-corpus produce for BRIDGE, meaning their copies of BRIDGE schema files and the records they emit, and not their own source-description schemas.
+13. A DOI is stored in one form only, the CURIE `doi:10....`, with the pattern `^doi:10\.\d{2,9}/.*$` that nmdc-schema puts on `doi_value`. The loader accepts `https://doi.org/...`, `http://dx.doi.org/...`, `DOI:...` and a bare `10....` and rewrites each to that form, so the same DOI never appears under two IRIs.
+14. In a slot of range `uriorcurie`, a value is a full URI only when its scheme is followed by `//` or it is a URN (`urn:`). Any other `x:y` value is a CURIE, and its prefix must be declared. A URI scheme with no `//`, such as `mailto:`, is declared like a prefix if BRIDGE ever needs it.
 
 ## Edge cases
 
@@ -34,6 +36,7 @@ Bioregistry values were read from `https://bioregistry.io/api/registry/<prefix>`
 | `ameriflux` | none; AmeriFlux is not in Bioregistry | `https://ameriflux.lbl.gov/sites/siteinfo/`, so `ameriflux:US-Ha1` expands to the site page | Declared only in this schema. |
 | `urn:uuid` | none; `urn:uuid:` is the URN form of a UUID in RFC 9562, not a prefix | BASALT ids written as URIs, such as `urn:uuid:5b0c6c1e-0000-4000-8000-000000000001` | BASALT's identifier slots have range `uuid` and no prefix (https://github.com/EMSL-Computing/BASALT-Schema/blob/f41b7f4a371d856ebd5357cff7209245559e92d7/src/basalt_schema/schema/study.yaml#L36), and Bioregistry has no `uuid` prefix. A `urn:uuid:` value is a URI and not a CURIE, so a table that holds BASALT rows needs either a prefix for them or an `id` range that allows URIs; that goes with the row-id question on https://github.com/doe-bridge/bridge-central-schema/issues/28. The tests treat `http`, `https` and `urn` as URI schemes, not prefixes. |
 | `insdc` | `https://www.ebi.ac.uk/ena/data/view/$1` | Feature ids the converter makes, such as `insdc:NC_001422.1:feature-1` | Bioregistry's `insdc` pattern does not match `NC_` accessions, which are RefSeq, and the source never issued the `:feature-N` suffix. These ids stay until https://github.com/doe-bridge/bridge-central-schema/issues/28 settles how BRIDGE makes ids. |
+| `doi` | `https://doi.org/$1` | Not declared yet; no branch holds a DOI value | nmdc-schema expands `doi` to `https://bioregistry.io/doi:`. Declare `doi` with Bioregistry's value in the pull request that adds the first DOI slot. |
 
 ## Identifier lifecycle
 
