@@ -13,9 +13,9 @@ SCHEMA = (
 # Only valid examples: invalid ones may break other rules on purpose.
 DATA_DIR = Path(__file__).parent / "data" / "valid"
 ELEMENT_PREFIX = "bridge_central_schema"
-# URI schemes written in full in data, not CURIE prefixes. Schemes are
-# case-insensitive (RFC 3986 section 3.1), so values are compared lowercased.
-URI_SCHEMES = {"http", "https", "urn"}
+# A full URI is not a CURIE. Any value with "://" after its scheme is one, and
+# so is a URN. Schemes are case-insensitive (RFC 3986 section 3.1).
+URN_SCHEME = "urn"
 # A prefix is an NCName, so it may start with an underscore and contain hyphens.
 CURIE = re.compile(r"^([A-Za-z_][A-Za-z0-9_.-]*):(\S+)$")
 
@@ -83,8 +83,10 @@ def test_data_prefixes_are_declared():
     for path in DATA_DIR.rglob("*.yaml"):
         for value in _curie_values(yaml.safe_load(path.read_text()), slots):
             match = CURIE.match(value)
-            prefix = match.group(1) if match else None
-            if match and prefix.lower() not in URI_SCHEMES and prefix not in declared:
+            if not match or match.group(2).startswith("//"):
+                continue
+            prefix = match.group(1)
+            if prefix.lower() != URN_SCHEME and prefix not in declared:
                 undeclared.add((path.name, match.group(1)))
     assert not undeclared
 
