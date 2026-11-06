@@ -10,9 +10,11 @@ from linkml_runtime.utils.schemaview import SchemaView
 SCHEMA = (
     Path(__file__).parent.parent / "src" / "ber_central_schema" / "schema" / "ber_central_schema.yaml"
 )
-DATA_DIR = Path(__file__).parent / "data"
+# Only valid examples: invalid ones may break other rules on purpose.
+DATA_DIR = Path(__file__).parent / "data" / "valid"
 ELEMENT_PREFIX = "bridge_central_schema"
-# URI schemes written in full in data, not CURIE prefixes.
+# URI schemes written in full in data, not CURIE prefixes. Schemes are
+# case-insensitive (RFC 3986 section 3.1), so values are compared lowercased.
 URI_SCHEMES = {"http", "https", "urn"}
 # A prefix is an NCName, so it may start with an underscore and contain hyphens.
 CURIE = re.compile(r"^([A-Za-z_][A-Za-z0-9_.-]*):(\S+)$")
@@ -81,7 +83,8 @@ def test_data_prefixes_are_declared():
     for path in DATA_DIR.rglob("*.yaml"):
         for value in _curie_values(yaml.safe_load(path.read_text()), slots):
             match = CURIE.match(value)
-            if match and match.group(1) not in URI_SCHEMES | declared.keys():
+            prefix = match.group(1) if match else None
+            if match and prefix.lower() not in URI_SCHEMES and prefix not in declared:
                 undeclared.add((path.name, match.group(1)))
     assert not undeclared
 
