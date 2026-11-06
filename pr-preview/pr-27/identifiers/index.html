@@ -756,6 +756,8 @@
 <li><code>id</code> is a CURIE with a pattern: range <code>curie</code>, and a pattern that opens with the prefixes the schema declares for that table. Every CURIE in a slot of range <code>uriorcurie</code> or <code>curie</code> uses a declared prefix, checked by <code>test_data_prefixes_are_declared</code>. Other string slots can hold source text as written, such as a GenBank <code>db_xref</code> value, and are not checked.</li>
 <li>Curated terms keep readable ids for now: <code>bridge_property:air_temperature</code>, <code>bridge_unit:mm2</code>. Readable versus opaque is decided again in the follow-up to <a href="https://github.com/doe-bridge/bridge-central-schema/issues/30">https://github.com/doe-bridge/bridge-central-schema/issues/30</a>; see the alternatives below.</li>
 <li>These rules cover what <a href="https://github.com/turbomam/gold-schema">https://github.com/turbomam/gold-schema</a> and <a href="https://github.com/turbomam/feature-table-corpus">https://github.com/turbomam/feature-table-corpus</a> produce for BRIDGE, meaning their copies of BRIDGE schema files and the records they emit, and not their own source-description schemas.</li>
+<li>A DOI is stored in one form only, the CURIE <code>doi:10....</code>, with the pattern <code>^doi:10\.\d{2,9}/.*$</code> that nmdc-schema puts on <code>doi_value</code>. The loader accepts <code>https://doi.org/...</code>, <code>http://dx.doi.org/...</code>, <code>DOI:...</code> and a bare <code>10....</code> and rewrites each to that form, so the same DOI never appears under two IRIs.</li>
+<li>In a slot of range <code>uriorcurie</code>, a value is a full URI only when its scheme is followed by <code>//</code> or it is a URN (<code>urn:</code>). Any other <code>x:y</code> value is a CURIE, and its prefix must be declared. A URI scheme with no <code>//</code>, such as <code>mailto:</code>, is declared like a prefix if BRIDGE ever needs it.</li>
 </ol>
 <h2 id="edge-cases">Edge cases</h2>
 <p>Bioregistry values were read from <code>https://bioregistry.io/api/registry/&lt;prefix&gt;</code> on 2026-11-06. The third column is the value declared in the module that uses the prefix, on <code>main</code> or on the open pull request that adds it.</p>
@@ -822,6 +824,12 @@
 <td><code>https://www.ebi.ac.uk/ena/data/view/$1</code></td>
 <td>Feature ids the converter makes, such as <code>insdc:NC_001422.1:feature-1</code></td>
 <td>Bioregistry's <code>insdc</code> pattern does not match <code>NC_</code> accessions, which are RefSeq, and the source never issued the <code>:feature-N</code> suffix. These ids stay until <a href="https://github.com/doe-bridge/bridge-central-schema/issues/28">https://github.com/doe-bridge/bridge-central-schema/issues/28</a> settles how BRIDGE makes ids.</td>
+</tr>
+<tr>
+<td><code>doi</code></td>
+<td><code>https://doi.org/$1</code></td>
+<td>Not declared yet; no branch holds a DOI value</td>
+<td>nmdc-schema expands <code>doi</code> to <code>https://bioregistry.io/doi:</code>. Declare <code>doi</code> with Bioregistry's value in the pull request that adds the first DOI slot.</td>
 </tr>
 </tbody>
 </table>
