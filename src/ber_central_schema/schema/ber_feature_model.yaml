@@ -473,6 +473,7 @@ slots:
         instead, an accession where an SO term is expected in one case, a generic placeholder
         where an accession would be more specific in another.
   method:
+    slot_uri: bridge_central_schema:method
     title: Method
     range: MethodEnum
     description: >-
