@@ -14,7 +14,8 @@ DATA_DIR = Path(__file__).parent / "data"
 ELEMENT_PREFIX = "bridge_central_schema"
 # URI schemes written in full in data, not CURIE prefixes.
 URI_SCHEMES = {"http", "https", "urn"}
-CURIE = re.compile(r"^([A-Za-z][A-Za-z0-9_.]*):(\S+)$")
+# A prefix is an NCName, so it may start with an underscore and contain hyphens.
+CURIE = re.compile(r"^([A-Za-z_][A-Za-z0-9_.-]*):(\S+)$")
 
 
 def _modules():
