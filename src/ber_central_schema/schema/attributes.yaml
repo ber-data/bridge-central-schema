@@ -8,17 +8,17 @@ description: >-
 license: https://creativecommons.org/publicdomain/zero/1.0/
 prefixes:
   linkml: https://w3id.org/linkml/
-  battr: https://w3id.org/ber-data/attributes/
+  bridge_central_schema: https://w3id.org/ber-data/bridge-central-schema/
+  edam: http://edamontology.org/
   kb_cdm: http://kbase.github.io/cdm-schema/linkml/
   nmdc: https://w3id.org/nmdc/
-default_prefix: battr
+default_prefix: bridge_central_schema
 default_range: string
 imports:
   - linkml:types
 classes:
   Attribute:
     title: Attribute
-    class_uri: battr:Attribute
     description: One named value attached to a record by a consuming model.
     notes:
       - GFF column 9 is a minimal use case, alongside tabular annotations and metadata.
@@ -33,13 +33,11 @@ classes:
     attributes:
       key:
         title: Key
-        slot_uri: battr:key
         range: string
         required: true
         description: Source-reported attribute name, unnormalized (for example a GFF tag or metadata key).
       value:
         title: Value
-        slot_uri: battr:value
         range: string
         required: true
         description: >-
@@ -47,17 +45,15 @@ classes:
           the source format defines decoded (a GFF3 %2C is stored as a comma).
       attribute_cv_id:
         title: Attribute CV ID
-        slot_uri: battr:attribute_cv_id
         range: uriorcurie
         description: >-
           A CURIE for what the key means, from an ontology or controlled vocabulary, for example
-          EDAM:data_1667 (E-value) for both e-value and
+          edam:data_1667 (E-value) for both e-value and
           evalue. key keeps the source spelling either way.
         exact_mappings:
           - kb_cdm:attribute_cv_id
       numeric_value:
         title: Numeric value
-        slot_uri: battr:numeric_value
         range: float
         description: >-
           value read as a number, only for keys known to be numeric. value
