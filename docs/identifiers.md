@@ -1,111 +1,123 @@
-# Identifiers across the BRIDGE central model
+# Identifiers and prefixes
 
-This page records the state on 2026-11-04. The classes are on open pull requests rather than on `main`, and each row names its pull request. Nothing here is a decision. The last section lists the questions.
+This page sets the prefix and identifier rules for the BRIDGE central schema, https://github.com/doe-bridge/bridge-central-schema. `tests/test_prefixes.py` checks part of it. `test_no_prefix_has_two_expansions` and `test_data_prefixes_are_declared` pass against the schema on `main`. `test_every_module_uses_the_element_prefix`, `test_every_element_asserts_its_uri` and `test_every_class_has_a_type_slot` are marked expected to fail (a strict `xfail`) until the open pull requests move every module to the one namespace and https://github.com/doe-bridge/bridge-central-schema/issues/35 is done; after that each of them has to pass. Rules for numeric values are a separate topic, on https://github.com/doe-bridge/bridge-central-schema/issues/36.
 
-## What an id is in this schema
+A CURIE is the compact form of a URI, `prefix:local_part`, where the schema declares what the prefix expands to. Bioregistry, https://bioregistry.io, is the registry of prefixes this schema follows.
 
-`core.yaml` on https://github.com/doe-bridge/bridge-central-schema/pull/16 defines one `id` slot: `identifier: true`, range `uriorcurie`, no pattern. Every class that `is_a: NamedThing` inherits it, and LinkML treats an identifier slot as required. The feature model (https://github.com/doe-bridge/bridge-central-schema/pull/5) and the measurements first pass (https://github.com/doe-bridge/bridge-central-schema/pull/9) predate that file and name their identifiers differently.
+## Rules
 
-No identifier slot on the open pull requests carries a pattern. The two single-prefix patterns are on reference slots. `observed_property` on https://github.com/doe-bridge/bridge-central-schema/pull/9 has range `uriorcurie` and pattern `^bridge_property:[a-z0-9_]+$`, and the terms it points at are rows of `src/ber_central_schema/terms/bridge_property.tsv` on that branch, added by pull request with a label and a definition. The hackathon page there says a term's id does not change once merged. `taxon` on https://github.com/doe-bridge/bridge-central-schema/pull/16 has range `uriorcurie` and pattern `^NCBITaxon:\d+$`.
+1. Every class, slot, enum and type this schema defines has a URI under one namespace, `bridge_central_schema`, which expands to https://w3id.org/ber-data/bridge-central-schema/, and every module sets `default_prefix: bridge_central_schema`. A module does not declare a namespace of its own. The measurements module on `main` still uses `bridge`; https://github.com/doe-bridge/bridge-central-schema/pull/9 changes it. Checked by `test_every_module_uses_the_element_prefix`.
+2. Each module's schema `id` is `https://w3id.org/ber-data/bridge-central-schema/<module>`, for example https://w3id.org/ber-data/bridge-central-schema/measurements. A schema id is a full URL and not a CURIE, so the slash is fine; element CURIEs stay `bridge_central_schema:Measurement`.
+3. BRIDGE ids and namespaces stay under https://w3id.org/ber-data/, even though the GitHub organization is now `doe-bridge`. Nothing under that path resolves yet; registering it is https://github.com/doe-bridge/bridge-central-schema/issues/26.
+4. Every element asserts its URI: `class_uri` on every class, `slot_uri` on every slot, and `meaning` on every enum value that has a term in an outside vocabulary. Checked by `test_every_element_asserts_its_uri`.
+5. Every class has a type slot, marked `designates_type: true`, and every row fills it with its class CURIE, such as `bridge_central_schema:Sample`. The slot's name is open on https://github.com/doe-bridge/bridge-central-schema/issues/35. Checked by `test_every_class_has_a_type_slot`.
+6. An id from a source system keeps the source's prefix, spelled as Bioregistry's preferred prefix: `BERVO`, `NCBITaxon`, `NCBIGene`, `kegg.orthology`, `refseq`, `insdc`, `edam`, `qudt.unit`, `emsl.project`, `orcid`, `ror`, `gold` and `nmdc`. A source id is never re-minted under a BRIDGE prefix. An id from another BRIDGE project keeps that project's prefix, so registry entries from https://github.com/doe-bridge/lakehouse-registry are `ber_registry:` ids. A source with no Bioregistry prefix gets one declared in this schema (`ameriflux`). An id with no prefix at all is written as a URI (`urn:uuid:` for BASALT); see the edge cases.
+7. A prefix expands to Bioregistry's `uri_format` with the `$1` removed. Each case where this schema differs, or where Bioregistry's value needs a note, is in the table below and in a comment next to the declaration.
+8. A prefix name is never reused with a new expansion, within one release or across releases. `bridge` expands to https://w3id.org/ber-data/bridge-measurements/ on `main`, so no later prefix may be called `bridge`. `test_no_prefix_has_two_expansions` checks this within one schema; across releases it is a rule for review.
+9. No placeholder namespace. `example:` and the like appear in no schema and no example data; example data uses real public ids under their source's prefix.
+10. `id` is a CURIE with a pattern: range `curie`, and a pattern that opens with the prefixes the schema declares for that table. Every CURIE in a slot of range `uriorcurie` or `curie` uses a declared prefix, checked by `test_data_prefixes_are_declared`. Other string slots can hold source text as written, such as a GenBank `db_xref` value, and are not checked.
+11. Curated terms keep readable ids for now: `bridge_property:air_temperature`, `bridge_unit:mm2`. Readable versus opaque is decided again in the follow-up to https://github.com/doe-bridge/bridge-central-schema/issues/30; see the alternatives below.
+12. These rules cover what https://github.com/turbomam/gold-schema and https://github.com/turbomam/feature-table-corpus produce for BRIDGE, meaning their copies of BRIDGE schema files and the records they emit, and not their own source-description schemas.
 
-A follow-up pull request is planned after the measurements pull request. In words, since none of it is public yet: the `bridge_property:` terms become rows of an `ObservedProperty` table, a `Unit` table gets `bridge_unit:` ids whose local part is derived from the UCUM code, `Measurement` gets a required `id` that the loader builds from `source_system`, `source_record_id` and `source_field` plus a sequence number when a row arrives without one (the three fields alone do not tell measurements apart: at e431b4c, `Measurement-005`, a range from 0 to 30, and `Measurement-006`, a value of 10, share all three, so which discriminator to use is still open), a `SourceMapping` table gets an id built the same way from `source_system` and `source_field`, the two SSSOM mapping tables stay keyed by `subject_id`, `predicate_id` and `object_id` with no id of their own, and tests require that each table's identifier is named `id`, has range `curie`, and carries a pattern that opens with prefixes the schema declares. The rows below are the state before that work.
+## Edge cases
 
-## Where each table's id comes from
+Bioregistry values were read from `https://bioregistry.io/api/registry/<prefix>` on 2026-11-06. The third column is the value declared in the module that uses the prefix, on `main` or on the open pull request that adds it.
 
-Read from each pull request head on 2026-11-04: https://github.com/doe-bridge/bridge-central-schema/pull/5 at 15b0e06, https://github.com/doe-bridge/bridge-central-schema/pull/9 at e431b4c, https://github.com/doe-bridge/bridge-central-schema/pull/12 at bd6c14d, https://github.com/doe-bridge/bridge-central-schema/pull/16 at ced63d4 and https://github.com/doe-bridge/bridge-central-schema/pull/21 at 7359746. Examples are from `tests/data/valid/` on the same branch. An example marked placeholder is illustrative and not a source record.
-
-| Class | Pull request | Identifier slot | Range | Id made by | Example | Pattern | Notes |
-|---|---|---|---|---|---|---|---|
-| `Study` | https://github.com/doe-bridge/bridge-central-schema/pull/16 | `id` | `uriorcurie` | source system | `gold:Gs0114820` | no | A real GOLD study. `nmdc:sty-11-example` is a placeholder in the shape of nmdc-schema's `Study` pattern. |
-| `Site` | https://github.com/doe-bridge/bridge-central-schema/pull/16 | `id` | `uriorcurie` | source system | `ameriflux:US-Ha1` | no | No example at ced63d4. Commit 399f24d, pushed later on 2026-11-04, adds this AmeriFlux site and declares `ameriflux` in core.yaml, since AmeriFlux has no registered prefix (see the prefix table). |
-| `Organism` | https://github.com/doe-bridge/bridge-central-schema/pull/16 | `id` | `uriorcurie` | source system | `gold:Go0459731` | no | A real GOLD organism. `nmdc:orgn-11-example` is a placeholder in the shape of nmdc-schema's `Organism` pattern. |
-| `Sample` | https://github.com/doe-bridge/bridge-central-schema/pull/16 | `id` | `uriorcurie` | source system | `gold:Gb0239762` | no | A real GOLD biosample. `nmdc:bsm-11-example` and `nmdc:procsm-11-example` are placeholders, and both kinds sit in the one `Sample` table. |
-| `MaterialProcessing` | https://github.com/doe-bridge/bridge-central-schema/pull/16 | `id` | `uriorcurie` | source system | `nmdc:extrp-11-example` (placeholder) | no | Abstract, so no example file of its own. The example is the `processing` value in `ProcessingSampleLink-nmdc-input.yaml`. |
-| `ProcessingSampleLink` | https://github.com/doe-bridge/bridge-central-schema/pull/16 | none | not applicable | nobody | none | not applicable | A join row: `processing`, `sample`, `role`. No `id` and no `unique_keys`. |
-| `Person` | https://github.com/doe-bridge/bridge-central-schema/pull/21 | `id` | `uriorcurie` | undecided | none | no | Inherits `id` through `Agent`. `orcid` is a separate slot with range `uriorcurie`. The branch has no example data. What `id` a person without an ORCID gets is open in https://github.com/doe-bridge/bridge-central-schema/issues/17. |
-| `Organization` | https://github.com/doe-bridge/bridge-central-schema/pull/21 | `id` | `uriorcurie` | undecided | none | no | Inherits `id` through `Agent`. `ror` is a separate slot with range `uriorcurie`. No example data. |
-| `CreditAssociation` | https://github.com/doe-bridge/bridge-central-schema/pull/21 | none | not applicable | nobody | none | not applicable | A join row: `applies_to_agent`, `applied_roles`, `applies_to_study`. No `id` and no `unique_keys`. The branch also shows a nested form inside `Study`. |
-| `Measurement` | https://github.com/doe-bridge/bridge-central-schema/pull/9 | `measurement_id`, optional | `uriorcurie` | source system, or BRIDGE on ingest | `example:nitrate-0001` (placeholder) | no | Not an identifier slot. The slot comment says `id` was avoided because LinkML would make it required and most measurements have none. |
-| `Contig` | https://github.com/doe-bridge/bridge-central-schema/pull/5 | `contig_id` | `string` | source system | `insdc:NC_001422.1` | no | Not named `id`, range is the default `string`. `nmdc:wfmgas-11-19jh9v28.1_scf_10_c1` is an NMDC contig. Neither `ber_feature_model.yaml` nor `ber_central_schema.yaml` on that branch declares `insdc`. |
-| `ContigCollection` | https://github.com/doe-bridge/bridge-central-schema/pull/5 | `collection_id` | `string` | source system | `nmdc:wfmgas-11-19jh9v28.1` | no | The slot note says to use a CURIE when the identifier has one. |
-| `Feature` | https://github.com/doe-bridge/bridge-central-schema/pull/5 | `feature_id` | `string` | source file, or the converter | `insdc:NC_001422.1:feature-1` | no | Unique only within one `Dataset`. The slot note says it is a file-local key, not a persistent identifier, and that authority-assigned ids go in `stable_identifiers`. |
-| `Dataset` | https://github.com/doe-bridge/bridge-central-schema/pull/5 | none | not applicable | nobody | none | not applicable | A document holding contigs, collections and features. No identifier slot. |
-| `Attribute` | https://github.com/doe-bridge/bridge-central-schema/pull/12 | none | not applicable | nobody | none | not applicable | Nested in the record it describes. Its note says a key is not an identifier. `attribute_cv_id` is an optional `uriorcurie` for the key. |
-
-Two things the table shows without any decision. First, the `NamedThing` tables hold ids from more than one source in one column: `gold:` and `nmdc:` in `Study`, `Sample` and `Organism`. Second, nothing yet says which prefixes an `id` column may hold.
-
-## Which ids BRIDGE would make and manage
-
-Ids from a source system (`gold:`, `nmdc:`, `insdc:`) cost BRIDGE nothing to make, and the source decides whether they persist. Two kinds would be BRIDGE's own.
-
-Curated vocabularies: the `bridge_property:` terms already on https://github.com/doe-bridge/bridge-central-schema/pull/9, and the planned `bridge_unit:` terms. A term is added by pull request, its id never changes, and its label and definition can be edited. The term is the thing the id names, so the id has to outlive any one load.
-
-Keys built from data: the planned `Measurement` and `SourceMapping` ids. The loader builds the id from the row's own fields when the row arrives without one. Nothing has to be stored to make the id again, and a second load of the same source row builds the same id. These ids name a row in a BRIDGE table and nothing outside it.
-
-Two colleagues have spoken to this. @mslarae13 asked in https://github.com/doe-bridge/bertron-schema/issues/37 that an attribute's id be optional but a CURIE when given, and on 2025-07-31 wrote "making the attribute ID optional means we don't need fake IDs" (https://github.com/doe-bridge/bertron-schema/issues/37#issuecomment-3140659081). Her example was `FAKE:####` for an attribute no standard defines, which in this model is a `bridge_property:` term. On 2025-08-14 she added "Make label required, make ID recommended. If your attribute is from an ontology or standard the ID should ALWAYS be provided." @dschristianson asked of `measurement_id` on https://github.com/doe-bridge/bridge-central-schema/pull/9 "why not just "id"?" (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4230719718) and on 2026-10-21 wrote "We could give ESS-DIVE measurement_ids or ids (if I understand the identifier rules correctly) upon ETL but probably no guarantee that they would be stable between versions or persistent outside of the lakehouse." (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4339981188)
-
-## Prefixes
-
-Any URL can be condensed to a CURIE by declaring a prefix for the part before the local id. The question is who vouches for the prefix. The order proposed here, open for discussion:
-
-1. The namespace owner's own prefix, registered in a registry such as Bioregistry (https://bioregistry.io).
-2. A prefix BRIDGE registers in Bioregistry for a namespace whose owner has not. Bioregistry takes requests through an issue form (`new-prefix.yml` in https://github.com/biopragmatics/bioregistry).
-3. A prefix declared only in this schema.
-
-Checked against https://bioregistry.io/api/registry/ on 2026-11-04, one prefix per row:
-
-| Prefix | In Bioregistry | Where it appears | What it is used for |
+| Prefix | Bioregistry `uri_format` | What this schema uses now | Note |
 |---|---|---|---|
-| `gold` | yes | https://github.com/doe-bridge/bridge-central-schema/pull/16 | `Study`, `Sample` and `Organism` ids |
-| `nmdc` | yes | https://github.com/doe-bridge/bridge-central-schema/pull/16 and https://github.com/doe-bridge/bridge-central-schema/pull/5 | placeholder `NamedThing` ids, and `Contig`, `ContigCollection` and `Feature` ids |
-| `insdc` | yes | https://github.com/doe-bridge/bridge-central-schema/pull/5 | `Contig` and `Feature` ids, not declared in the schema |
-| `emsl.project` | yes | https://github.com/doe-bridge/bridge-central-schema/pull/16 | an `external_identifiers` example, not declared in the schema |
-| `orcid` | yes | https://github.com/doe-bridge/bridge-central-schema/pull/21 | `orcid` slot values, no example yet |
-| `ror` | yes | https://github.com/doe-bridge/bridge-central-schema/pull/21 | `ror` slot values, no example yet |
-| `ncbitaxon` | yes | https://github.com/doe-bridge/bridge-central-schema/pull/16 | `taxon` values, declared as `NCBITaxon` |
-| `ameriflux` | no | https://github.com/doe-bridge/bridge-central-schema/pull/16 at 399f24d | `Site` ids, declared in core.yaml only, the third choice in the order above |
-| `ameriflux.site` | no | nowhere | checked as a possible `Site` source |
-| `essdive` | no | nowhere | checked as a possible measurement source |
-| `ess.dive` | no | nowhere | checked as a possible measurement source |
-| `bridge_property` | no | https://github.com/doe-bridge/bridge-central-schema/pull/9 | `observed_property` values |
-| `ber_registry` | no | https://github.com/doe-bridge/bridge-central-schema/pull/9 | `source_system` values |
-| `bfm` | no | https://github.com/doe-bridge/bridge-central-schema/pull/5 | the feature model's own namespace |
-| `bridge_unit` | no | planned follow-up | `Unit` ids |
-| `bridge_measurement` | no | planned follow-up | `Measurement` ids |
-| `bridge_source_mapping` | no | planned follow-up | `SourceMapping` ids |
+| `gold` | `https://gold.jgi.doe.gov/resolver?id=$1` | `https://bioregistry.io/gold:`, the same as nmdc-schema | The two IRIs for `gold:Gs0114820` differ, so a change here would stop BRIDGE and NMDC records from matching in RDF or in a join on the full IRI. On 2026-11-06 the bioregistry.io IRI redirected to the GOLD resolver and the resolver to `https://gold.jgi.doe.gov/study?id=Gs0114820`. I asked JGI which expansion they want on https://github.com/doe-bridge/bridge-central-schema/issues/15#issuecomment-6690980599; the schema keeps `https://bioregistry.io/gold:` until that is answered. |
+| `emsl.project` | `https://sc-data.emsl.pnnl.gov/?projectId=$1` | Bioregistry's value | nmdc-schema expands `emsl.project` to `https://bioregistry.io/emsl.project:`, so EMSL project IRIs differ between the two schemas. |
+| `refseq` | `https://www.ncbi.nlm.nih.gov/protein/$1` | Not declared yet. The feature model's contig ids, written `insdc:NC_001422.1` today, move to `refseq:NC_001422.1` with Bioregistry's value | Bioregistry's pattern accepts nucleotide accessions (`NC_`, `NZ_`), but the expansion is NCBI's protein path. `https://www.ncbi.nlm.nih.gov/protein/NC_001422.1` returned HTTP 200 on 2026-11-06. |
+| `BERVO` | `https://w3id.org/bervo/BERVO_$1` | `bervo`, expanding to `https://w3id.org/bervo/`, with local parts such as `BERVO_0001370` | Bioregistry's spelling moves `BERVO_` out of the local part: `bervo:BERVO_0001370` becomes `BERVO:0001370`, and both expand to the same IRI. Every file that copies the observed property mappings needs the rewrite. |
+| `schema` | `https://schema.org/$1` | `http://schema.org/` | Kept. It matches nmdc-schema and the LinkML metamodel (https://github.com/linkml/linkml-model), and it names mapping targets rather than source records. |
+| `biolink` | `https://biolink.github.io/biolink-model/$1` | `https://w3id.org/biolink/vocab/` | Kept. It is the namespace `biolink-model.yaml` declares for its own elements (https://github.com/biolink/biolink-model), and nmdc-schema uses it. Mapping targets only. |
+| `ameriflux` | none; AmeriFlux is not in Bioregistry | `https://ameriflux.lbl.gov/sites/siteinfo/`, so `ameriflux:US-Ha1` expands to the site page | Declared only in this schema. |
+| `urn:uuid` | none; `urn:uuid:` is the URN form of a UUID in RFC 9562, not a prefix | BASALT ids written as URIs, such as `urn:uuid:5b0c6c1e-0000-4000-8000-000000000001` | BASALT's identifier slots have range `uuid` and no prefix (https://github.com/EMSL-Computing/BASALT-Schema/blob/f41b7f4a371d856ebd5357cff7209245559e92d7/src/basalt_schema/schema/study.yaml#L36), and Bioregistry has no `uuid` prefix. A `urn:uuid:` value is a URI and not a CURIE, so a table that holds BASALT rows needs either a prefix for them or an `id` range that allows URIs; that goes with the row-id question on https://github.com/doe-bridge/bridge-central-schema/issues/28. The tests treat `http`, `https` and `urn` as URI schemes, not prefixes. |
+| `insdc` | `https://www.ebi.ac.uk/ena/data/view/$1` | Feature ids the converter makes, such as `insdc:NC_001422.1:feature-1` | Bioregistry's `insdc` pattern does not match `NC_` accessions, which are RefSeq, and the source never issued the `:feature-N` suffix. These ids stay until https://github.com/doe-bridge/bridge-central-schema/issues/28 settles how BRIDGE makes ids. |
 
-The `bridge_*` prefixes, `ber_registry` and `bfm` are the third kind. All of them expand under https://w3id.org/ber-data/, which returned 404 on 2026-11-04. https://github.com/doe-bridge/bridge-central-schema/issues/26 proposes registering that path with one redirect per prefix. One prefix per table means one redirect per table.
+## Identifier lifecycle
 
-## Patterns
+Create: reuse the source's id under the source's registered prefix, and mint only for things BRIDGE originates (Lesson 1 of McMurry et al. 2017, https://doi.org/10.1371/journal.pbio.2001414). Every id BRIDGE makes has a published pattern, with no `/` or `?` in the local part and a dot only for a version (Lesson 5 of the same paper). A new BRIDGE prefix is lowercase, is never issued per version, and is a subspace only when the resource has more than one entity type (https://github.com/biopragmatics/bioregistry/blob/main/docs/CONTRIBUTING.md). Whether a row that arrives with no source id gets a minted id, a key derived from its fields, or no id is open; the alternatives below give the costs, and RFC 9562 section 6.13 cautions against name-based UUIDs as primary keys because the input values later change (https://www.rfc-editor.org/rfc/rfc9562#section-6.13).
 
-The planned follow-up gives each table BRIDGE owns a pattern that opens with one prefix, as https://github.com/doe-bridge/bridge-central-schema/pull/9 already does for `observed_property`. That works because BRIDGE is the only authority for those tables. `NamedThing`'s `id` has no pattern, and its tables hold ids from several sources. `feature_of_interest` on `Measurement` is a `uriorcurie` with no restriction at e431b4c. Its description names samples, organisms, sites or plots and streams, and a planned `feature_of_interest_type` would name one of the Sample, Organism, Site and Study tables. Four choices, none preferred here:
+Modify: a label or definition edit keeps the id. For a change that does not break meaning, Lesson 6 of McMurry et al. 2017 (https://doi.org/10.1371/journal.pbio.2001414) recommends a machine-readable change history rather than a new id.
 
-1. A pattern that lists the allowed prefixes, such as `^(nmdc|gold):[A-Za-z0-9._-]+$`. Every new source adds to the list.
-2. A general CURIE pattern plus a test that every prefix in the data is declared. nmdc-schema's base `id` slot uses `^[a-zA-Z0-9][a-zA-Z0-9_\.]+:[a-zA-Z0-9_][a-zA-Z0-9_\-\/\.,]*$`, read from `src/schema/basic_slots.yaml` in https://github.com/microbiomedata/nmdc-schema on 2026-11-04. The pattern then says nothing about which table an id belongs to.
-3. A pattern on the local part, as nmdc-schema does per class: `{id_nmdc_prefix}:sty-{id_shoulder}-{id_blade}` for `Study` and `{id_nmdc_prefix}:bsm-{id_shoulder}-{id_blade}` for `Biosample`, with `id_shoulder` set to `([0-9][a-z]{0,6}[0-9])` and `id_blade` to `([A-Za-z0-9]{1,})`. A reference slot lists the type codes it accepts, as `has_input` does with `(bsm|procsm)`. In this schema the type code would overlap a slot that says which table a reference joins to. This works only for ids BRIDGE issues. A `gold:` id has its own shape.
-4. One BRIDGE prefix with a type code in the local part, as nmdc-schema does with `nmdc:` (type code, shoulder, blade: its own example is `nmdc:sty-11-076c9980`), compared with one prefix per table (`bridge_property:`, `bridge_unit:`, `bridge_measurement:`, `bridge_source_mapping:`). Four points of comparison:
-    - What the id says about its table. Under one prefix per table the prefix names the table. Under one prefix with a type code the first segment of the local part names it. Both say it, in different places.
-    - How many w3id paths to register. One prefix per table is one path per table: five on the open pull requests (`bridge_central_schema`, `bridge_property`, `ber_registry`, `bfm`, `battr`) and eight with the planned ones. One prefix is one path, and the redirect rule can branch on the type code.
-    - How readable the curated terms are. `bridge_property:air_temperature` carries its meaning. nmdc-schema's identifier page asks that ids be opaque, and its blades are random, so a term in that form would carry its label only in the row. A type code with a readable local part is also possible and is not what nmdc-schema does.
-    - What minting needs. NMDC's minter is in nmdc-runtime (https://github.com/microbiomedata/nmdc-runtime, `nmdc_runtime/minter/`, served at `/pids/mint`): it reads each class's type code from the schema's id pattern, holds the shoulder `11` for the central minting service, and generates a random blade, so it has to record what it issued. Curated terms and keys built from data need no service: a pull request or the loader makes them, and tests can check uniqueness across tables.
+Deprecate: an id is never deleted or reassigned (Lesson 7 of McMurry et al. 2017, https://doi.org/10.1371/journal.pbio.2001414). A deprecated curated term keeps resolving and names its replacement with IAO:0100001 (term replaced by), or lists alternatives with `consider`, as OBO ontologies do (https://oboacademy.github.io/obook/howto/obsolete-term/). DataCite applies the same rule to DOIs, which get a tombstone page rather than deletion (https://support.datacite.org/docs/tombstone-pages).
 
-## A naming rule for key slots, as a proposal
+Merge: one id stays primary and the others become secondary ids that still resolve to the surviving row, as UniProt keeps every accession of merged entries (https://www.uniprot.org/help/accession_numbers). The source ids of every merged row stay recorded on the surviving row.
 
-The open pull requests already follow most of this rule. Writing it down would make the rest follow. Ranges below were read from each pull request head on 2026-11-04.
+Split: each part gets a new id, and the old id stays, deprecated, pointing at every part, as UniProt does for demerged entries (https://www.uniprot.org/help/accession_numbers).
+
+Version: a BRIDGE id carries no version, and a source's version suffix stays as the source writes it (`NC_001422.1`). A version belongs in an id only for a breaking change (Lesson 6 of McMurry et al. 2017), and DataCite recommends a new DOI only for a major change, linked to the old one with `IsNewVersionOf` (https://support.datacite.org/docs/versioning). Bioregistry issues no prefix per version (https://github.com/biopragmatics/bioregistry/blob/main/docs/CONTRIBUTING.md).
+
+Resolve: every BRIDGE prefix resolves through w3id with a 302 redirect, because w3id's rules say a 301 cannot be taken back (https://github.com/perma-id/w3id.org/blob/master/docs/rules/htaccess/avoid-permanent-redirect.md). Registering `ids/ber-data` is https://github.com/doe-bridge/bridge-central-schema/issues/26.
+
+## Alternatives considered
+
+### One element namespace or one per module
+
+Earlier branches gave each module its own namespace: `bridge` for measurements, `battr` for attributes and `bfm` for the feature model.
+
+1. One namespace per module. Benefit: a module could be released on its own under its own URI. Costs: a reader has to know which module defined an element to write its CURIE, each namespace needs its own w3id redirect, and the same slot name can exist twice with two different URIs.
+2. One namespace, `bridge_central_schema`. Benefit: one CURIE form for every element and one redirect. Cost: slot names must be unique across modules, which `numeric_value` already broke (https://github.com/doe-bridge/bridge-central-schema/issues/36).
+
+I set rule 1 because no module of this schema is released as a standard on its own.
+
+### Ids BRIDGE makes
+
+These are the options for ids BRIDGE itself issues: curated terms today, and possibly table rows later.
+
+1. One readable prefix per curated vocabulary, `bridge_property:` and `bridge_unit:`, which is the current state. @valerie-autumn-skye asked for `bridge_property:air_temperature` as an "intermediate" human-readable term mapped to BERVO (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4273386207), and https://github.com/doe-bridge/bridge-central-schema/issues/29 adds `bridge_unit:` the same way. Benefits: the id is readable in data files and diffs, a term is added by pull request with no minting service, and the prefix names the table. Costs: one Bioregistry prefix and one w3id redirect per vocabulary, and the rename problem described under readable local parts below.
+2. One prefix with an opaque number and no type code. Benefits: one prefix and one redirect, and a rename never touches the id, which is what Lesson 4 of McMurry et al. 2017 recommends (https://doi.org/10.1371/journal.pbio.2001414). Costs: it reverses the readable ids already in use on https://github.com/doe-bridge/bridge-central-schema/pull/9 and in the issues above, a reviewer needs the label beside every id, and each pull request has to take the next free number, with a test that no number is used twice.
+3. One prefix with a type code in the local part, as nmdc-schema's `nmdc:sty-11-076c9980` (https://github.com/microbiomedata/nmdc-schema/blob/270aefeda91443c6cbb6e8bfd340f6ec09e74b8c/src/docs/identifiers.md) and KBase CDM's `CDM:<type>-<uuid4>` (https://github.com/kbase/cdm-schema/blob/c1a59b9607abc85affe3d17f0239ef4e2b819f61/src/linkml/cdm_types.yaml#L26). Benefits: one prefix, and the id says which class it belongs to. Costs: type codes outlive their meaning; nmdc-schema's patterns still accept `omprc` next to the codes that replaced it when `OmicsProcessing` was split (https://github.com/microbiomedata/nmdc-schema/blob/270aefeda91443c6cbb6e8bfd340f6ec09e74b8c/src/schema/nmdc.yaml#L281). A random local part needs a minting service that records what it issued, as the minter in https://github.com/microbiomedata/nmdc-runtime does.
+4. One prefix per table, extending option 1 to every table BRIDGE keys itself. Benefit: every table's pattern opens with one prefix. Costs: the number of prefixes and redirects grows with the number of tables, Bioregistry puts more than five prefixes at once through a bulk request that reviewers may send back as individual requests, and Bioregistry says subspacing should not be used unnecessarily (https://github.com/biopragmatics/bioregistry/blob/main/docs/CONTRIBUTING.md).
+5. Bioregistry subspaces, such as `bridge.property` and `bridge.unit`. Benefit: this is Bioregistry's own way to partition one resource by entity type. Costs: each subspace is still a registered prefix, and Bioregistry's policy on subspaces is still open (https://github.com/biopragmatics/bioregistry/issues/65).
+
+I chose option 1 for curated terms, for now, because the ids are already in use and were asked for in review. Whether they stay readable is decided again when the terms become table rows (https://github.com/doe-bridge/bridge-central-schema/issues/30). For table rows and features, options 2 to 5 stay open on https://github.com/doe-bridge/bridge-central-schema/issues/28.
+
+### Readable or opaque local parts
+
+1. Readable local parts: `bridge_property:air_temperature`, `bridge_unit:mm2`. Benefits: a reader needs no lookup, and a reviewer can check a mapping row by eye. Costs: a term cannot be renamed by editing, because the id is the name, so the old id has to be deprecated and a new one created with a replacement, and a vocabulary whose names change often fills up with deprecated ids. UCUM codes hold characters a local part cannot take as they stand: `mg/L` and `[degF]` do not fit the `[a-z0-9_]+` pattern the measurements module uses for `bridge_property:` local parts, and Lesson 5 of McMurry et al. 2017 (https://doi.org/10.1371/journal.pbio.2001414) warns against `/` in a local id, so `bridge_unit:` needs an escaping rule from UCUM code to local part. Lesson 5 also advises that `_` or `:` occur no more than once per identifier, because an id such as `bridge_property:air_temperature` can also be read as `bridge:property_air_temperature`; a snake_case local part under a snake_case prefix breaks that advice.
+2. Opaque local parts: a number, with the label and definition in the row. Benefits: a rename is a row edit, no escaping rule is needed, and two terms cannot collide by name. Costs: the meaning is only in the row, numbers are allocated by hand in each pull request, and it reverses posted work.
+
+I chose readable for now (rule 11). The follow-up to https://github.com/doe-bridge/bridge-central-schema/issues/30 decides again, and the question to answer first is how often curated term names will change.
+
+### Rows that arrive without a source id
+
+Measurement rows from a source such as ESS-DIVE, the planned `SourceMapping` rows, and features the converter makes from a GFF file have no id from their source.
+
+1. Keep the source's record id under the source's prefix whenever the source has one. @boehms asked whether the ESS-DIVE `measurement_id` is reflected in the source id (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4473191401), and @ialarmedalien wrote on a bertron-schema pull request that each data source should use a prefix with its internal ids, with an "unofficial" reference as the fallback (https://github.com/doe-bridge/bertron-schema/pull/3#discussion_r1989866631). Benefit: nothing to mint. Cost: it covers only rows whose source has a record id.
+2. Mint a BRIDGE id on first load and record which source fields it came from, so the next load finds the same row. Benefit: the id survives a change in the source fields. Cost: the loader keeps state, and that store becomes something BRIDGE has to run.
+3. Build the id by hashing source fields, so any loader rebuilds it. Benefit: no state. Costs: RFC 9562 section 6.13 cautions against name-based UUIDs as primary keys because the inputs later change (https://www.rfc-editor.org/rfc/rfc9562#section-6.13), and rows that share every input field collide; at commit e431b4c of https://github.com/doe-bridge/bridge-central-schema/pull/9, `Measurement-005` and `Measurement-006` shared `source_system`, `source_record_id` and `source_field` and differed only in their values.
+4. No persistent id: the slot is optional and a row gets none when the source has none. @mslarae13 wrote that making an attribute's id optional "means we don't need fake IDs" (https://github.com/doe-bridge/bertron-schema/issues/37#issuecomment-3140659081), and @dschristianson said ESS-DIVE could assign ids at ETL with "probably no guarantee that they would be stable between versions or persistent outside of the lakehouse" (https://github.com/doe-bridge/bridge-central-schema/pull/9#discussion_r4339981188). Benefit: no invented ids. Cost: a row with no id cannot be referenced from another table or from outside BRIDGE.
+
+Nothing is chosen yet; this is https://github.com/doe-bridge/bridge-central-schema/issues/28. Until then the converter-made feature ids stay `insdc:NC_001422.1:feature-1` and so on.
+
+### Bioregistry expansions everywhere or nmdc-schema's
+
+1. Match nmdc-schema wherever it declares a prefix: `gold` and `emsl.project` expand to `https://bioregistry.io/gold:` and `https://bioregistry.io/emsl.project:` (https://github.com/microbiomedata/nmdc-schema/blob/270aefeda91443c6cbb6e8bfd340f6ec09e74b8c/src/schema/external_identifiers.yaml#L16). Benefit: a GOLD study in an NMDC record and in a BRIDGE record is the same IRI, so RDF and full-IRI joins match. Costs: two rules instead of one, and the IRIs go through a third-party resolver rather than the source's own.
+2. Bioregistry's `uri_format` for every source prefix. Benefit: one rule, and each IRI is the source's own resolver. Cost: GOLD and EMSL project IRIs differ from nmdc-schema's.
+
+I chose option 2 with every difference recorded in the edge-case table, and asked JGI on https://github.com/doe-bridge/bridge-central-schema/issues/15#issuecomment-6690980599 which expansion they want for `gold:`; `gold` keeps the nmdc-schema value until then.
+
+### Asserted element URIs or default_prefix
+
+1. Rely on `default_prefix`, so LinkML derives `bridge_central_schema:Sample` from the class name. Benefit: fewer lines. Costs: the IRI is invisible in the YAML and in a diff, and changing a module's `default_prefix` changes every URI in it with no line of any element changing.
+2. Assert `class_uri`, `slot_uri` and `meaning` on every element. Benefits: each IRI shows in review and in generated artifacts, and a test catches an element that lost its URI. Cost: one line per element.
+
+I chose option 2 (https://github.com/doe-bridge/bridge-central-schema/issues/35).
+
+## Key slot naming
 
 1. `id` is used only for a row's own primary key.
-2. A foreign key is named for the thing it points to, with no `_id`: `associated_studies` (`Study`), `collected_at` (`Site`), `organism` (`Organism`), `processing` (`MaterialProcessing`) and `sample` (`Sample`) on https://github.com/doe-bridge/bridge-central-schema/pull/16, `observed_property` (`uriorcurie`, constrained to `bridge_property:`) and `feature_of_interest` (`uriorcurie`) on https://github.com/doe-bridge/bridge-central-schema/pull/9, and `member_of` (`ContigCollection`), `parent` (`Feature`) and `seqid` (`Contig` or `Feature`) on https://github.com/doe-bridge/bridge-central-schema/pull/5. The exception is a name an outside standard fixes: the planned mapping tables keep SSSOM's `subject_id`, so they can be written out as SSSOM files.
-3. `_id` marks an identifier from outside, kept as data, with no table here to join to: `attribute_cv_id` (`uriorcurie`, https://github.com/doe-bridge/bridge-central-schema/pull/12), `target_id` (`string`, https://github.com/doe-bridge/bridge-central-schema/pull/5), `source_record_id` (`string`) and the source's own measurement identifier `measurement_id` (`uriorcurie`), both on https://github.com/doe-bridge/bridge-central-schema/pull/9. In the planned mapping tables `object_id` is the other vocabulary's term and `predicate_id` is an enum value, not a key.
+2. A foreign key is named for the thing it points to, with no `_id` suffix: `associated_studies`, `collected_at`, `organism`, `sample`, `observed_property`, `feature_of_interest`, `member_of` and `parent`. The exception is a name an outside standard fixes: the SSSOM mapping tables keep `subject_id`, `predicate_id` and `object_id`, so they can be written out as SSSOM files.
+3. `_id` marks an identifier from outside, kept as data, with no table here to join to: `attribute_cv_id`, `target_id`, `source_record_id` and `measurement_id`.
 
-Under this rule the feature model's `contig_id`, `collection_id` and `feature_id` would become `id`. That rename waits on a rule for making a CURIE for a feature, since `feature_id` today is unique only within one `Dataset`.
+The feature model's `contig_id`, `collection_id` and `feature_id` become `id` once https://github.com/doe-bridge/bridge-central-schema/issues/28 settles how a feature gets a CURIE, since `feature_id` today is unique only within one dataset.
 
 ## Open questions
 
-1. Do ids the loader builds from a row's own fields, as planned for `Measurement` and `SourceMapping`, count as the "fake IDs" @mslarae13 described, or does a key that any loader can rebuild stand apart from an invented one?
-2. Is an id built from source fields stable enough to be `Measurement`'s primary key, given what @dschristianson said about ESS-DIVE ids between versions, or should the optional `measurement_id` with a generated row id stay?
-3. For the tables that hold ids from several sources, which of the four pattern choices above should the `id` slot carry?
-4. Should BRIDGE use one prefix with a type code, or one prefix per table, for the ids it makes itself?
-5. What `id` does a `Person` without an ORCID, or an `Organization` without a ROR, get?
-6. Should `ProcessingSampleLink` and `CreditAssociation` declare a unique key, get an id, or stay as they are?
-7. Should the schema declare `insdc` and `emsl.project`, which the example data already uses?
-8. Does the naming rule above hold, and if so, when do the feature model's three identifier slots become `id`?
+1. What is the type slot called? The options are `type` everywhere, which means renaming the feature model's GFF3 `type` slot; another name everywhere; or `type` everywhere except the feature model. Tracked on https://github.com/doe-bridge/bridge-central-schema/issues/35.
+2. What does `gold:` expand to: the GOLD resolver, as Bioregistry has it, or `https://bioregistry.io/gold:`, as nmdc-schema has it? Asked of JGI on https://github.com/doe-bridge/bridge-central-schema/issues/15.
+3. How does BRIDGE make ids for rows that arrive without one, and for features? The answer settles the converter's `insdc:NC_001422.1:feature-1` ids, how BASALT's `urn:uuid:` ids fit an `id` slot of range `curie`, and when the feature model's three key slots become `id`. Tracked on https://github.com/doe-bridge/bridge-central-schema/issues/28.
+4. Do curated terms keep readable local parts or move to opaque ones? Decided in the follow-up to https://github.com/doe-bridge/bridge-central-schema/issues/30, after the group says how often term names will change.
+5. Who maintains the w3id registration for `ids/ber-data`? Tracked on https://github.com/doe-bridge/bridge-central-schema/issues/26.
