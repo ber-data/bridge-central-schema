@@ -1,4 +1,4 @@
-id: https://w3id.org/ber-data/gff-feature-model
+id: https://w3id.org/ber-data/bridge-central-schema/feature-model
 name: ber-feature-model
 title: BER unified feature model (draft)
 version: 0.1.0-bridge.1
@@ -43,6 +43,7 @@ imports:
 
 classes:
   Dataset:
+    class_uri: bridge_central_schema:Dataset
     title: Feature dataset
     description: A document holding every Contig and SequenceFeature harmonized from one or more workflow executions.
     slots:
@@ -51,6 +52,7 @@ classes:
       - features
 
   Contig:
+    class_uri: bridge_central_schema:Contig
     title: Contig
     description: A reference sequence, chromosome, scaffold, or contig that features are located on.
     slots:
@@ -65,6 +67,7 @@ classes:
       - source_files
 
   ContigCollection:
+    class_uri: bridge_central_schema:ContigCollection
     title: Contig collection
     description: A set of contigs that belong together, such as one isolate genome, one metagenome-assembled genome (MAG) bin, or one whole assembly.
     exact_mappings:
@@ -90,6 +93,7 @@ classes:
         identifier: true
 
   SequenceFeature:
+    class_uri: bridge_central_schema:SequenceFeature
     title: SequenceFeature
     description: An annotated sequence interval.
     notes:
@@ -148,6 +152,7 @@ classes:
               value_presence: PRESENT
 
   AlignmentTarget:
+    class_uri: bridge_central_schema:AlignmentTarget
     description: >-
       Where a hit aligns on the thing it matched, such as a Pfam model or a reference protein, in
       that thing's own positions. GFF3 writes this as the Target and Gap tags.
@@ -162,6 +167,7 @@ classes:
       - gap
 
   FeatureLocation:
+    class_uri: bridge_central_schema:FeatureLocation
     description: Ordered component intervals; authoritative when present, with scalar feature bounds serving only as an indexing envelope.
     slots:
       - location_operator
@@ -169,6 +175,7 @@ classes:
       - crosses_origin
 
   LocationPart:
+    class_uri: bridge_central_schema:LocationPart
     description: One oriented, reference-qualified interval with explicit endpoint status.
     slots:
       - seqid
@@ -186,9 +193,11 @@ classes:
 
 slots:
   topology:
+    slot_uri: bridge_central_schema:topology
     description: Declared reference topology; circular locations also require length_bp.
     range: TopologyEnum
   translation_table:
+    slot_uri: bridge_central_schema:translation_table
     title: Translation table
     range: integer
     minimum_value: 1
@@ -199,6 +208,7 @@ slots:
         (https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi). Codes 7, 8 and 17 to 20 are
         unassigned.
   target:
+    slot_uri: bridge_central_schema:target
     title: Alignment target
     description: Where this hit aligns on the thing it matched; absent for features that are not alignments.
     range: AlignmentTarget
@@ -207,39 +217,47 @@ slots:
       # Close: GFF3's Target holds id, start, end and strand; this keeps Gap alongside.
       - gff3:Target
   target_id:
+    slot_uri: bridge_central_schema:target_id
     title: Target ID
     required: true
     description: What the hit aligned to, as the source names it, such as a Pfam accession or a reference gene ID.
   target_start:
+    slot_uri: bridge_central_schema:target_start
     title: Target start
     range: integer
     minimum_value: 1
     required: true
     description: First aligned position on the target, one-based and inclusive.
   target_end:
+    slot_uri: bridge_central_schema:target_end
     title: Target end
     range: integer
     minimum_value: 1
     required: true
     description: Last aligned position on the target, one-based and inclusive.
   target_strand:
+    slot_uri: bridge_central_schema:target_strand
     title: Target strand
     range: StrandEnum
     description: Strand of the alignment on the target, when the target is a nucleotide sequence.
   gap:
+    slot_uri: bridge_central_schema:gap
     title: Gap
     description: The alignment in GFF3 Gap form, a CIGAR-like string of operations and lengths.
     exact_mappings:
       - gff3:Gap
   location:
+    slot_uri: bridge_central_schema:location
     description: Explicit location parts; parent links and BED drawing blocks are separate concepts.
     range: FeatureLocation
     inlined: true
   location_operator:
+    slot_uri: bridge_central_schema:location_operator
     description: Whether the parts describe one interval, a joined sequence, or ordered intervals without a join assertion.
     range: LocationOperatorEnum
     required: true
   parts:
+    slot_uri: bridge_central_schema:parts
     description: Parts in biological traversal order, including strand orientation.
     range: LocationPart
     multivalued: true
@@ -248,30 +266,36 @@ slots:
     required: true
     minimum_cardinality: 1
   crosses_origin:
+    slot_uri: bridge_central_schema:crosses_origin
     description: True only when traversal crosses the origin of a known-length circular reference.
     range: boolean
     required: true
   start_status:
+    slot_uri: bridge_central_schema:start_status
     description: Exact lower endpoint or a bound before or after the reported coordinate.
     range: EndpointStatusEnum
     required: true
   end_status:
+    slot_uri: bridge_central_schema:end_status
     description: Exact upper endpoint or a bound before or after the reported coordinate.
     range: EndpointStatusEnum
     required: true
   contig_collections:
+    slot_uri: bridge_central_schema:contig_collections
     title: Contig collections
     multivalued: true
     inlined_as_list: true
     range: ContigCollection
     description: Every ContigCollection that this dataset's Contigs name in member_of.
   contigs:
+    slot_uri: bridge_central_schema:contigs
     title: Contigs
     multivalued: true
     inlined_as_list: true
     range: Contig
     description: Every Contig referenced by this dataset's Features.
   features:
+    slot_uri: bridge_central_schema:features
     title: Features
     multivalued: true
     inlined_as_list: true
@@ -279,10 +303,12 @@ slots:
     description: Every SequenceFeature in this dataset.
 
   contig_id:
+    slot_uri: bridge_central_schema:contig_id
     title: Contig ID
     identifier: true
     description: Native NMDC or source-system identifier for the contig or scaffold.
   member_of:
+    slot_uri: bridge_central_schema:member_of
     title: Member of
     multivalued: true
     range: ContigCollection
@@ -292,16 +318,19 @@ slots:
         into a MAG. Membership in a bin is a statement by the binning workflow, so the bin's
         own generated_by names that workflow rather than the assembly.
   collection_id:
+    slot_uri: bridge_central_schema:collection_id
     title: Collection ID
     description: Identifier of the genome, bin or assembly, from the system that defined it.
     notes:
       - Examples are an NMDC assembly workflow execution (nmdc:wfmgas-...), an NMDC MAG bin name,
         or a JGI IMG taxon or Data Portal record. Use a CURIE when the identifier has one.
   collection_type:
+    slot_uri: bridge_central_schema:collection_type
     title: Collection type
     range: ContigCollectionTypeEnum
     description: What kind of contig collection this is.
   display_name:
+    slot_uri: bridge_central_schema:display_name
     # Renamed from name in this copy: the root schema defines a name slot, and LinkML refuses two
     # imported slots with one name. alias keeps the data key as name. Open question in the PR.
     alias: name
@@ -310,6 +339,7 @@ slots:
       Human-readable name, not an identifier and not unique: for a contig collection an organism
       and strain or a bin label; for a feature the GFF3 Name, its display name.
   note:
+    slot_uri: bridge_central_schema:note
     exact_mappings:
       - gff3:Note
     title: Note
@@ -317,6 +347,7 @@ slots:
     list_elements_ordered: true
     description: GFF3 Note values, free-text remarks about the feature, in source order.
   dbxref:
+    slot_uri: bridge_central_schema:dbxref
     exact_mappings:
       - gff3:Dbxref
     broad_mappings:
@@ -329,6 +360,7 @@ slots:
       stable_identifiers, a cross-reference can point at a related record rather than at this
       feature itself, such as a GeneID on a CDS.
   ontology_term:
+    slot_uri: bridge_central_schema:ontology_term
     exact_mappings:
       - gff3:Ontology_term
     title: Ontology term
@@ -336,6 +368,7 @@ slots:
     list_elements_ordered: true
     description: GFF3 Ontology_term values, ontology term CURIEs such as GO:0003677, in source order.
   length_bp:
+    slot_uri: bridge_central_schema:length_bp
     title: Length (bp)
     range: integer
     minimum_value: 1
@@ -344,6 +377,7 @@ slots:
       - Compute directly from the contig's own FASTA record where there is one, not from a
         summary statistics file, so it is exact rather than an average.
   taxonomic_lineage:
+    slot_uri: bridge_central_schema:taxonomic_lineage
     title: Taxonomic lineage
     multivalued: true
     list_elements_ordered: true
@@ -355,6 +389,7 @@ slots:
         per-gene lineage (Gene Phylogeny tsv) for the same organism were reported at
         different depths, 2 ranks versus 8.
   lineage_confidence:
+    slot_uri: bridge_central_schema:lineage_confidence
     title: Lineage confidence
     range: float
     description: Confidence value reported alongside the lineage call.
@@ -363,6 +398,7 @@ slots:
         descriptive, not confirmed.
 
   feature_id:
+    slot_uri: bridge_central_schema:feature_id
     close_mappings:
       - gff3:ID
     title: SequenceFeature ID
@@ -373,6 +409,7 @@ slots:
       - feature_id is a file-local key, not a globally unique persistent identifier. GFF3 IDs are
         not stable identifiers; use stable_identifiers for those.
   stable_identifiers:
+    slot_uri: bridge_central_schema:stable_identifiers
     title: Stable identifiers
     multivalued: true
     description: Identifiers an authority assigns to this feature and keeps across releases, as opposed to feature_id, which only needs to be unique within this Dataset.
@@ -386,6 +423,7 @@ slots:
       - Use a CURIE when a prefix exists, such as an NCBI GeneID. A locus tag has no registered
         prefix and is written as it appears; list both current and legacy locus tags.
   seqid:
+    slot_uri: bridge_central_schema:seqid
     exact_mappings:
       - gff3:seqid
     title: Sequence ID
@@ -402,6 +440,7 @@ slots:
       - For a hit reported in protein coordinates, seqid names the protein, because GFF3 column 1 is
         the landmark that establishes the coordinate system.
   source:
+    slot_uri: bridge_central_schema:source
     exact_mappings:
       - gff3:source
     title: Source
@@ -414,6 +453,7 @@ slots:
         where the individual GFF's own source column is empty; use `generated_by` plus that
         sidecar for full provenance when this is blank.
   type:
+    slot_uri: bridge_central_schema:type
     exact_mappings:
       - gff3:type
     title: Type
@@ -430,6 +470,7 @@ slots:
         instead, an accession where an SO term is expected in one case, a generic placeholder
         where an accession would be more specific in another.
   start:
+    slot_uri: bridge_central_schema:start
     exact_mappings:
       - gff3:start
       - biolink:start_coordinate
@@ -441,6 +482,7 @@ slots:
     minimum_value: 1
     description: 1-based inclusive start; when location is present this is only the minimum reported part coordinate, not a claim that gaps are occupied.
   end:
+    slot_uri: bridge_central_schema:end
     exact_mappings:
       - gff3:end
       - biolink:end_coordinate
@@ -452,6 +494,7 @@ slots:
     minimum_value: 1
     description: 1-based inclusive end, always >= start; when location is present this is only the maximum reported part coordinate.
   coordinate_system:
+    slot_uri: bridge_central_schema:coordinate_system
     title: Coordinate system
     range: CoordinateSystemEnum
     required: true
@@ -464,6 +507,7 @@ slots:
         CDS's own start/end are contig-relative. A table mixing both kinds of row without
         this field would silently let one be misread as the other.
   score:
+    slot_uri: bridge_central_schema:score
     exact_mappings:
       - gff3:score
     title: Score
@@ -474,6 +518,7 @@ slots:
         Meaning is tool-specific (an HMMER bit score, a Prodigal confidence value, and so
         on); do not compare scores across different `source` values.
   score_type:
+    slot_uri: bridge_central_schema:score_type
     title: Score type
     range: ScoreTypeEnum
     description: What kind of number score is.
@@ -481,6 +526,7 @@ slots:
       - Leave it unset when no source states what the score means. Unset says the meaning is
         not recorded, not that the score is generic.
   strand:
+    slot_uri: bridge_central_schema:strand
     exact_mappings:
       - gff3:strand
       - biolink:strand
@@ -488,6 +534,7 @@ slots:
     range: StrandEnum
     description: GFF3 column 7.
   phase:
+    slot_uri: bridge_central_schema:phase
     exact_mappings:
       - gff3:phase
       - biolink:phase
@@ -500,6 +547,7 @@ slots:
       - Measured 2026-09-11, 366 of 368 real values are 0, so a handler that mishandles 1
         and 2 will still pass almost all real-data testing.
   parent:
+    slot_uri: bridge_central_schema:parent
     exact_mappings:
       - gff3:Parent
     title: Parent
@@ -513,6 +561,7 @@ slots:
       - The 2026-09-17 BRIDGE discussion confirmed that this relationship does not
         have to be flattened into a join table.
   attributes:
+    slot_uri: bridge_central_schema:attributes
     title: Attributes
     # Close, not exact: column 9 is one text field, and this is its ordered key/value pairs.
     close_mappings:
@@ -525,6 +574,7 @@ slots:
     notes:
       - See the Attribute class description for why this stays generic rather than typed.
   generated_by:
+    slot_uri: bridge_central_schema:generated_by
     title: Generated by
     description: The workflow execution (or tool run) that produced this ContigCollection, Contig or SequenceFeature.
     notes:
@@ -535,6 +585,7 @@ slots:
         nmdc:wfmgan-11-5xxrm214.2) produces the SequenceFeature rows on it. Do not assume one
         workflow execution id covers both.
   source_files:
+    slot_uri: bridge_central_schema:source_files
     title: Source files
     range: uri
     multivalued: true
@@ -543,6 +594,7 @@ slots:
       - A sidecar may come from a different workflow than generated_by, for example annotation
         lineage on an assembled Contig. Preserve each artifact's workflow in its URL or manifest.
   is_selected:
+    slot_uri: bridge_central_schema:is_selected
     title: Is selected
     range: boolean
     description: Whether the annotation pipeline chose this call as canonical for its locus.
@@ -555,6 +607,7 @@ slots:
         \"filtered despite no competitor\"; a future revision may need a second field, or an
         enum instead of a boolean."
   is_representative:
+    slot_uri: bridge_central_schema:is_representative
     title: Is representative
     range: boolean
     description: >-
@@ -566,11 +619,13 @@ slots:
       - Different from is_selected, which records which competing call an annotation pipeline kept
         for a locus, not which of a gene's isoforms stands for it.
   product:
+    slot_uri: bridge_central_schema:product
     title: Product
     description: Human-readable functional product name for a gene, e.g. "transposase".
     notes:
       - Populated once, on the gene-level feature; not repeated per functional-evidence hit.
   product_source:
+    slot_uri: bridge_central_schema:product_source
     title: Product source
     description: What justified the product call, e.g. a COG accession or "Hypo-rule applied".
     notes:
@@ -579,6 +634,7 @@ slots:
         both, so the same product assignment is never recorded twice under two different
         provenance stories.
   translated_sequence:
+    slot_uri: bridge_central_schema:translated_sequence
     title: Translated sequence
     description: Amino-acid translation of a CDS feature, from the workflow's protein FASTA output.
     notes:
