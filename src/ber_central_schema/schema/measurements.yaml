@@ -19,6 +19,9 @@ prefixes:
   sosa: http://www.w3.org/ns/sosa/
   METPO: https://w3id.org/metpo/
   MIXS: https://w3id.org/mixs/
+  MIAPPE: https://w3id.org/miappe/
+  TO: http://purl.obolibrary.org/obo/TO_
+  PO: http://purl.obolibrary.org/obo/PO_
   gold: "https://bioregistry.io/gold:"
   bridge_property: https://w3id.org/ber-data/bridge-property/
   example: https://example.org/
@@ -139,6 +142,49 @@ classes:
         A source cell that holds several values (for example a width and a
         length) becomes several measurements that share source_record_id
         and source_field.
+
+  PhenotypicMeasurement:
+    is_a: Measurement
+    description: >-
+      A measurement of a phenotypic trait of an organism or observation
+      unit: one trait value, produced by one method, at one time. Modeled on
+      MIAPPE v1.2 Observed Variable (trait + method + scale) and on the ORNL
+      APPL plant phenotyping exports, where one Observation row is one trait
+      value from one imaging event.
+    slots:
+      - trait_term
+      - trait_entity_term
+    comments:
+      - >-
+        Deliberately thin. Measurement already carries what phenotyping
+        needs: the trait's name goes in observed_property or property_label,
+        the method in measurement_method, the summary in statistic, the
+        image-QC state in quality_flag, missing values in
+        missing_value_reason, and computed traits (pixel counts times a
+        calibration scale, such as APPL's millimetre areas) in value_role
+        derived. Only the trait-ontology hooks are new.
+      - >-
+        Phenotype versus measurement: a raw trait value (projected shoot
+        area on one date, Fv/Fm from one fluorescence event) is a
+        measurement and belongs here. An interpreted phenotype claim
+        ("dwarf under high dose"), aggregated over many measurements, is a
+        knowledge-level assertion and is deliberately NOT this class; value_role
+        interpreted covers a single interpreted value, and a future
+        Phenotype class referencing the measurements it derives from would
+        cover the aggregate. Flagged as an open question on the
+        genotype/strain straw person.
+      - >-
+        QC values that describe the measuring process rather than the
+        organism (for example APPL's fc1.mask_coverage_pct segmentation
+        coverage) should be plain Measurements, not PhenotypicMeasurements,
+        so trait tables are not polluted with instrument diagnostics.
+      - >-
+        A known APPL pitfall this model should not reproduce: events whose
+        segmentation found no plant (empty_mask) store 0.0 instead of no
+        value. Here that case keeps the source's 0.0 in raw_value only, with
+        missing_value_reason not_determined and quality_flag empty_mask, so
+        no parsed numeric_value fabricates a size for a plant that was not
+        seen.
 
 slots:
 
@@ -352,6 +398,26 @@ slots:
     description: >-
       A flag from the source or from BRIDGE curation, such as needs_review for
       a value that could not be parsed.
+
+  trait_term:
+    range: uriorcurie
+    description: >-
+      Ontology accession for the phenotypic trait as a whole (Trait
+      Ontology, Crop Ontology), when one exists. The trait's name goes in
+      observed_property or property_label as for any measurement; this slot
+      adds the trait-ontology mapping MIAPPE asks for. In the APPL corpus 0
+      of 512 variables carry any trait accession, so this is optional and
+      expected to be sparse.
+    exact_mappings:
+      - MIAPPE:traitAccNumber
+
+  trait_entity_term:
+    range: uriorcurie
+    description: >-
+      Ontology accession for the part of the organism the trait is about
+      (Plant Ontology for plants), for example PO:0009006 shoot system.
+    exact_mappings:
+      - MIAPPE:traitEntityAccessionNumber
 
 enums:
 

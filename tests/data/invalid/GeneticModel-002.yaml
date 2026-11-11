@@ -1,0 +1,4 @@
+# Invalid: neither full_name nor symbol is populated (AGR rule).
+genetic_model_id: bridge_genotype:nameless
+subtype: strain
+taxon: NCBITaxon:511145

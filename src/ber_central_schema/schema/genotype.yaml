@@ -1,0 +1,411 @@
+# BRIDGE genotype/strain straw person, 2026-11-10. A starting point for
+# discussion, not agreed.
+#
+# Built from four sources:
+#   - nmdc-schema Organism (basic_classes.yaml, read 2026-11-10): biological
+#     identity as a MaterialEntity; NMDC deliberately dropped a separate
+#     Strain class and records strain_name/isolate_name as slots.
+#   - Alliance of Genome Resources AffectedGenomicModel: one class covering
+#     "inbred strains, stocks, disease models and mutant genotypes",
+#     disambiguated by a subtype vocabulary (strain / genotype / fish), with
+#     allele-level components carrying GENO zygosity terms.
+#   - MIAPPE v1.2 Biological Material checklist section: species-level
+#     organism (NCBI taxon ID), infraspecificName with MCPD ranks
+#     (subspecies, cultivar, variety, hybrid, line, ...), and a material
+#     source block (germplasm accession + holding institute). MIAPPE itself
+#     notes the material source "is commonly called germplasm, accession,
+#     genotype or even variety".
+#   - ORNL APPL plant phenotyping exports (OPAL study 67): genotype identity
+#     in practice is a named line ("cultivar:RIL 407") plus germplasm source;
+#     no allele-level data exists in any current BER source.
+#
+# Design: two related classes. Organism is the NMDC-style biological
+# identity that samples and observation units point at. GeneticModel is the
+# AGM-style named genetic entity (strain, genotype, cultivar, line, ...)
+# that several organisms can instantiate, linked from Organism via
+# genetic_model. This relates the NMDC shape to the AGR shape instead of
+# choosing one: NMDC's strain_name collapses into a reference to a
+# GeneticModel of subtype strain; AGR's AGM maps to GeneticModel directly.
+#
+# Reconciliation notes:
+#   - umbrella-classes-draft (PR #16) drafts an Organism with a taxon slot.
+#     This module's Organism is the same concept; when either merges, the
+#     classes unify (is_a NamedThing, organism_id -> id).
+#   - measurements-first-pass (PR #9) has feature_of_interest as the hook a
+#     Measurement uses to point at the thing measured; an Organism or an
+#     observation-unit-like Sample is an intended target.
+id: https://w3id.org/ber-data/bridge-central-schema/genotype
+name: genotype
+title: BRIDGE Genotype and Strain Module (straw person)
+description: >-
+  Straw-person classes for genotype and strain identity across BER data
+  sources: an NMDC-style Organism (the biological identity of what is in a
+  sample) related to an AGR-style GeneticModel (the named strain, genotype,
+  cultivar, accession, line, isolate or variant that organisms instantiate).
+license: Apache-2.0
+version: 0.1.0
+
+prefixes:
+  bridge_genotype: https://w3id.org/ber-data/bridge-central-schema/genotype/
+  linkml: https://w3id.org/linkml/
+  nmdc: https://w3id.org/nmdc/
+  alliance: http://alliancegenome.org/
+  MIAPPE: https://w3id.org/miappe/
+  NCBITaxon: http://purl.obolibrary.org/obo/NCBITaxon_
+  GENO: http://purl.obolibrary.org/obo/GENO_
+  EFO: http://www.ebi.ac.uk/efo/EFO_
+  NCIT: http://purl.obolibrary.org/obo/NCIT_
+  biolink: https://w3id.org/biolink/vocab/
+  schema: http://schema.org/
+
+default_prefix: bridge_genotype
+default_range: string
+
+imports:
+  - linkml:types
+
+classes:
+
+  Organism:
+    description: >-
+      The biological identity of what is in a sample or observation unit: a
+      living or once-living individual (or expected population of one
+      taxon), not the physical sample itself. Several samples can share one
+      organism, and several organisms can instantiate one GeneticModel.
+    slots:
+      - organism_id
+      - organism_name
+      - taxon
+      - genus
+      - species
+      - genetic_model
+    close_mappings:
+      - nmdc:Organism
+      - biolink:IndividualOrganism
+    comments:
+      - >-
+        nmdc:Organism carries strain_name and isolate_name as plain slots.
+        Here that identity moves one hop away: an organism whose strain is
+        known points at a GeneticModel of subtype strain. A source with only
+        a species-level taxon populates taxon and leaves genetic_model
+        empty.
+      - >-
+        In the APPL/MIAPPE plant-phenotyping shape, the ObservationUnit (one
+        pot-grown plant) is the individual; it maps here as an Organism
+        whose genetic_model is the MIAPPE BiologicalMaterial line.
+
+  GeneticModel:
+    description: >-
+      A named genetic entity that organisms instantiate: a strain, genotype,
+      cultivar, accession, line, isolate, ecotype or variant. Covers AGR's
+      AffectedGenomicModel ("inbred strains, stocks, disease models and
+      mutant genotypes") and MIAPPE's BiologicalMaterial (germplasm
+      accessions and named lines). The subtype slot says which kind of
+      entity a record claims to be, because communities draw the
+      strain/genotype line differently rather than because the distinction
+      is crisp.
+    slots:
+      - genetic_model_id
+      - full_name
+      - symbol
+      - subtype
+      - taxon
+      - synonyms
+      - secondary_identifiers
+      - parent_models
+      - has_genomic_components
+      - material_source_accession_number
+      - material_source_accession_name
+      - material_source_institute_code
+      - material_source_institute_name
+      - material_source_doi
+      - material_source_other_identifiers
+      - genetic_model_description
+    any_of:
+      - slot_conditions:
+          full_name:
+            required: true
+      - slot_conditions:
+          symbol:
+            required: true
+    exact_mappings:
+      - alliance:AffectedGenomicModel
+    close_mappings:
+      - MIAPPE:BiologicalMaterial
+    comments:
+      - >-
+        At least one of full_name or symbol must be populated (carried over
+        from the AGR AffectedGenomicModel rule).
+      - >-
+        Strain versus genotype, as users mean them. A strain / line /
+        cultivar / accession is a material lineage you can obtain and
+        propagate (it has a stock center, a holding institute, parents). A
+        genotype is a description of genetic composition (alleles, zygosity,
+        background). A strain has a genotype; a genotype can be written down
+        for an individual that belongs to no named lineage. Both NMDC and
+        AGR collapsed the two in practice, and no current BER source records
+        allele-level composition, so this straw person keeps one class with
+        a subtype and leaves decomposition to has_genomic_components.
+      - >-
+        GENO (checked 2026-11-10) makes the same split and is upfront about
+        it: GENO:0000536 genotype is "a specification of the genetic state
+        of an organism" (an information artifact), while GENO:0000112
+        strain or breed is "a maximal collection of organisms of a single
+        species that have been bred or experimentally manipulated with the
+        goal of being genetically identical" (a collection of material
+        entities; GENO even notes that two colonies with the same genotype
+        maintained in different labs are different strains). So no single
+        GENO term covers this class; the subtype values carry the GENO
+        meanings instead, and an ontologically strict future revision would
+        split GeneticModel along exactly that line. GENO has no term for
+        cultivar or botanical variety; those meanings come from EFO,
+        NCIT and TAXRANK.
+      - >-
+        Per-kingdom usage of subtype. Plants: cultivar, accession, line
+        (RILs), variety, ecotype (MCPD ranks via MIAPPE infraspecificName).
+        Animals: strain (mouse, rat), genotype (fish, fly). Microbes and
+        fungi: strain, isolate; engineered strains are strains whose
+        has_genomic_components lists the modifications; NCBI Taxonomy
+        sometimes has strain-level taxa (e.g. E. coli K-12 MG1655,
+        NCBITaxon:511145), in which case taxon points there and the
+        species-level rollup comes from the taxonomy, not this schema.
+        Viruses: variant, isolate.
+      - >-
+        Lakehouse join points. has_genomic_components is the intended JGI
+        connection (gene / transcript / allele CURIEs). EMSL MONet connects
+        at study/project level only; nothing genotype-shaped exists there.
+
+slots:
+
+  organism_id:
+    identifier: true
+    range: uriorcurie
+    description: Unique identifier for the organism record.
+    comments:
+      - >-
+        Not named id: reserved for reconciliation with the central schema's
+        NamedThing id slot (see module header).
+
+  organism_name:
+    description: A human-readable name or label for the organism.
+    slot_uri: schema:name
+
+  genetic_model_id:
+    identifier: true
+    range: uriorcurie
+    description: >-
+      Unique identifier for the genetic model. When the source assigns one
+      (a ZFIN genotype ID, a germplasm accession ID), keep it; otherwise
+      BRIDGE mints one on ingest.
+    comments:
+      - Not named id; see organism_id.
+
+  taxon:
+    range: uriorcurie
+    pattern: '^NCBITaxon:\d+$'
+    description: >-
+      Taxonomic classification as an NCBITaxon CURIE. On GeneticModel this
+      may be a strain-level taxon when NCBI has one; on Organism it is
+      usually species-level.
+    close_mappings:
+      - nmdc:classified_as
+      - MIAPPE:organism
+    comments:
+      - >-
+        Same pattern as nmdc:NcbiTaxon ids and the umbrella draft's taxon
+        slot. Widen in lockstep (GTDB, LPSN, SeqCode) if those registries
+        are admitted.
+
+  genus:
+    description: Genus part of the organism name, per standard nomenclature.
+    exact_mappings:
+      - MIAPPE:genus
+
+  species:
+    description: Specific epithet part of the organism name.
+    exact_mappings:
+      - MIAPPE:species
+
+  genetic_model:
+    range: GeneticModel
+    description: >-
+      The named strain, genotype, cultivar, accession, line, isolate or
+      variant this organism is an instance of.
+    comments:
+      - >-
+        Single-valued on purpose. An individual with several applicable
+        models (a cross, an engineered derivative) points at the most
+        specific one, whose parent_models carry the rest.
+
+  full_name:
+    description: The one current full name for the genetic model.
+    exact_mappings:
+      - alliance:agm_full_name
+    close_mappings:
+      - MIAPPE:biologicalMaterialId
+
+  symbol:
+    description: >-
+      The one current accepted symbol, e.g. CB1370 (a C. elegans strain) or
+      a zebrafish genotype symbol.
+    exact_mappings:
+      - alliance:agm_symbol
+      - biolink:symbol
+
+  subtype:
+    range: GeneticModelSubtypeEnum
+    required: true
+    description: >-
+      Which kind of named genetic entity this record claims to be. Extends
+      AGR's strain / genotype / fish vocabulary with the MCPD
+      infraspecific ranks MIAPPE uses for plants and with microbial and
+      viral usage.
+    exact_mappings:
+      - alliance:subtype
+
+  synonyms:
+    multivalued: true
+    description: Non-preferred names for the genetic model, any type.
+    exact_mappings:
+      - alliance:agm_synonyms
+
+  secondary_identifiers:
+    multivalued: true
+    description: >-
+      Identifiers for the same entity in other collections (EBI BioSamples,
+      germplasm databases, stock centers).
+    exact_mappings:
+      - alliance:agm_secondary_ids
+      - MIAPPE:biologicalMaterialExtId
+
+  parent_models:
+    range: GeneticModel
+    multivalued: true
+    description: >-
+      Parental lineages: AGR parental populations, or MIAPPE's
+      "mother_accession X father_accession" convention for material derived
+      from a cross.
+    exact_mappings:
+      - alliance:parental_populations
+
+  has_genomic_components:
+    range: uriorcurie
+    multivalued: true
+    description: >-
+      References to the genomic parts that make up this model: gene,
+      transcript, allele or construct CURIEs. A hook, not a structure; see
+      comments.
+    related_mappings:
+      - alliance:components
+    comments:
+      - >-
+        Deliberately flat for the straw person. AGR models this as
+        AgmAlleleAssociation rows each carrying a GENO zygosity term
+        (GENO:0000602 homozygous, GENO:0000603 heterozygous, ...). No
+        current BER source records zygosity, so the component class is
+        deferred; when allele-level data arrives, replace this slot's range
+        with a GenomicComponent association class without restructuring
+        anything else.
+      - >-
+        This is the intended JGI join point: gene or transcript CURIEs here
+        join to JGI feature/annotation records.
+
+  material_source_accession_number:
+    description: >-
+      Unique identifier for the accession within the source genebank or
+      collection, e.g. W95115_inra.
+    exact_mappings:
+      - MIAPPE:materialSourceAccNumber
+
+  material_source_accession_name:
+    description: Registered accession or variety name in the source collection.
+    exact_mappings:
+      - MIAPPE:materialSourceAccName
+
+  material_source_institute_code:
+    description: >-
+      FAO WIEWS code (or laboratory acronym) of the institute holding the
+      material, e.g. FRA09.
+    exact_mappings:
+      - MIAPPE:materialSourceInstCode
+
+  material_source_institute_name:
+    description: Name of the institute holding the material.
+    exact_mappings:
+      - MIAPPE:materialSourceInstName
+
+  material_source_doi:
+    range: uriorcurie
+    description: DOI of the material source.
+    exact_mappings:
+      - MIAPPE:materialSourceDoi
+
+  material_source_other_identifiers:
+    multivalued: true
+    description: >-
+      Other identifiers known for this material source, as key:value pairs
+      when the source provides them.
+    exact_mappings:
+      - MIAPPE:materialSourceOtherIds
+
+  genetic_model_description:
+    description: A human-readable description of the genetic model.
+    slot_uri: schema:description
+    comments:
+      - Not named description; see organism_id.
+
+enums:
+
+  GeneticModelSubtypeEnum:
+    description: >-
+      Kinds of named genetic entity. AGR's subtype_values (strain, genotype,
+      fish) widened for BER: fish is dropped (it is a taxon fact, not a
+      subtype), and plant, microbial and viral usage is added.
+    permissible_values:
+      genotype:
+        meaning: GENO:0000536
+        description: >-
+          A described genetic composition, as used for fish and fly models
+          (ZFIN, FlyBase) and for plant genotypes in the GWAS sense. GENO
+          defines it as a specification of the genetic state of an
+          organism, i.e. information, not material.
+      strain:
+        meaning: GENO:0000112
+        description: >-
+          A maintained lineage: mouse and rat strains, microbial and fungal
+          strains, including engineered strains. GENO's term is "strain or
+          breed": a collection of organisms bred or manipulated with the
+          goal of being genetically identical.
+      isolate:
+        description: >-
+          A lineage derived from a single environmental or clinical
+          isolation event (microbes, fungi, viruses); nmdc isolate_name maps
+          here.
+      cultivar:
+        meaning: EFO:0005136
+        description: >-
+          A cultivated plant variety selected and given a name because it
+          has desirable characteristics (MCPD cv.; EFO definition). Also
+          TAXRANK:0000034 as a taxonomic rank; not in GENO.
+      accession:
+        description: >-
+          A germplasm accession held by a genebank or collection; MIAPPE's
+          material source entity.
+      line:
+        description: >-
+          A named laboratory or breeding line, including recombinant inbred
+          lines (RILs) such as the APPL Thlaspi arvense lines.
+      variety:
+        meaning: NCIT:C62709
+        description: >-
+          A botanical variety (MCPD var.): in botanical nomenclature, a
+          rank below subspecies but above forma (NCIT definition; not in
+          GENO).
+      subspecies:
+        description: A subspecies-rank entity (MCPD subsp.).
+      ecotype:
+        description: >-
+          A naturally occurring population adapted to a locality, as used
+          for Arabidopsis ecotypes.
+      variant:
+        description: A viral variant or lineage designation.

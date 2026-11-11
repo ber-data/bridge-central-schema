@@ -1,0 +1,9 @@
+# APPL observation unit 29041: one pot-grown Thlaspi arvense plant of line
+# RIL 407 (from samples/observation_units.csv). The MIAPPE ObservationUnit
+# maps to Organism; its biologicalMaterialId is the genetic_model reference.
+organism_id: bridge_genotype:appl-67-plant-29041
+organism_name: APPL study 67 plant 29041
+taxon: NCBITaxon:13288
+genus: Thlaspi
+species: arvense
+genetic_model: bridge_genotype:appl-67-ril-407

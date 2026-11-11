@@ -1,0 +1,10 @@
+# The APPL empty_mask case done right: segmentation found no plant, the
+# source stored 0.0. The sentinel stays in raw_value, no numeric_value is
+# parsed from it, and the flag plus missing_value_reason say why.
+property_label: maximum quantum yield of PSII (Fv/Fm)
+raw_value: "0.0"
+missing_value_reason: not_determined
+quality_flag: empty_mask
+measurement_method: chlorophyll fluorescence imaging, masked median
+source_system: APPL-CORE
+source_field: fc1.QY_max.masked_median

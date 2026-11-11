@@ -1,0 +1,17 @@
+# From APPL samples/observations.csv: projected shoot area of plant 29041
+# from one top-view RGB event. The rgb2.area_mm2 variable is computed as
+# area_px * scale, hence value_role derived. property_label because no
+# bridge_property term exists yet; PO:0009006 is "shoot system".
+property_label: projected shoot area
+feature_of_interest: bridge_genotype:appl-67-plant-29041
+raw_value: "1234.5"
+numeric_value: 1234.5
+unit: mm2
+statistic: median
+value_role: derived
+measurement_method: area_px * scale
+trait_entity_term: "PO:0009006"
+treatment: spike_dose=0
+source_system: APPL-CORE
+source_record_id: 67__29041__269__rgb2
+source_field: rgb2.area_mm2

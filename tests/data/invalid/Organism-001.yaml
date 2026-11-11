@@ -1,0 +1,4 @@
+# Invalid: taxon must be an NCBITaxon CURIE.
+organism_id: bridge_genotype:bad-taxon
+organism_name: organism with a free-text taxon
+taxon: Thlaspi arvense

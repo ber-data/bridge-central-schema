@@ -1,0 +1,11 @@
+# From ORNL APPL OPAL study 67 samples/biological_material.csv:
+# a Thlaspi arvense recombinant inbred line, MIAPPE infraspecificName
+# "cultivar:RIL 407".
+genetic_model_id: bridge_genotype:appl-67-ril-407
+full_name: RIL 407
+subtype: line
+taxon: NCBITaxon:13288
+material_source_other_identifiers:
+  - "61.0"
+genetic_model_description: >-
+  Thlaspi arvense recombinant inbred line grown in APPL OPAL study 67.
