@@ -1,0 +1,13 @@
+# A TAIR/ABRC-shaped T-DNA insertion line: mutagen, a genetic background
+# that is itself a GeneticModel (the Col-0 ecotype), and an allele
+# reference in the flat component hook.
+genetic_model_id: "ABRC:SALK_089234C"
+symbol: SALK_089234C
+subtype: line
+taxon: NCBITaxon:3702
+mutagen: T-DNA insertion
+genetic_background: bridge_genotype:ath-col-0
+material_source_accession_number: SALK_089234C
+material_source_institute_name: Arabidopsis Biological Resource Center
+has_genomic_components:
+  - "TAIR:AT1G14685"

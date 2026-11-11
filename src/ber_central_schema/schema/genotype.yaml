@@ -113,6 +113,11 @@ classes:
       - synonyms
       - secondary_identifiers
       - parent_models
+      - genetic_background
+      - pedigree
+      - mutagen
+      - member_of_populations
+      - genome_assemblies
       - has_genomic_components
       - material_source_accession_number
       - material_source_accession_name
@@ -174,6 +179,22 @@ classes:
         Lakehouse join points. has_genomic_components is the intended JGI
         connection (gene / transcript / allele CURIEs). EMSL MONet connects
         at study/project level only; nothing genotype-shaped exists there.
+      - >-
+        Survey of plant resources (2026-11-10; Gramene, TAIR, SorghumBase/
+        GRIN, Ensembl Plants, Phytozome/GOLD, ABRC, pennycress resources):
+        none has a genotype entity. Allelic composition everywhere is an
+        association (TAIR germplasm-to-allele rows carrying zygosity;
+        Ensembl per-variant sample calls), which supports keeping
+        GeneticModel name-level and deferring components. Two recurring
+        splits this single class absorbs, recorded here so mappings stay
+        honest: (1) the line versus the orderable stock (TAIR Germplasm vs
+        Stock, ABRC stock records) - the stock side lands in the
+        material_source_* block; (2) the line versus its genome assembly
+        (Ensembl species databases, Phytozome genome releases, Gramene) -
+        the assembly side lands in genome_assemblies. GOLD's organism
+        entity has a strain field and no cultivar field (cultivars go in
+        strain), so GOLD organisms map to this class with subtype strain
+        or cultivar as the source metadata indicates.
 
 slots:
 
@@ -215,6 +236,15 @@ slots:
         Same pattern as nmdc:NcbiTaxon ids and the umbrella draft's taxon
         slot. Widen in lockstep (GTDB, LPSN, SeqCode) if those registries
         are admitted.
+      - >-
+        Expect asymmetry across kingdoms. Microbial strains often have
+        their own NCBI taxid (E. coli K-12 MG1655, NCBITaxon:511145);
+        plant cultivars never do - Ensembl Plants gives wheat Jagger the
+        species taxid (4565) and rice MH63 the Indica group taxid (39946),
+        and every Phytozome pennycress accession carries the species-level
+        13288. On a plant GeneticModel this slot holds the nearest
+        existing taxon, and the cultivar identity lives in this class, not
+        in the taxonomy.
 
   genus:
     description: Genus part of the organism name, per standard nomenclature.
@@ -288,6 +318,74 @@ slots:
     exact_mappings:
       - alliance:parental_populations
 
+  genetic_background:
+    range: GeneticModel
+    description: >-
+      The reference line or ecotype this model was made in or backcrossed
+      to, such as Col-0 for a SALK T-DNA insertion line. Distinct from
+      parent_models: a background is a reference, not a cross parent.
+    close_mappings:
+      - MIAPPE:infraspecificName
+    comments:
+      - >-
+        TAIR and ABRC both record Background as its own field, separate
+        from pedigree. The background is itself a GeneticModel, typically
+        of subtype ecotype, accession or strain, so natural accessions
+        (Col-0, Ler-0) become instances rather than magic strings.
+
+  pedigree:
+    description: >-
+      The pedigree exactly as the source wrote it, in cross notation, for
+      example ((SC120-6*Tx7000)Tx7000)-10-4-6-1-1-1-bk (a GRIN sorghum
+      pedigree). parent_models holds the references that resolve to
+      records; this keeps the full string, which usually does not resolve.
+    comments:
+      - >-
+        GRIN, TAIR and ABRC all carry pedigree as prose (ABRC's Col-0
+        lineage exists only as a description sentence). A model with
+        resolvable parents populates both.
+
+  mutagen:
+    description: >-
+      The mutagen applied to create this model, such as EMS, X-rays, fast
+      neutron or T-DNA insertion, when it is a mutant line.
+    comments:
+      - >-
+        Recorded by TAIR (Mutagen on germplasm and per allele), ABRC
+        donation forms, and central to the pennycress and sorghum EMS
+        populations (line names like 2019-M2-207, LBK_25M2-0136). MIAPPE
+        has no field for it; biologicalMaterialPreprocessing is the
+        closest and is about pre-study treatment, not lineage origin.
+
+  member_of_populations:
+    multivalued: true
+    description: >-
+      Named panels, populations or collections this model belongs to, such
+      as the Sorghum Association Panel, the 1001 Genomes collection, or a
+      stock-center set. Free text or CURIE as the source provides.
+    comments:
+      - >-
+        Membership, not parentage: TAIR pools and sets contain germplasms,
+        Ensembl populations contain samples, sorghum panels (SAP, BAP)
+        contain accessions. Do not put these in parent_models.
+
+  genome_assemblies:
+    multivalued: true
+    description: >-
+      Genome assembly or annotation releases of this model: INSDC assembly
+      accessions (GCA_911865555.2 for pennycress MN106-Ref) or portal
+      release identifiers (Phytozome Tarvensevar_MN106_v4_1, Ensembl
+      production names such as oryza_sativa_mh63). The scope anchor for
+      has_genomic_components.
+    comments:
+      - >-
+        Every genome resource surveyed identifies a sequenced line
+        primarily by its assembly (Gramene and Ensembl: one cultivar = one
+        genome database with a GCA accession; Phytozome: genome release
+        slugs; SorghumBase: per-line gene namespaces). A line can have
+        several (BTx623 has v3 SORBI_3 and v5.1 Sobic annotations
+        simultaneously).
+
   has_genomic_components:
     range: uriorcurie
     multivalued: true
@@ -301,14 +399,29 @@ slots:
       - >-
         Deliberately flat for the straw person. AGR models this as
         AgmAlleleAssociation rows each carrying a GENO zygosity term
-        (GENO:0000602 homozygous, GENO:0000603 heterozygous, ...). No
-        current BER source records zygosity, so the component class is
-        deferred; when allele-level data arrives, replace this slot's range
-        with a GenomicComponent association class without restructuring
-        anything else.
+        (GENO:0000602 homozygous, GENO:0000603 heterozygous, ...), and
+        TAIR's germplasm-to-allele associations carry the same information
+        (zygosity, inheritance, allele-to-locus) as table rows, so the
+        evidence that this eventually becomes an association class is
+        strong. No current BER source records zygosity, so the component
+        class is deferred; when allele-level data arrives, replace this
+        slot's range with a GenomicComponent association class without
+        restructuring anything else.
       - >-
-        This is the intended JGI join point: gene or transcript CURIEs here
-        join to JGI feature/annotation records.
+        This is the intended JGI join point: Phytozome locus CURIEs here
+        (phytozome.locus:TaMN106.1G000100 style; note the Bioregistry
+        phytozome.locus pattern predates dotted locus names and needs a
+        fix) join to JGI annotations. Gene identifiers are scoped to an
+        assembly and annotation version, not to the line: Phytozome
+        resolves a locus only together with its genome release, SorghumBase
+        BTx623 has two concurrent namespaces, and Ensembl projected models
+        reuse another cultivar's prefix. Always populate genome_assemblies
+        alongside this slot.
+      - >-
+        Known mismatch to plan for: ORNL pennycress work on the NCBI MN106
+        v2 assembly uses TAV2_LOCUS-style gene ids that do not match
+        Phytozome's TaMN106 ids for the same line; joining them needs an
+        id-mapping resource.
 
   material_source_accession_number:
     description: >-
@@ -406,6 +519,15 @@ enums:
       ecotype:
         description: >-
           A naturally occurring population adapted to a locality, as used
-          for Arabidopsis ecotypes.
+          for Arabidopsis ecotypes. TAIR models these as first-class
+          records with collection-site passport data (country, lat/long,
+          habitat); a geo passport block is deferred here pending the
+          BRIDGE Site/sample modules.
+      landrace:
+        description: >-
+          A traditional, locally adapted variety not produced by formal
+          breeding. One of GRIN's improvement-status values (cultivar /
+          landrace / genetic material), which is the closest operational
+          analog of this enum in a working genebank.
       variant:
         description: A viral variant or lineage designation.
