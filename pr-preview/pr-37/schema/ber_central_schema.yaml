@@ -1659,7 +1659,7 @@ classes:
           required: true
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-11-11T01:18:11'
+source_file_date: '2026-11-11T01:21:39'
 source_file_size: 1475
-generation_date: '2026-11-11T01:18:19'
+generation_date: '2026-11-11T01:21:47'
 
