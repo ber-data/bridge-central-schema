@@ -486,6 +486,7 @@
 
 
 <h1 id="slot-numeric_value">Slot: numeric_value</h1>
+<p><em>A single number parsed from raw_value.</em></p>
 <div>
 <p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/numeric_value">bridge_central_schema:numeric_value</a></p>
 <!-- no inheritance hierarchy -->
@@ -500,8 +501,8 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../QuantityValue/">QuantityValue</a></td>
-<td>A numeric value with a unit</td>
+<td><a href="../Measurement/">Measurement</a></td>
+<td>One value of one property of one thing, as reported by a source</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -522,7 +523,7 @@
 </tr>
 <tr>
 <td>Domain Of</td>
-<td><a href="../QuantityValue/">QuantityValue</a></td>
+<td><a href="../Measurement/">Measurement</a></td>
 </tr>
 </tbody>
 </table>
@@ -563,15 +564,22 @@
 <td>native</td>
 <td>bridge_central_schema:numeric_value</td>
 </tr>
+<tr>
+<td>close</td>
+<td>nmdc:has_numeric_value</td>
+</tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">numeric_value</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A single number parsed from raw_value.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
+<span class="nt">close_mappings</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:has_numeric_value</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QuantityValue</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">double</span>
 </code></pre></div>
 </details>

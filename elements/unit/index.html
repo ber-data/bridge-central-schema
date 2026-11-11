@@ -486,7 +486,7 @@
 
 
 <h1 id="slot-unit">Slot: unit</h1>
-<p><em>UCUM code preferred.</em></p>
+<p><em>The unit as a UCUM code, written in printable ASCII (for example um, not µm). Leave empty for values without a unit, such as pH. The source's own spelling stays in raw_value. UCUM is a grammar rather than a fixed list, so most units can be written even when no common code exists, and annotations in braces cover counted things ({cells}/g). When a unit cannot be written in UCUM, leave unit empty and keep the source's unit in raw_value. Many units from QUDT (used by ESS-DIVE) carry a UCUM code (qudt:ucumCode) that can go here.</em></p>
 <div>
 <p>URI: <a href="https://w3id.org/ber-data/bridge-central-schema/unit">bridge_central_schema:unit</a></p>
 <!-- no inheritance hierarchy -->
@@ -501,8 +501,8 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../QuantityValue/">QuantityValue</a></td>
-<td>A numeric value with a unit</td>
+<td><a href="../Measurement/">Measurement</a></td>
+<td>One value of one property of one thing, as reported by a source</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -523,7 +523,7 @@
 </tr>
 <tr>
 <td>Domain Of</td>
-<td><a href="../QuantityValue/">QuantityValue</a></td>
+<td><a href="../Measurement/">Measurement</a></td>
 </tr>
 </tbody>
 </table>
@@ -537,8 +537,22 @@
 </thead>
 <tbody>
 <tr>
+<td>### Value Constraints</td>
 <td></td>
-<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Regex Pattern</td>
+<td><code>^[!-~]+$</code></td>
 </tr>
 </tbody>
 </table>
@@ -564,17 +578,30 @@
 <td>native</td>
 <td>bridge_central_schema:unit</td>
 </tr>
+<tr>
+<td>close</td>
+<td>nmdc:has_unit</td>
+</tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unit</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UCUM code preferred.</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The unit as a UCUM code, written in printable ASCII (for example um,</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">not µm). Leave empty for values without a unit, such as pH. The source&#39;s own spelling</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">stays in raw_value. UCUM is a grammar rather than a fixed list, so most units can</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">be written even when no common code exists, and annotations in braces cover counted</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">things ({cells}/g). When a unit cannot be written in UCUM, leave unit empty and</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">keep the source&#39;s unit in raw_value. Many units from QUDT (used by ESS-DIVE) carry</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">a UCUM code (qudt:ucumCode) that can go here.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
+<span class="nt">close_mappings</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:has_unit</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QuantityValue</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Measurement</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^[!-~]+$</span>
 </code></pre></div>
 </details>
 </div>

@@ -560,24 +560,12 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="MeasurementValue/">MeasurementValue</a></td>
-<td>The polymorphic result of an observation or measurement; root of the result-v...</td>
-</tr>
-<tr>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="QuantityValue/">QuantityValue</a></td>
-<td>A numeric value with a unit</td>
+<td><a href="Measurement/">Measurement</a></td>
+<td>One value of one property of one thing, as reported by a source</td>
 </tr>
 <tr>
 <td><a href="NamedThing/">NamedThing</a></td>
 <td>Generic base for any identifiable BRIDGE entity</td>
-</tr>
-<tr>
-<td><a href="Observation/">Observation</a></td>
-<td>An act of observing a property of a feature of interest, yielding a result (O...</td>
-</tr>
-<tr>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="Measurement/">Measurement</a></td>
-<td>An observation whose result is a quantity</td>
 </tr>
 </tbody>
 </table>
@@ -591,12 +579,48 @@
 </thead>
 <tbody>
 <tr>
+<td><a href="coded_value/">coded_value</a></td>
+<td>A categorical value as a code from an ontology or controlled vocabulary, pars...</td>
+</tr>
+<tr>
+<td><a href="comparator/">comparator</a></td>
+<td>How the true value relates to numeric_value, for values reported as above or ...</td>
+</tr>
+<tr>
 <td><a href="description/">description</a></td>
 <td>A human-readable description for a thing</td>
 </tr>
 <tr>
+<td><a href="feature_of_interest/">feature_of_interest</a></td>
+<td>A reference to the thing whose property was measured: a sample, an organism, ...</td>
+</tr>
+<tr>
 <td><a href="id/">id</a></td>
 <td>A unique identifier for a thing</td>
+</tr>
+<tr>
+<td><a href="instrument/">instrument</a></td>
+<td>The instrument or sensor that produced the value</td>
+</tr>
+<tr>
+<td><a href="maximum_numeric_value/">maximum_numeric_value</a></td>
+<td>The upper end of a range, or the upper bound of a one-sided value</td>
+</tr>
+<tr>
+<td><a href="measurement_id/">measurement_id</a></td>
+<td>An identifier for this measurement, when the source has one or BRIDGE mints o...</td>
+</tr>
+<tr>
+<td><a href="measurement_method/">measurement_method</a></td>
+<td>How the value was obtained: a protocol name, a method reference, or the sourc...</td>
+</tr>
+<tr>
+<td><a href="minimum_numeric_value/">minimum_numeric_value</a></td>
+<td>The lower end of a range, or the lower bound of a one-sided value</td>
+</tr>
+<tr>
+<td><a href="missing_value_reason/">missing_value_reason</a></td>
+<td>Why no usable value is present</td>
 </tr>
 <tr>
 <td><a href="name/">name</a></td>
@@ -604,23 +628,79 @@
 </tr>
 <tr>
 <td><a href="numeric_value/">numeric_value</a></td>
-<td></td>
+<td>A single number parsed from raw_value</td>
+</tr>
+<tr>
+<td><a href="observed_end_time/">observed_end_time</a></td>
+<td>The end of the period a value covers</td>
 </tr>
 <tr>
 <td><a href="observed_property/">observed_property</a></td>
-<td>The property observed; a BERVO Variable CURIE when one exists</td>
+<td>The property that was measured, as a BRIDGE property identifier (bridge_prope...</td>
+</tr>
+<tr>
+<td><a href="observed_start_time/">observed_start_time</a></td>
+<td>The start of the period a value covers, for sources that report a start and a...</td>
+</tr>
+<tr>
+<td><a href="observed_time/">observed_time</a></td>
+<td>When the property was observed, in ISO 8601 at whatever resolution the source...</td>
+</tr>
+<tr>
+<td><a href="property_label/">property_label</a></td>
+<td>The name of the measured property as free text, for values whose property has...</td>
+</tr>
+<tr>
+<td><a href="quality_flag/">quality_flag</a></td>
+<td>A flag from the source or from BRIDGE curation, such as needs_review for a va...</td>
 </tr>
 <tr>
 <td><a href="raw_value/">raw_value</a></td>
-<td>The value exactly as it appeared at the source</td>
+<td>The value exactly as it appeared at the source, including its unit text, rang...</td>
 </tr>
 <tr>
-<td><a href="result/">result</a></td>
-<td>The result of the observation</td>
+<td><a href="sample_size/">sample_size</a></td>
+<td>How many readings, replicates or individuals a statistic summarizes</td>
+</tr>
+<tr>
+<td><a href="source_field/">source_field</a></td>
+<td>The source field, column or slot the value came from, named as the source nam...</td>
+</tr>
+<tr>
+<td><a href="source_record_id/">source_record_id</a></td>
+<td>The identifier of the source record the value came from, in the source's own ...</td>
+</tr>
+<tr>
+<td><a href="source_system/">source_system</a></td>
+<td>The system the value came from</td>
+</tr>
+<tr>
+<td><a href="standard_deviation/">standard_deviation</a></td>
+<td>The standard deviation reported with a mean, in the same unit</td>
+</tr>
+<tr>
+<td><a href="statistic/">statistic</a></td>
+<td>The summary statistic that numeric_value reports, when the source value summa...</td>
+</tr>
+<tr>
+<td><a href="treatment/">treatment</a></td>
+<td>The experimental treatment applied to the thing measured, such as a warming o...</td>
 </tr>
 <tr>
 <td><a href="unit/">unit</a></td>
-<td>UCUM code preferred</td>
+<td>The unit as a UCUM code, written in printable ASCII (for example um, not µm)</td>
+</tr>
+<tr>
+<td><a href="unit_basis/">unit_basis</a></td>
+<td>What the unit is expressed relative to, when the unit alone does not say, suc...</td>
+</tr>
+<tr>
+<td><a href="value_qualifier/">value_qualifier</a></td>
+<td>A qualifier the source attaches to the value, such as an optimum (optimal gro...</td>
+</tr>
+<tr>
+<td><a href="value_role/">value_role</a></td>
+<td>Whether the value was measured, set as an experimental condition, or assigned...</td>
 </tr>
 </tbody>
 </table>
@@ -634,8 +714,24 @@
 </thead>
 <tbody>
 <tr>
-<td></td>
-<td></td>
+<td><a href="ComparatorEnum/">ComparatorEnum</a></td>
+<td>How a reported number relates to the true value</td>
+</tr>
+<tr>
+<td><a href="MissingValueReasonEnum/">MissingValueReasonEnum</a></td>
+<td>Reasons a measurement has no usable value</td>
+</tr>
+<tr>
+<td><a href="StatisticEnum/">StatisticEnum</a></td>
+<td>Summary statistics a measurement value can report</td>
+</tr>
+<tr>
+<td><a href="ValueQualifierEnum/">ValueQualifierEnum</a></td>
+<td>Qualifiers a source attaches to a value</td>
+</tr>
+<tr>
+<td><a href="ValueRoleEnum/">ValueRoleEnum</a></td>
+<td>How a value came to be recorded</td>
 </tr>
 </tbody>
 </table>
@@ -703,6 +799,10 @@
 <tr>
 <td><a href="Objectidentifier/">Objectidentifier</a></td>
 <td>A URI or CURIE that represents an object in the model</td>
+</tr>
+<tr>
+<td><a href="PartialDateTime/">PartialDateTime</a></td>
+<td>An ISO 8601 year, year-month, date, or date-time</td>
 </tr>
 <tr>
 <td><a href="Sparqlpath/">Sparqlpath</a></td>
