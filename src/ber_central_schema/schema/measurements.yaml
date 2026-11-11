@@ -143,6 +143,35 @@ classes:
         length) becomes several measurements that share source_record_id
         and source_field.
 
+  MeasuredEntity:
+    mixin: true
+    description: >-
+      A mixin marking the things a measurement can be about - the siblings
+      a feature_of_interest reference points at: a site, a subject organism
+      observed in its own right, a sample. From the MeasuredEntity
+      discussion in issue #32.
+    see_also:
+      - https://github.com/doe-bridge/bridge-central-schema/issues/32
+    comments:
+      - >-
+        A mixin rather than an is_a parent, so the grouping does not spend
+        each member's single is_a slot on what is really a role (the
+        objection raised in issue #32); a class rather than only a subset,
+        so the sibling group is visible in generated docs and artifacts.
+        Both marking styles are semantic only: LinkML validates a reference
+        as a string, so nothing in the schema checks what a
+        feature_of_interest id points at. Referential enforcement stays a
+        downstream check over this mixin's members, exactly as the
+        subset-driven check proposed in issue #32 would run.
+      - >-
+        Members in this branch: Organism (the Subject of the issue #32
+        trio). Sample and Site live in the umbrella-classes draft (PR #16)
+        and should take this mixin when that module merges. GeneticModel
+        deliberately does NOT take it: a line or strain is the shared
+        identity of measured things, not a measured thing - you measure
+        plant 29041, not RIL 407, and line-level claims are aggregations
+        over measurements (the knowledge layer), not measurements.
+
   PhenotypicMeasurement:
     is_a: Measurement
     description: >-
@@ -238,6 +267,12 @@ slots:
       2026-10-07 BRIDGE DM notes.
     exact_mappings:
       - sosa:hasFeatureOfInterest
+    comments:
+      - >-
+        The classes this may point at carry the MeasuredEntity mixin
+        (issue #32). The range stays uriorcurie because LinkML validates a
+        reference as a string; what enforces membership is a downstream
+        check over the mixin's members, not this slot's range.
 
   raw_value:
     description: >-
