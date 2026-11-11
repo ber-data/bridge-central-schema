@@ -1,0 +1,15 @@
+# Real row from APPL samples/observations.csv: fc1.mask_coverage_pct for
+# plant 29013, event 67__29013__5577__fc1. This is a segmentation-quality
+# diagnostic (traitFamily qc in the APPL variable table), not a property
+# of the plant, so it is a plain Measurement rather than a
+# PhenotypicMeasurement - the separation the PhenotypicMeasurement
+# comments call for.
+property_label: segmentation mask coverage of tray ROI
+raw_value: "0.0"
+numeric_value: 0.0
+unit: "%"
+measurement_method: FC1 imaging; APPL-CORE feature extraction (masked px / tray ROI px * 100)
+observed_time: "2026-04-08"
+source_system: APPL-CORE
+source_record_id: 67__29013__5577__fc1
+source_field: fc1.mask_coverage_pct
