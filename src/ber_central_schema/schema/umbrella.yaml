@@ -36,8 +36,8 @@ classes:
   Study:
     is_a: NamedThing
     description: >-
-      A research initiative, proposal or project under which samples are
-      collected and processed.
+      A research initiative, proposal or project under which samples and/or data
+      may be collected and processed.
     close_mappings:
       # nmdc:Study aliases include "project" and "proposal".
       - nmdc:Study
