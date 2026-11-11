@@ -190,10 +190,28 @@
     </label>
 <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#inheritance">
+<span class="md-ellipsis">
+      
+        Inheritance
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#slots">
 <span class="md-ellipsis">
       
         Slots
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#aliases">
+<span class="md-ellipsis">
+      
+        Aliases
       
     </span>
 </a>
@@ -283,6 +301,9 @@
 <pre class="mermaid"><code> classDiagram
     class Organism
     click Organism href "../Organism/"
+      MeasuredEntity &lt;|-- Organism
+        click MeasuredEntity href "../MeasuredEntity/"
+
       Organism : genetic_model
 
 
@@ -305,7 +326,10 @@
       Organism : taxon
 
 </code></pre>
-<!-- no inheritance hierarchy -->
+<h2 id="inheritance">Inheritance</h2>
+<ul>
+<li><strong>Organism</strong> [ <a href="../MeasuredEntity/">MeasuredEntity</a>]</li>
+</ul>
 <h2 id="slots">Slots</h2>
 <table>
 <thead>
@@ -355,10 +379,15 @@
 </tr>
 </tbody>
 </table>
+<h2 id="aliases">Aliases</h2>
+<ul>
+<li>Subject</li>
+</ul>
 <h2 id="comments">Comments</h2>
 <ul>
 <li>nmdc:Organism carries strain_name and isolate_name as plain slots. Here that identity moves one hop away: an organism whose strain is known points at a GeneticModel of subtype strain. A source with only a species-level taxon populates taxon and leaves genetic_model empty.</li>
 <li>In the APPL/MIAPPE plant-phenotyping shape, the ObservationUnit (one pot-grown plant) is the individual; it maps here as an Organism whose genetic_model is the MIAPPE BiologicalMaterial line.</li>
+<li>This class is instance-level: one individual (a phenotyped plant, a patient) - the Subject of the issue #32 MeasuredEntity trio, hence the mixin. Note that nmdc:Organism is used type-ishly (one record of shared biological identity that many OrganismSamples point at via expected_organism), so microbial nmdc:Organism records carrying strain_name map better to GeneticModel than here; the close mapping below covers the individual reading. Whether BRIDGE needs individual-level Organism records for microbial data at all (it probably does not - samples would reference a GeneticModel directly) is a question for the samples squad.</li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
@@ -405,10 +434,22 @@
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In the APPL/MIAPPE plant-phenotyping shape, the ObservationUnit (one pot-grown plant)</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">is the individual; it maps here as an Organism whose genetic_model is the MIAPPE</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">BiologicalMaterial line.</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'This</span><span class="nv"> </span><span class="s">class</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">instance-level:</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">individual</span><span class="nv"> </span><span class="s">(a</span><span class="nv"> </span><span class="s">phenotyped</span><span class="nv"> </span><span class="s">plant,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">patient)</span><span class="nv"> </span><span class="s">-</span>
+<span class="w">  </span><span class="s">the</span><span class="nv"> </span><span class="s">Subject</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">issue</span><span class="nv"> </span><span class="s">#32</span><span class="nv"> </span><span class="s">MeasuredEntity</span><span class="nv"> </span><span class="s">trio,</span><span class="nv"> </span><span class="s">hence</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">mixin.</span><span class="nv"> </span><span class="s">Note</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">nmdc:Organism</span>
+<span class="w">  </span><span class="s">is</span><span class="nv"> </span><span class="s">used</span><span class="nv"> </span><span class="s">type-ishly</span><span class="nv"> </span><span class="s">(one</span><span class="nv"> </span><span class="s">record</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">shared</span><span class="nv"> </span><span class="s">biological</span><span class="nv"> </span><span class="s">identity</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">many</span><span class="nv"> </span><span class="s">OrganismSamples</span>
+<span class="w">  </span><span class="s">point</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">via</span><span class="nv"> </span><span class="s">expected_organism),</span><span class="nv"> </span><span class="s">so</span><span class="nv"> </span><span class="s">microbial</span><span class="nv"> </span><span class="s">nmdc:Organism</span><span class="nv"> </span><span class="s">records</span><span class="nv"> </span><span class="s">carrying</span><span class="nv"> </span><span class="s">strain_name</span>
+<span class="w">  </span><span class="s">map</span><span class="nv"> </span><span class="s">better</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">GeneticModel</span><span class="nv"> </span><span class="s">than</span><span class="nv"> </span><span class="s">here;</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">close</span><span class="nv"> </span><span class="s">mapping</span><span class="nv"> </span><span class="s">below</span><span class="nv"> </span><span class="s">covers</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">individual</span>
+<span class="w">  </span><span class="s">reading.</span><span class="nv"> </span><span class="s">Whether</span><span class="nv"> </span><span class="s">BRIDGE</span><span class="nv"> </span><span class="s">needs</span><span class="nv"> </span><span class="s">individual-level</span><span class="nv"> </span><span class="s">Organism</span><span class="nv"> </span><span class="s">records</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">microbial</span><span class="nv"> </span><span class="s">data</span>
+<span class="w">  </span><span class="s">at</span><span class="nv"> </span><span class="s">all</span><span class="nv"> </span><span class="s">(it</span><span class="nv"> </span><span class="s">probably</span><span class="nv"> </span><span class="s">does</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">samples</span><span class="nv"> </span><span class="s">would</span><span class="nv"> </span><span class="s">reference</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">GeneticModel</span><span class="nv"> </span><span class="s">directly)</span>
+<span class="w">  </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">question</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">samples</span><span class="nv"> </span><span class="s">squad.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
+<span class="nt">aliases</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Subject</span>
 <span class="nt">close_mappings</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:Organism</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">biolink:IndividualOrganism</span>
+<span class="nt">mixins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasuredEntity</span>
 <span class="nt">slots</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">organism_id</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">organism_name</span>
@@ -433,10 +474,22 @@
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In the APPL/MIAPPE plant-phenotyping shape, the ObservationUnit (one pot-grown plant)</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">is the individual; it maps here as an Organism whose genetic_model is the MIAPPE</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">BiologicalMaterial line.</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'This</span><span class="nv"> </span><span class="s">class</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">instance-level:</span><span class="nv"> </span><span class="s">one</span><span class="nv"> </span><span class="s">individual</span><span class="nv"> </span><span class="s">(a</span><span class="nv"> </span><span class="s">phenotyped</span><span class="nv"> </span><span class="s">plant,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">patient)</span><span class="nv"> </span><span class="s">-</span>
+<span class="w">  </span><span class="s">the</span><span class="nv"> </span><span class="s">Subject</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">issue</span><span class="nv"> </span><span class="s">#32</span><span class="nv"> </span><span class="s">MeasuredEntity</span><span class="nv"> </span><span class="s">trio,</span><span class="nv"> </span><span class="s">hence</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">mixin.</span><span class="nv"> </span><span class="s">Note</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">nmdc:Organism</span>
+<span class="w">  </span><span class="s">is</span><span class="nv"> </span><span class="s">used</span><span class="nv"> </span><span class="s">type-ishly</span><span class="nv"> </span><span class="s">(one</span><span class="nv"> </span><span class="s">record</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">shared</span><span class="nv"> </span><span class="s">biological</span><span class="nv"> </span><span class="s">identity</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">many</span><span class="nv"> </span><span class="s">OrganismSamples</span>
+<span class="w">  </span><span class="s">point</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">via</span><span class="nv"> </span><span class="s">expected_organism),</span><span class="nv"> </span><span class="s">so</span><span class="nv"> </span><span class="s">microbial</span><span class="nv"> </span><span class="s">nmdc:Organism</span><span class="nv"> </span><span class="s">records</span><span class="nv"> </span><span class="s">carrying</span><span class="nv"> </span><span class="s">strain_name</span>
+<span class="w">  </span><span class="s">map</span><span class="nv"> </span><span class="s">better</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">GeneticModel</span><span class="nv"> </span><span class="s">than</span><span class="nv"> </span><span class="s">here;</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">close</span><span class="nv"> </span><span class="s">mapping</span><span class="nv"> </span><span class="s">below</span><span class="nv"> </span><span class="s">covers</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">individual</span>
+<span class="w">  </span><span class="s">reading.</span><span class="nv"> </span><span class="s">Whether</span><span class="nv"> </span><span class="s">BRIDGE</span><span class="nv"> </span><span class="s">needs</span><span class="nv"> </span><span class="s">individual-level</span><span class="nv"> </span><span class="s">Organism</span><span class="nv"> </span><span class="s">records</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">microbial</span><span class="nv"> </span><span class="s">data</span>
+<span class="w">  </span><span class="s">at</span><span class="nv"> </span><span class="s">all</span><span class="nv"> </span><span class="s">(it</span><span class="nv"> </span><span class="s">probably</span><span class="nv"> </span><span class="s">does</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">samples</span><span class="nv"> </span><span class="s">would</span><span class="nv"> </span><span class="s">reference</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">GeneticModel</span><span class="nv"> </span><span class="s">directly)</span>
+<span class="w">  </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">question</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">samples</span><span class="nv"> </span><span class="s">squad.'</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/ber-data/bridge-central-schema</span>
+<span class="nt">aliases</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Subject</span>
 <span class="nt">close_mappings</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nmdc:Organism</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">biolink:IndividualOrganism</span>
+<span class="nt">mixins</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MeasuredEntity</span>
 <span class="nt">attributes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">organism_id</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">organism_id</span>

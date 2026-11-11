@@ -587,6 +587,11 @@ slots:
       belong to the Samples, Projects, and Processes Modelling Squad, and classes
       for sites, plots and other landscape features to the Landscape/Physical Features
       module proposed in the 2026-10-07 BRIDGE DM notes.'
+    comments:
+    - 'The classes this may point at carry the MeasuredEntity mixin (issue #32). The
+      range stays uriorcurie because LinkML validates a reference as a string; what
+      enforces membership is a downstream check over the mixin''s members, not this
+      slot''s range.'
     from_schema: https://w3id.org/ber-data/bridge-central-schema/measurements
     exact_mappings:
     - sosa:hasFeatureOfInterest
@@ -1477,6 +1482,31 @@ classes:
         property_label:
           name: property_label
           required: true
+  MeasuredEntity:
+    name: MeasuredEntity
+    definition_uri: https://w3id.org/ber-data/bridge-central-schema/MeasuredEntity
+    description: 'A mixin marking the things a measurement can be about - the siblings
+      a feature_of_interest reference points at: a site, a subject organism observed
+      in its own right, a sample. From the MeasuredEntity discussion in issue #32.'
+    comments:
+    - 'A mixin rather than an is_a parent, so the grouping does not spend each member''s
+      single is_a slot on what is really a role (the objection raised in issue #32);
+      a class rather than only a subset, so the sibling group is visible in generated
+      docs and artifacts. Both marking styles are semantic only: LinkML validates
+      a reference as a string, so nothing in the schema checks what a feature_of_interest
+      id points at. Referential enforcement stays a downstream check over this mixin''s
+      members, exactly as the subset-driven check proposed in issue #32 would run.'
+    - 'Members in this branch: Organism (the Subject of the issue #32 trio). Sample
+      and Site live in the umbrella-classes draft (PR #16) and should take this mixin
+      when that module merges. GeneticModel deliberately does NOT take it: a line
+      or strain is the shared identity of measured things, not a measured thing -
+      you measure plant 29041, not RIL 407, and line-level claims are aggregations
+      over measurements (the knowledge layer), not measurements.'
+    from_schema: https://w3id.org/ber-data/bridge-central-schema/measurements
+    see_also:
+    - https://github.com/doe-bridge/bridge-central-schema/issues/32
+    mixin: true
+    class_uri: bridge_central_schema:MeasuredEntity
   PhenotypicMeasurement:
     name: PhenotypicMeasurement
     definition_uri: https://w3id.org/ber-data/bridge-central-schema/PhenotypicMeasurement
@@ -1556,10 +1586,22 @@ classes:
     - In the APPL/MIAPPE plant-phenotyping shape, the ObservationUnit (one pot-grown
       plant) is the individual; it maps here as an Organism whose genetic_model is
       the MIAPPE BiologicalMaterial line.
+    - 'This class is instance-level: one individual (a phenotyped plant, a patient)
+      - the Subject of the issue #32 MeasuredEntity trio, hence the mixin. Note that
+      nmdc:Organism is used type-ishly (one record of shared biological identity that
+      many OrganismSamples point at via expected_organism), so microbial nmdc:Organism
+      records carrying strain_name map better to GeneticModel than here; the close
+      mapping below covers the individual reading. Whether BRIDGE needs individual-level
+      Organism records for microbial data at all (it probably does not - samples would
+      reference a GeneticModel directly) is a question for the samples squad.'
     from_schema: https://w3id.org/ber-data/bridge-central-schema/genotype
+    aliases:
+    - Subject
     close_mappings:
     - nmdc:Organism
     - biolink:IndividualOrganism
+    mixins:
+    - MeasuredEntity
     slots:
     - organism_id
     - organism_name
@@ -1608,6 +1650,21 @@ classes:
     - Lakehouse join points. has_genomic_components is the intended JGI connection
       (gene / transcript / allele CURIEs). EMSL MONet connects at study/project level
       only; nothing genotype-shaped exists there.
+    - 'What this class is not. Not an Organism: it is instance-to-type with Organism,
+      parallel to taxon - classification continued below NCBI resolution (its subtypes
+      are MCPD infraspecific ranks), shared by many individuals. The related mapping
+      to nmdc:Organism covers nmdc''s type-ish use of that class for microbes, where
+      the strain-bearing record is this entity. Not a Sample, by the umbrella draft''s
+      own three conditions: a genotype is not material, and a lineage is not taken
+      from a larger body nor input to a measurement. The inference directions differ
+      - a sample licenses claims upward about the body it came from; a genetic model
+      licenses generalization downward over its instances, which is the aggregation
+      (knowledge) layer, not representativeness. Not a MeasuredEntity (issue #32):
+      you measure plant 29041, not RIL 407. The sample-shaped neighbors are stocks
+      and culture aliquots (TAIR splits Germplasm from Stock for this reason; the
+      umbrella sample_category already has pure_culture and engineered_strain): material
+      instances of a lineage entering a lab workflow are Samples whose identity points
+      here.'
     - 'Survey of plant resources (2026-11-10; Gramene, TAIR, SorghumBase/ GRIN, Ensembl
       Plants, Phytozome/GOLD, ABRC, pennycress resources): none has a genotype entity.
       Allelic composition everywhere is an association (TAIR germplasm-to-allele rows
@@ -1625,6 +1682,8 @@ classes:
     - alliance:AffectedGenomicModel
     close_mappings:
     - MIAPPE:BiologicalMaterial
+    related_mappings:
+    - nmdc:Organism
     slots:
     - genetic_model_id
     - full_name
@@ -1659,7 +1718,7 @@ classes:
           required: true
 metamodel_version: 1.11.0
 source_file: ber_central_schema.yaml
-source_file_date: '2026-11-11T01:21:39'
+source_file_date: '2026-11-11T01:46:51'
 source_file_size: 1475
-generation_date: '2026-11-11T01:21:47'
+generation_date: '2026-11-11T01:47:01'
 
