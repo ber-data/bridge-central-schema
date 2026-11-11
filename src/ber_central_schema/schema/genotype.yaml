@@ -63,13 +63,10 @@ default_range: string
 
 imports:
   - linkml:types
-  - measurements
 
 classes:
 
   Organism:
-    mixins:
-      - MeasuredEntity
     aliases:
       - Subject
     description: >-
@@ -100,8 +97,10 @@ classes:
         whose genetic_model is the MIAPPE BiologicalMaterial line.
       - >-
         This class is instance-level: one individual (a phenotyped plant, a
-        patient) - the Subject of the issue #32 MeasuredEntity trio, hence
-        the mixin. Note that nmdc:Organism is used type-ishly (one record
+        patient) - the Subject of the issue #32 Site/Subject/Sample trio,
+        and one of the things a feature_of_interest may point at (see that
+        slot in the measurements module). Note that nmdc:Organism is used
+        type-ishly (one record
         of shared biological identity that many OrganismSamples point at
         via expected_organism), so microbial nmdc:Organism records carrying
         strain_name map better to GeneticModel than here; the close mapping
@@ -209,9 +208,11 @@ classes:
         The inference directions differ - a sample licenses claims upward
         about the body it came from; a genetic model licenses
         generalization downward over its instances, which is the
-        aggregation (knowledge) layer, not representativeness. Not a
-        MeasuredEntity (issue #32): you measure plant 29041, not RIL 407.
-        The sample-shaped neighbors are stocks and culture aliquots (TAIR
+        aggregation (knowledge) layer, not representativeness. Not a thing
+        measurements are about (the issue #32 MeasuredEntity discussion):
+        you measure plant 29041, not RIL 407, so feature_of_interest never
+        points here. The sample-shaped neighbors are stocks and culture
+        aliquots (TAIR
         splits Germplasm from Stock for this reason; the umbrella
         sample_category already has pure_culture and engineered_strain):
         material instances of a lineage entering a lab workflow are
