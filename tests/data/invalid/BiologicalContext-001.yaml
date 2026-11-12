@@ -1,0 +1,4 @@
+# Invalid: context_type is required.
+biological_context_id: bridge_biocontext:missing-context-type
+full_name: A context with no context_type
+taxon: NCBITaxon:13288

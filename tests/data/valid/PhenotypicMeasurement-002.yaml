@@ -1,0 +1,16 @@
+# Real row from APPL samples/observations.csv: fc1.Size.plant_scalar
+# (fluorescence mask area) for plant 29013, event 67__29013__5577__fc1,
+# which carries qcFlags empty_mask|low_mask_coverage - segmentation found
+# no plant, and the source stored 0.0. The sentinel stays in raw_value,
+# no numeric_value is parsed from it, and missing_value_reason plus the
+# source's flags say why.
+property_label: fluorescence mask area
+raw_value: "0.0"
+missing_value_reason: not_determined
+quality_flag: empty_mask|low_mask_coverage
+measurement_method: FC1 fluorescence imaging; APPL-CORE appl_plant_scalar
+trait_entity_term: "PO:0009006"
+observed_time: "2026-04-08"
+source_system: APPL-CORE
+source_record_id: 67__29013__5577__fc1
+source_field: fc1.Size.plant_scalar

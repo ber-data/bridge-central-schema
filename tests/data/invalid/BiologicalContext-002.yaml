@@ -1,0 +1,3 @@
+# Invalid: none of full_name, symbol or taxon is populated.
+biological_context_id: bridge_biocontext:nameless
+context_type: strain

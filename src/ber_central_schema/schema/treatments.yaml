@@ -1,0 +1,191 @@
+# BRIDGE treatments straw person, 2026-11-12. A starting point for
+# discussion, not agreed.
+#
+# Built from three sources:
+#   - MIAPPE v1.2 Experimental Factor (factor type, factor description,
+#     factor values) and Observation Unit (observation unit factor value):
+#     the factor is a variable the study controls, each level of it is a
+#     value, and observation units record which level they got.
+#   - The ORNL APPL OPAL export (study 67): experimental_factor.csv is one
+#     MIAPPE factor row (expeFactorType "Chemical administration", design
+#     column spike_dose, levels 0|50|100|200|500|1000), and
+#     observation_units.csv ties each plant to one level
+#     (obsUnitFactorValue "spike_dose=200").
+#   - The opalplants lakehouse data model, where opal.treatment is one row
+#     per applied level carrying the dose as an exact number
+#     (ni_dose_mg_per_kg) or as bounds (ni_dose_min/max_mg_per_kg) when
+#     only a range is known, plus evidence columns.
+#
+# Design: one Treatment record is ONE APPLIED LEVEL of one experimental
+# factor, not the factor as a whole. A MIAPPE factor with six values
+# becomes six Treatment records sharing factor_name and factor_type. This
+# matches how sources join (opal.plant.treatment and obsUnitFactorValue
+# both name a level, never the bare factor) and how the measurements
+# module's free-text treatment slot is already used ("warming or nitrogen
+# addition plot").
+#
+# The magnitude of a level reuses the measurements module's value slots
+# (raw_value, numeric_value, minimum/maximum_numeric_value, unit) instead
+# of defining dose slots of its own, so doses follow the same parsing and
+# UCUM conventions as measured values. A treatment's value is what the
+# measurements module calls value_role "setting"; here the class itself
+# says that, so the slot is not repeated.
+id: https://w3id.org/ber-data/bridge-central-schema/treatments
+name: treatments
+title: BRIDGE Treatments Module (straw person)
+description: >-
+  A Treatment class for one applied level of one experimental factor: a
+  dose in a dose series, a watering regime, a warming plot. Built from
+  MIAPPE v1.2 Experimental Factor, the ORNL APPL OPAL export, and the
+  opalplants treatment table.
+license: Apache-2.0
+version: 0.1.0
+
+prefixes:
+  bridge_treatments: https://w3id.org/ber-data/bridge-central-schema/treatments/
+  linkml: https://w3id.org/linkml/
+  MIAPPE: https://w3id.org/miappe/
+  EFO: http://www.ebi.ac.uk/efo/EFO_
+  schema: http://schema.org/
+
+default_prefix: bridge_treatments
+default_range: string
+
+imports:
+  - linkml:types
+  - measurements
+
+classes:
+
+  Treatment:
+    description: >-
+      One applied level of one experimental factor: the thing an
+      experimenter set, as opposed to measured. Examples: spike_dose=200
+      in the APPL OPAL dose series; a 600 mg/kg Ni amendment; the
+      "unwatered" arm of a watering regime. A factor with several levels
+      becomes several Treatment records sharing factor_name and
+      factor_type.
+    slots:
+      - treatment_id
+      - treatment_label
+      - factor_name
+      - factor_type
+      - treatment_description
+      - raw_value
+      - numeric_value
+      - minimum_numeric_value
+      - maximum_numeric_value
+      - unit
+    any_of:
+      - slot_conditions:
+          treatment_label:
+            required: true
+      - slot_conditions:
+          factor_name:
+            required: true
+    close_mappings:
+      - EFO:0000727
+    related_mappings:
+      - MIAPPE:ExperimentalFactor
+    comments:
+      - >-
+        At least one of treatment_label or factor_name must be populated:
+        a record must say either which level it is or which factor it is a
+        level of.
+      - >-
+        Level, not factor. MIAPPE's Experimental Factor describes the
+        factor once and lists its values; sources join on the level (OPAL
+        obsUnitFactorValue "spike_dose=0", opal.plant.treatment labels),
+        so the record here is the level and the factor lives in the shared
+        factor_name/factor_type/treatment_description values. If a future
+        source needs factor-level metadata that does not repeat cleanly
+        (a protocol document per factor), an ExperimentalFactor class can
+        be added above this one without moving any slot.
+      - >-
+        The value slots are the measurements module's. numeric_value
+        carries an exact dose, minimum/maximum_numeric_value carry a dose
+        known only as bounds (the opalplants dosing study records Ni doses
+        both ways), unit is UCUM, and raw_value keeps the source text.
+        Every value on a Treatment is a setting in the measurements
+        module's value_role sense; do not also create a Measurement with
+        value_role setting for the same fact unless the source reports the
+        achieved value as measured (a target dose here, the measured
+        realized dose as a Measurement).
+      - >-
+        The subject points at its treatments via applied_treatments,
+        mirroring MIAPPE where factor values attach to observation
+        units. applied_treatments is a Sample-bound slot: owned by no
+        class yet, defined for the squad's Sample class (PR #39) to
+        adopt alongside the biological_context module's Sample-bound
+        slots (biological_context, observation_unit_type,
+        spatial_position, replicate). The 2026-11-11 hackathon decision
+        that a sample carries nullable pointers to its biology extends
+        naturally to its treatments.
+      - >-
+        Evidence and status columns (opal.treatment.status, .source) are
+        deliberately left off the straw person; if they prove common,
+        reuse the measurements module's source_system / source_record_id /
+        quality_flag here.
+
+slots:
+
+  treatment_id:
+    identifier: true
+    range: uriorcurie
+    description: >-
+      Unique identifier for the treatment level. When the source assigns
+      one, keep it; otherwise BRIDGE derives one on ingest from the study
+      and the level label.
+    comments:
+      - >-
+        Not named id; reserved for reconciliation with the central
+        schema's NamedThing id slot, like biological_context_id.
+
+  treatment_label:
+    description: >-
+      The level as the source writes it, kept joinable with the source:
+      "spike_dose=200" (APPL obsUnitFactorValue), "ctrl_0mM", the
+      opal.plant.treatment string.
+    close_mappings:
+      - MIAPPE:observationUnitFactorValue
+
+  factor_name:
+    description: >-
+      The experimental factor this is a level of, named as the source
+      names the variable: spike_dose (the APPL design column), watering
+      regime, warming.
+    close_mappings:
+      - MIAPPE:factorValues
+    comments:
+      - >-
+        MIAPPE has no separate factor-name field; the factor is named
+        implicitly by its values ("Watering: watered / unwatered"). The
+        APPL export makes the name explicit (applAttributeName), and
+        joining levels into a factor needs it, so it is its own slot here.
+
+  factor_type:
+    description: >-
+      The kind of factor, as free text or an ontology term label: MIAPPE
+      suggests terms like watering, nutrient fertilizing, chemical
+      administration (the APPL OPAL factor type), air humidity regime.
+    exact_mappings:
+      - MIAPPE:factorType
+
+  treatment_description:
+    description: >-
+      Free-text description of the factor and how it was applied,
+      including anything unresolved about it (the APPL OPAL export notes
+      "unit UNCONFIRMED" on its dose factor).
+    exact_mappings:
+      - MIAPPE:factorDescription
+    slot_uri: schema:description
+
+  applied_treatments:
+    range: Treatment
+    multivalued: true
+    description: >-
+      The treatment levels applied to this subject, one per factor it
+      participates in: the MIAPPE observation unit factor value, OPAL's
+      per-plant treatment label, resolved to Treatment records.
+    close_mappings:
+      - MIAPPE:observationUnitFactorValue

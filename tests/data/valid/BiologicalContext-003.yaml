@@ -1,0 +1,11 @@
+# An AGR-shaped zebrafish genotype: symbol only (exercises the
+# name-or-symbol-or-taxon rule), with an allele reference in the flat
+# has_genomic_components hook and a parent strain.
+biological_context_id: "ZFIN:ZDB-FISH-150901-9465"
+symbol: fgf8a^ti282a/ti282a
+context_type: genotype
+taxon: NCBITaxon:7955
+has_genomic_components:
+  - "ZFIN:ZDB-ALT-980203-1374"
+parent_contexts:
+  - bridge_biocontext:zfin-ab-strain

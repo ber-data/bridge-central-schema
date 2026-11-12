@@ -1,0 +1,5 @@
+# Invalid: taxon must be an NCBITaxon CURIE.
+biological_context_id: bridge_biocontext:bad-taxon
+full_name: context with a free-text taxon
+context_type: taxon
+taxon: Thlaspi arvense

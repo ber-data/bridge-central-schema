@@ -1,0 +1,743 @@
+# BRIDGE biological-context straw person. A starting point for
+# discussion, not agreed.
+#
+# History: drafted 2026-11-10 as a two-class genotype/strain module
+# (Organism + GeneticModel); merged into one BiologicalContext class on
+# 2026-11-12 after the 2026-11-11 Samples, Projects and Processes squad
+# hackathon.
+#
+# Built from six sources:
+#   - nmdc-schema Organism (basic_classes.yaml, read 2026-11-10):
+#     biological identity as one record that many samples point at; NMDC
+#     deliberately dropped a separate Strain class and records
+#     strain_name/isolate_name as slots.
+#   - The squad's Tier-1 "Option 2" draft, whose BiologicalClassification
+#     is an information entity holding taxon_id, strain_name and
+#     isolate_name that samples reference via expected_organisms. This
+#     class is that idea, widened.
+#   - Alliance of Genome Resources AffectedGenomicModel: one class
+#     covering "inbred strains, stocks, disease models and mutant
+#     genotypes", disambiguated by a subtype vocabulary, with
+#     allele-level components carrying GENO zygosity terms.
+#   - MIAPPE v1.2 Biological Material: species-level organism (NCBI taxon
+#     ID), infraspecificName with MCPD ranks (subspecies, cultivar,
+#     variety, line, ...), and a material source block (germplasm
+#     accession + holding institute + collection-site coordinates).
+#   - ORNL APPL plant phenotyping exports (OPAL study 67): genotype
+#     identity in practice is a named line ("cultivar:RIL 407") plus
+#     germplasm source; no allele-level data exists in any current BER
+#     source.
+#   - The opalplants lakehouse pennycress germplasm registry: permanent
+#     opaque line ids, passport rows (collection lat/long, country,
+#     growth habit), aliases, pedigree parents, seed lots.
+#
+# Design: ONE self-referencing catalog class. A BiologicalContext row is
+# a biological identity at whatever level of specificity a source knows:
+# a bare taxon, a strain / isolate / cultivar / accession / line, a
+# described genotype, a named population, or a community of several
+# taxa. Samples and measurements point at the most specific context
+# known; a context can point at a broader one (broader_context), at its
+# pedigree parents (parent_contexts), at its background
+# (genetic_background), and - for communities - at its members
+# (member_contexts).
+#
+# Hackathon outcomes this design answers:
+#   - "Organism" as the squad means it is a reference or catalog record
+#     ("a table where you would go look up what E. coli is"), not the
+#     measured instance. The measured instance (a potted plant, a culture
+#     flask) is a Sample that represents its population or line (PR #39),
+#     so this module has NO instance-level class: the earlier straw
+#     person's Organism records (one phenotyped plant) become Samples
+#     whose biological_context names the line.
+#   - The hackathon's "sample points at both the organism and the
+#     genotype" collapses here into one pointer to the most specific
+#     context row, which reaches the taxon through the row itself
+#     (taxon slot) or through broader_context.
+#   - Microbes are never studied one cell at a time: a pure culture's
+#     biology is a population of one strain (point the sample at the
+#     strain row), a defined mixed culture (SynCom) or an environmental
+#     assemblage is a community row, with member_contexts carrying known
+#     composition.
+#
+# Reconciliation notes:
+#   - thing-identified-sample (PR #39) drafts Sample with derived_from /
+#     sample_of. The Sample-bound slots at the end of this module
+#     (biological_context, observation_unit_type, spatial_position,
+#     replicate, and applied_treatments in the treatments module) are
+#     defined here, owned by no class, for Sample to adopt when it lands.
+#   - measurements-first-pass has feature_of_interest as the hook a
+#     Measurement uses to point at the thing measured; a Sample or Site
+#     is the intended target. A BiologicalContext is deliberately NOT a
+#     measurement target: you measure plant 29041, not RIL 407.
+id: https://w3id.org/ber-data/bridge-central-schema/biological_context
+name: biological_context
+title: BRIDGE Biological Context Module (straw person)
+description: >-
+  One catalog class for biological identity across BER data sources:
+  taxa, strains, isolates, cultivars, accessions, lines, described
+  genotypes, named populations and communities, as BiologicalContext
+  rows that samples and other contexts reference.
+license: Apache-2.0
+version: 0.2.0
+
+prefixes:
+  bridge_biocontext: https://w3id.org/ber-data/bridge-central-schema/biological_context/
+  linkml: https://w3id.org/linkml/
+  nmdc: https://w3id.org/nmdc/
+  alliance: http://alliancegenome.org/
+  MIAPPE: https://w3id.org/miappe/
+  NCBITaxon: http://purl.obolibrary.org/obo/NCBITaxon_
+  GENO: http://purl.obolibrary.org/obo/GENO_
+  EFO: http://www.ebi.ac.uk/efo/EFO_
+  NCIT: http://purl.obolibrary.org/obo/NCIT_
+  PCO: http://purl.obolibrary.org/obo/PCO_
+  RO: http://purl.obolibrary.org/obo/RO_
+  biolink: https://w3id.org/biolink/vocab/
+  schema: http://schema.org/
+
+default_prefix: bridge_biocontext
+default_range: string
+
+imports:
+  - linkml:types
+  - treatments
+
+classes:
+
+  BiologicalContext:
+    aliases:
+      - GeneticModel
+      - Organism
+      - BiologicalClassification
+      - germplasm
+      - biological material
+    description: >-
+      A catalog record of biological identity, at whatever level of
+      specificity a source knows: a taxon, a strain, isolate, cultivar,
+      accession, line or other named lineage, a described genotype, a
+      named population of one taxon, or a community of several taxa.
+      Information about identity, not the biological material itself:
+      samples point at the most specific context known, and a context can
+      point at a broader one.
+    slots:
+      - biological_context_id
+      - full_name
+      - symbol
+      - context_type
+      - taxon
+      - genus
+      - species
+      - synonyms
+      - secondary_identifiers
+      - broader_context
+      - member_contexts
+      - parent_contexts
+      - genetic_background
+      - pedigree
+      - mutagen
+      - member_of_populations
+      - genome_assemblies
+      - has_genomic_components
+      - material_source_accession_number
+      - material_source_accession_name
+      - material_source_institute_code
+      - material_source_institute_name
+      - material_source_doi
+      - material_source_other_identifiers
+      - material_source_latitude
+      - material_source_longitude
+      - material_source_description
+      - context_description
+    any_of:
+      - slot_conditions:
+          full_name:
+            required: true
+      - slot_conditions:
+          symbol:
+            required: true
+      - slot_conditions:
+          taxon:
+            required: true
+    close_mappings:
+      - nmdc:Organism
+    narrow_mappings:
+      - alliance:AffectedGenomicModel
+      - MIAPPE:BiologicalMaterial
+      - biolink:OrganismTaxon
+      - PCO:0000001
+      - PCO:0000002
+    comments:
+      - >-
+        At least one of full_name, symbol or taxon must be populated. The
+        first two carry over the AGR AffectedGenomicModel rule; taxon
+        alone admits catalog rows from sources that know only a
+        classification (an NMDC organism with a species taxid and no
+        strain name).
+      - >-
+        One class instead of Organism + GeneticModel, decided 2026-11-12.
+        The 2026-11-11 squad hackathon read organism as a catalog record
+        and put the measured instance in Sample, which left the earlier
+        two-class split holding two catalogs: a taxon catalog (Organism)
+        and a lineage catalog (GeneticModel). Those merge here, with
+        context_type saying which level a row claims, and broader_context
+        relating levels (a described genotype to its strain, a strain row
+        to a species row where a source keeps one). NMDC's strain_name
+        collapses into a strain-type row; AGR's AGM maps to the
+        strain/genotype/line rows; the Tier-1 Option 2
+        BiologicalClassification maps to the class as a whole.
+      - >-
+        Strain versus genotype, as users mean them. A strain / line /
+        cultivar / accession is a material lineage you can obtain and
+        propagate (it has a stock center, a holding institute, parents).
+        A genotype is a description of genetic composition (alleles,
+        zygosity, background). A strain has a genotype; a genotype can be
+        written down for an individual that belongs to no named lineage.
+        Both NMDC and AGR collapsed the two in practice, and no current
+        BER source records allele-level composition, so one class with
+        context_type carries both, and decomposition stays in
+        has_genomic_components. GENO draws the same line explicitly:
+        GENO:0000536 genotype is information, GENO:0000112 strain is a
+        collection of organisms; an ontologically strict future revision
+        would split along it.
+      - >-
+        Microbes and communities. A pure culture's sample points at the
+        strain or isolate row - no one studies a single microbial cell,
+        so there is no individual-level microbial record to make. A
+        defined mixed culture (SynCom) is a community row whose
+        member_contexts list the strains. An environmental community is a
+        community row whose taxon, when given at all, is a
+        metagenome-style NCBI taxon (soil metagenome, NCBITaxon:410658);
+        its measured composition is data (taxonomic profiles), not
+        catalog metadata, and stays in the source's own tables.
+      - >-
+        Per-kingdom usage of context_type. Plants: cultivar, accession,
+        line (RILs), variety, ecotype (MCPD ranks via MIAPPE
+        infraspecificName). Animals: strain (mouse, rat), genotype (fish,
+        fly). Microbes and fungi: strain, isolate; engineered strains are
+        strains whose has_genomic_components lists the modifications;
+        NCBI Taxonomy sometimes has strain-level taxa (E. coli K-12
+        MG1655, NCBITaxon:511145), in which case taxon points there and
+        the species rollup comes from the taxonomy, not this schema.
+        Viruses: variant, isolate. Any kingdom: taxon, population,
+        community.
+      - >-
+        What this class is not. Not a Sample: a context is not material,
+        is not taken from a larger body, and is not input to a
+        measurement. The inference directions differ - a sample licenses
+        claims upward about the body it came from; a context licenses
+        generalization downward over its instances, which is the
+        aggregation (knowledge) layer. Not a thing measurements are
+        about: you measure plant 29041, not RIL 407, so
+        feature_of_interest never points here. The sample-shaped
+        neighbors are stocks, seed lots and culture aliquots (TAIR splits
+        Germplasm from Stock for this reason): material instances of a
+        lineage entering a lab workflow are Samples whose
+        biological_context points here.
+      - >-
+        Lakehouse join points. has_genomic_components is the intended JGI
+        connection (gene / transcript / allele CURIEs), anchored by
+        genome_assemblies. The opalplants pennycress registry joins at
+        the line: its germplasm_id (PCG000001...) is a
+        biological_context_id, its passport row fills the
+        material_source_* block, its germplasm_parent rows fill
+        parent_contexts, and its aliases fill synonyms and
+        secondary_identifiers. EMSL MONet connects at study/project level
+        only; nothing context-shaped exists there.
+      - >-
+        Survey of plant resources (2026-11-10; Gramene, TAIR,
+        SorghumBase/GRIN, Ensembl Plants, Phytozome/GOLD, ABRC,
+        pennycress resources): none has a genotype entity. Allelic
+        composition everywhere is an association (TAIR
+        germplasm-to-allele rows carrying zygosity; Ensembl per-variant
+        sample calls), which supports keeping this class name-level and
+        deferring components. Two recurring splits this single class
+        absorbs: (1) the line versus the orderable stock (TAIR Germplasm
+        vs Stock) - the stock side lands in the material_source_* block;
+        (2) the line versus its genome assembly (Ensembl, Phytozome,
+        Gramene) - the assembly side lands in genome_assemblies. GOLD's
+        organism entity has a strain field and no cultivar field, so GOLD
+        organisms map here with context_type strain or cultivar as the
+        source metadata indicates.
+
+slots:
+
+  biological_context_id:
+    identifier: true
+    range: uriorcurie
+    description: >-
+      Unique identifier for the context. When the source assigns one (a
+      ZFIN genotype ID, a germplasm accession ID, an opalplants
+      PCG number), keep it; otherwise BRIDGE derives one on ingest.
+    comments:
+      - >-
+        Not named id: reserved for reconciliation with the central
+        schema's NamedThing id slot (see module header).
+
+  full_name:
+    description: >-
+      The one current full name for the context: a line name (RIL 407),
+      a strain's full designation, a taxon's scientific name.
+    exact_mappings:
+      - alliance:agm_full_name
+    close_mappings:
+      - MIAPPE:biologicalMaterialId
+
+  symbol:
+    description: >-
+      The one current accepted symbol, e.g. CB1370 (a C. elegans strain)
+      or a zebrafish genotype symbol.
+    exact_mappings:
+      - alliance:agm_symbol
+      - biolink:symbol
+
+  context_type:
+    range: BiologicalContextTypeEnum
+    required: true
+    description: >-
+      Which kind of biological identity this row claims to be. Extends
+      AGR's strain / genotype / fish subtype vocabulary with the MCPD
+      infraspecific ranks MIAPPE uses for plants, with microbial and
+      viral usage, and with taxon, population and community rows.
+    close_mappings:
+      - alliance:subtype
+    aliases:
+      - subtype
+
+  taxon:
+    range: uriorcurie
+    pattern: '^NCBITaxon:\d+$'
+    description: >-
+      Taxonomic classification as an NCBITaxon CURIE: the nearest
+      existing taxon for a lineage row (species-level for plant
+      cultivars, strain-level where NCBI has one), the taxon itself for a
+      taxon row, a metagenome-style taxon for an environmental community.
+    close_mappings:
+      - nmdc:classified_as
+      - MIAPPE:organism
+    comments:
+      - >-
+        Same pattern as nmdc:NcbiTaxon ids. Widen in lockstep (GTDB,
+        LPSN, SeqCode) if those registries are admitted.
+      - >-
+        Expect asymmetry across kingdoms. Microbial strains often have
+        their own NCBI taxid (E. coli K-12 MG1655, NCBITaxon:511145);
+        plant cultivars never do - Ensembl Plants gives wheat Jagger the
+        species taxid (4565), and every Phytozome pennycress accession
+        carries the species-level 13288. On a plant lineage row this slot
+        holds the nearest existing taxon, and the cultivar identity lives
+        in this class, not in the taxonomy.
+
+  genus:
+    description: Genus part of the organism name, per standard nomenclature.
+    exact_mappings:
+      - MIAPPE:genus
+
+  species:
+    description: Specific epithet part of the organism name.
+    exact_mappings:
+      - MIAPPE:species
+
+  synonyms:
+    multivalued: true
+    description: Non-preferred names for the context, any type.
+    exact_mappings:
+      - alliance:agm_synonyms
+
+  secondary_identifiers:
+    multivalued: true
+    description: >-
+      Identifiers for the same entity in other collections (EBI
+      BioSamples, germplasm databases, stock centers), and external ids
+      a source carries for the record.
+    exact_mappings:
+      - alliance:agm_secondary_ids
+      - MIAPPE:biologicalMaterialExtId
+
+  broader_context:
+    range: BiologicalContext
+    description: >-
+      The less specific context this row specializes, when the broader
+      identity is itself a BRIDGE row: a described genotype's strain, a
+      strain's species row where a source keeps species rows. When the
+      broader identity is exactly an NCBI taxon, populate taxon and leave
+      this empty.
+    aliases:
+      - specializes
+
+  member_contexts:
+    range: BiologicalContext
+    multivalued: true
+    description: >-
+      The known members of a community or population row: the strains of
+      a defined SynCom, the taxa of an enrichment. Composition, not
+      pedigree; measured community profiles are data, not catalog
+      metadata, and do not go here.
+    related_mappings:
+      - RO:0002351
+
+  parent_contexts:
+    range: BiologicalContext
+    multivalued: true
+    description: >-
+      Pedigree parents: AGR parental populations, MIAPPE's
+      "mother_accession X father_accession" convention, the opalplants
+      germplasm_parent rows.
+    aliases:
+      - parent_models
+    exact_mappings:
+      - alliance:parental_populations
+
+  genetic_background:
+    range: BiologicalContext
+    description: >-
+      The reference line or ecotype this lineage was made in or
+      backcrossed to, such as Col-0 for a SALK T-DNA insertion line.
+      Distinct from parent_contexts: a background is a reference, not a
+      cross parent.
+    close_mappings:
+      - MIAPPE:infraspecificName
+    comments:
+      - >-
+        TAIR and ABRC both record Background as its own field, separate
+        from pedigree, and the opalplants registry records
+        background_germplasm_id with the same meaning. The background is
+        itself a BiologicalContext, typically of context_type ecotype,
+        accession or strain, so natural accessions (Col-0, Ler-0) become
+        rows rather than magic strings.
+
+  pedigree:
+    description: >-
+      The pedigree exactly as the source wrote it, in cross notation, for
+      example ((SC120-6*Tx7000)Tx7000)-10-4-6-1-1-1-bk (a GRIN sorghum
+      pedigree). parent_contexts holds the references that resolve to
+      records; this keeps the full string, which usually does not
+      resolve.
+    comments:
+      - >-
+        GRIN, TAIR and ABRC all carry pedigree as prose (ABRC's Col-0
+        lineage exists only as a description sentence). A row with
+        resolvable parents populates both.
+
+  mutagen:
+    description: >-
+      The mutagen applied to create this lineage, such as EMS, X-rays,
+      fast neutron or T-DNA insertion, when it is a mutant line.
+    comments:
+      - >-
+        Recorded by TAIR (Mutagen on germplasm and per allele), ABRC
+        donation forms, and central to the pennycress and sorghum EMS
+        populations (line names like 2019-M2-207). MIAPPE has no field
+        for it; biologicalMaterialPreprocessing is the closest and is
+        about pre-study treatment, not lineage origin.
+
+  member_of_populations:
+    multivalued: true
+    description: >-
+      Named panels, populations or collections this lineage belongs to,
+      such as the Sorghum Association Panel, the 1001 Genomes collection,
+      or a stock-center set. Free text or CURIE as the source provides.
+    comments:
+      - >-
+        Membership of this row in a larger named set, as the source
+        states it; the inverse of member_contexts, kept as text because
+        panels are rarely rows. Do not put pedigree here.
+
+  genome_assemblies:
+    multivalued: true
+    description: >-
+      Genome assembly or annotation releases of this lineage: INSDC
+      assembly accessions (GCA_911865555.2 for pennycress MN106-Ref) or
+      portal release identifiers (Phytozome Tarvensevar_MN106_v4_1,
+      Ensembl production names such as oryza_sativa_mh63). The scope
+      anchor for has_genomic_components.
+    comments:
+      - >-
+        Every genome resource surveyed identifies a sequenced line
+        primarily by its assembly (Gramene and Ensembl: one cultivar =
+        one genome database with a GCA accession; Phytozome: genome
+        release slugs; SorghumBase: per-line gene namespaces). A line can
+        have several (BTx623 has v3 SORBI_3 and v5.1 Sobic annotations
+        simultaneously).
+
+  has_genomic_components:
+    range: uriorcurie
+    multivalued: true
+    description: >-
+      References to the genomic parts that make up this context: gene,
+      transcript, allele or construct CURIEs. A hook, not a structure;
+      see comments.
+    related_mappings:
+      - alliance:components
+    comments:
+      - >-
+        Deliberately flat for the straw person. AGR models this as
+        AgmAlleleAssociation rows each carrying a GENO zygosity term
+        (GENO:0000602 homozygous, GENO:0000603 heterozygous, ...), and
+        TAIR's germplasm-to-allele associations carry the same
+        information as table rows, so the evidence that this eventually
+        becomes an association class is strong. No current BER source
+        records zygosity, so the component class is deferred; when
+        allele-level data arrives, replace this slot's range with a
+        GenomicComponent association class without restructuring anything
+        else.
+      - >-
+        This is the intended JGI join point: Phytozome locus CURIEs here
+        join to JGI annotations. Gene identifiers are scoped to an
+        assembly and annotation version, not to the line, so always
+        populate genome_assemblies alongside this slot. Known mismatch to
+        plan for: ORNL pennycress work on the NCBI MN106 v2 assembly uses
+        TAV2_LOCUS-style gene ids that do not match Phytozome's TaMN106
+        ids for the same line; joining them needs an id-mapping resource.
+
+  material_source_accession_number:
+    description: >-
+      Unique identifier for the accession within the source genebank or
+      collection, e.g. W95115_inra.
+    exact_mappings:
+      - MIAPPE:materialSourceAccNumber
+
+  material_source_accession_name:
+    description: Registered accession or variety name in the source collection.
+    exact_mappings:
+      - MIAPPE:materialSourceAccName
+
+  material_source_institute_code:
+    description: >-
+      FAO WIEWS code (or laboratory acronym) of the institute holding the
+      material, e.g. FRA09.
+    exact_mappings:
+      - MIAPPE:materialSourceInstCode
+
+  material_source_institute_name:
+    description: Name of the institute holding the material.
+    exact_mappings:
+      - MIAPPE:materialSourceInstName
+
+  material_source_doi:
+    range: uriorcurie
+    description: DOI of the material source.
+    exact_mappings:
+      - MIAPPE:materialSourceDoi
+
+  material_source_other_identifiers:
+    multivalued: true
+    description: >-
+      Other identifiers known for this material source, as key:value
+      pairs when the source provides them.
+    exact_mappings:
+      - MIAPPE:materialSourceOtherIds
+
+  material_source_latitude:
+    range: double
+    description: >-
+      Latitude of the site the material was originally collected from,
+      decimal degrees WGS84: the germplasm passport coordinate (the
+      opalplants pennycress passport rows), not where any experiment
+      ran.
+    exact_mappings:
+      - MIAPPE:materialSourceLatitude
+    comments:
+      - >-
+        Three location facts live in three places and must not share a
+        slot. Where a sample or observation unit was collected or grown
+        belongs on Sample (PR #39, like nmdc lat_lon); where a study or
+        facility is belongs on Study (PR #21; the APPL export's
+        locationLatitude is the ORNL greenhouse); where the germplasm
+        accession was originally collected belongs here.
+
+  material_source_longitude:
+    range: double
+    description: >-
+      Longitude of the site the material was originally collected from,
+      decimal degrees WGS84. See material_source_latitude for which
+      location facts belong elsewhere.
+    exact_mappings:
+      - MIAPPE:materialSourceLongitude
+
+  material_source_description:
+    description: >-
+      Free-text description of the material source: provenance,
+      collecting circumstances, or the passport fields this straw person
+      does not yet structure (country, continent, growth habit in the
+      opalplants pennycress passport).
+    exact_mappings:
+      - MIAPPE:materialSourceDescription
+
+  context_description:
+    description: A human-readable description of the context.
+    slot_uri: schema:description
+    aliases:
+      - genetic_model_description
+    comments:
+      - Not named description; see biological_context_id.
+
+  # ------------------------------------------------------------------
+  # Sample-bound slots. Owned by no class in this module: they are the
+  # subject-side hooks for the squad's Sample class (PR #39) to adopt,
+  # defined here so the MIAPPE observation-unit fields have agreed names
+  # and mappings before Sample lands. applied_treatments, their sibling,
+  # is defined in the treatments module.
+  # ------------------------------------------------------------------
+
+  biological_context:
+    range: BiologicalContext
+    description: >-
+      The most specific biological identity known for this sample or
+      observation unit: a strain for a pure culture, a line for a
+      phenotyped plant, a community row for a SynCom inoculum. Replaces
+      the 2026-11-11 hackathon's pair of pointers (organism and genotype)
+      with one pointer that reaches the taxon through the context row.
+    aliases:
+      - expected_organisms
+      - genetic_model
+    comments:
+      - >-
+        Single-valued on purpose: a sample with several applicable
+        contexts (a host-microbe system) points at the most specific one,
+        or at a community row whose member_contexts carry the parts.
+        Whether host-associated data needs a second, host-side pointer
+        (the Tier-1 Option 2 draft's expected_organisms is multivalued)
+        is an open question for the samples squad.
+
+  observation_unit_type:
+    range: ObservationUnitTypeEnum
+    description: >-
+      The level of the experimental design this sample observes, per the
+      MIAPPE observation-unit levels (plant, pot, plot, block, ...),
+      extended with culture for microbial growth vessels.
+    exact_mappings:
+      - MIAPPE:observationUnitType
+    comments:
+      - >-
+        Only meaningful for samples that are observation units in a
+        designed study (APPL study 67 rows are all plant). Leave empty
+        for opportunistic and environmental samples.
+
+  spatial_position:
+    description: >-
+      Where the unit sits in the experimental layout, as the source
+      writes it: the APPL export's "tray:1591;trayBarcode:XX APPL 45", a
+      greenhouse row/tray/position triple, a field plot coordinate.
+    exact_mappings:
+      - MIAPPE:spatialDistribution
+
+  replicate:
+    description: >-
+      The design replicate this unit realizes, as the source labels it
+      (rep5; the opalplants plant table's replicate column).
+    comments:
+      - >-
+        MIAPPE has no replicate field (replication is implicit in the
+        design); APPL and the opalplants model both record it per plant,
+        so it is kept as source-shaped text.
+
+enums:
+
+  BiologicalContextTypeEnum:
+    description: >-
+      Kinds of biological identity a BiologicalContext row can claim.
+      AGR's subtype_values (strain, genotype, fish) widened for BER: fish
+      is dropped (it is a taxon fact, not a subtype); plant, microbial
+      and viral usage is added; and taxon, population and community admit
+      the catalog rows the merged class absorbs.
+    permissible_values:
+      taxon:
+        meaning: biolink:OrganismTaxon
+        description: >-
+          A row that is exactly a taxon in a reference taxonomy, for
+          sources that know only the classification (an NMDC organism
+          with a species taxid and no strain name).
+      genotype:
+        meaning: GENO:0000536
+        description: >-
+          A described genetic composition, as used for fish and fly
+          models (ZFIN, FlyBase) and for plant genotypes in the GWAS
+          sense. GENO defines it as a specification of the genetic state
+          of an organism, i.e. information, not material.
+      strain:
+        meaning: GENO:0000112
+        description: >-
+          A maintained lineage: mouse and rat strains, microbial and
+          fungal strains, including engineered strains. GENO's term is
+          "strain or breed": a collection of organisms bred or
+          manipulated with the goal of being genetically identical.
+      isolate:
+        description: >-
+          A lineage derived from a single environmental or clinical
+          isolation event (microbes, fungi, viruses); nmdc isolate_name
+          maps here.
+      cultivar:
+        meaning: EFO:0005136
+        description: >-
+          A cultivated plant variety selected and given a name because it
+          has desirable characteristics (MCPD cv.; EFO definition). Also
+          TAXRANK:0000034 as a taxonomic rank; not in GENO.
+      accession:
+        description: >-
+          A germplasm accession held by a genebank or collection;
+          MIAPPE's material source entity.
+      line:
+        description: >-
+          A named laboratory or breeding line, including recombinant
+          inbred lines (RILs) such as the APPL Thlaspi arvense lines.
+      variety:
+        meaning: NCIT:C62709
+        description: >-
+          A botanical variety (MCPD var.): in botanical nomenclature, a
+          rank below subspecies but above forma (NCIT definition; not in
+          GENO).
+      subspecies:
+        description: A subspecies-rank entity (MCPD subsp.).
+      ecotype:
+        description: >-
+          A naturally occurring population adapted to a locality, as used
+          for Arabidopsis ecotypes. TAIR models these as first-class
+          records with collection-site passport data; the
+          material_source_* block carries it here.
+      landrace:
+        description: >-
+          A traditional, locally adapted variety not produced by formal
+          breeding. One of GRIN's improvement-status values (cultivar /
+          landrace / genetic material), which is the closest operational
+          analog of this enum in a working genebank.
+      variant:
+        description: A viral variant or lineage designation.
+      population:
+        meaning: PCO:0000001
+        description: >-
+          A named population of organisms of one taxon treated as a
+          catalog identity in its own right: a GWAS population
+          descriptor, a sequenced panel's subpopulation. A pure culture
+          is NOT a population row - its sample points at the strain.
+      community:
+        meaning: PCO:0000002
+        description: >-
+          An assemblage of organisms of several taxa: a defined synthetic
+          community (SynCom) whose member_contexts list the strains, an
+          enrichment, or the expected biology of an environmental sample
+          (taxon then holds a metagenome-style NCBI taxon).
+
+  ObservationUnitTypeEnum:
+    description: >-
+      The MIAPPE v1.2 observation-unit levels, plus culture as a BRIDGE
+      extension for microbial growth vessels.
+    permissible_values:
+      study:
+        description: The whole study observed as one unit.
+      block:
+        description: A block of the experimental design.
+      sub_block:
+        description: A sub-block of a block.
+      plot:
+        description: A plot of the experimental design.
+      sub_plot:
+        description: A sub-plot of a plot.
+      pot:
+        description: A pot or container holding one or more plants.
+      plant:
+        description: One individual plant (the APPL study 67 unit).
+      culture:
+        description: >-
+          A microbial growth vessel (flask, plate, well). Not in MIAPPE;
+          BRIDGE extension so designed microbial experiments can use the
+          same level vocabulary.
