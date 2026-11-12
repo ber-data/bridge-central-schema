@@ -1,4 +1,0 @@
-# Invalid: subtype is required.
-genetic_model_id: bridge_genotype:missing-subtype
-full_name: A model with no subtype
-taxon: NCBITaxon:13288
