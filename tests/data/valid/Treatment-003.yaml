@@ -1,0 +1,7 @@
+# A MIAPPE-style categorical level: the "unwatered" arm of a watering
+# regime. Label only - no numeric magnitude - which is the common shape
+# for MIAPPE factorValues like "Watering: watered / unwatered".
+treatment_id: bridge_treatments:example-unwatered
+treatment_label: unwatered
+factor_name: watering regime
+factor_type: watering

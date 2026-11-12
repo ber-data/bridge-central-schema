@@ -1,0 +1,9 @@
+# A taxon-only catalog row, for sources that know only the
+# classification (an NMDC-style organism with a species taxid and no
+# strain name). Exercises the rule arm where taxon alone satisfies the
+# name-or-symbol-or-taxon requirement.
+biological_context_id: bridge_biocontext:tarvense-species
+context_type: taxon
+taxon: NCBITaxon:13288
+genus: Thlaspi
+species: arvense

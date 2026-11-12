@@ -172,7 +172,7 @@ classes:
         interpreted covers a single interpreted value, and a future
         Phenotype class referencing the measurements it derives from would
         cover the aggregate. Flagged as an open question on the
-        genotype/strain straw person.
+        biological-context straw person.
       - >-
         QC values that describe the measuring process rather than the
         organism (for example APPL's fc1.mask_coverage_pct segmentation
@@ -241,19 +241,20 @@ slots:
     comments:
       - >-
         The things this may point at - the issue #32 MeasuredEntity
-        discussion - are a Site, a Sample, or a subject Organism observed
-        in its own right (genotype module; Sample and Site are in the
-        umbrella-classes draft, PR #16). Conceptually these are
-        sosa:FeatureOfInterest, "the thing whose property is being
-        estimated or calculated in the course of an Observation". No
-        grouping class or subset marks them: LinkML's docs give mixins to
-        attribute-sharing, not marking, and no construct (range, parent,
-        mixin, any_of, subset) validates what a reference id points at, so
-        membership lives in this comment and enforcement is a downstream
-        check over these classes' id columns. A GeneticModel (a line or
-        strain) is deliberately not on the list: you measure plant 29041,
-        not RIL 407 - line-level claims are aggregations over
-        measurements, not measurements.
+        discussion - are a Site or a Sample (the squad's broadened
+        Sample, PR #39, covers the observed individual: a potted plant
+        or a tree is a Sample representing its line or population).
+        Conceptually these are sosa:FeatureOfInterest, "the thing whose
+        property is being estimated or calculated in the course of an
+        Observation". No grouping class or subset marks them: LinkML's
+        docs give mixins to attribute-sharing, not marking, and no
+        construct (range, parent, mixin, any_of, subset) validates what
+        a reference id points at, so membership lives in this comment
+        and enforcement is a downstream check over these classes' id
+        columns. A BiologicalContext (a line, strain or taxon row) is
+        deliberately not on the list: you measure plant 29041, not RIL
+        407 - line-level claims are aggregations over measurements, not
+        measurements.
     see_also:
       - https://github.com/doe-bridge/bridge-central-schema/issues/32
 
@@ -368,6 +369,14 @@ slots:
       The experimental treatment applied to the thing measured, such as a
       warming or nitrogen addition plot, kept apart from measurement_method
       because downstream users filter and compare on it.
+    comments:
+      - >-
+        Free text, for flat sources. When the source gives the
+        treatment its own structure (a factor with levels and doses, as
+        the APPL OPAL export and the opalplants treatment table do),
+        model it as a Treatment record (treatments module) referenced
+        from the subject's applied_treatments, and keep the label the
+        source wrote here.
 
   instrument:
     description: The instrument or sensor that produced the value.

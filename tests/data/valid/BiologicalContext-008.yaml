@@ -1,0 +1,13 @@
+# A defined synthetic community (SynCom): a community row whose
+# member_contexts list the strain rows. Illustrative composition, not a
+# real published SynCom.
+biological_context_id: bridge_biocontext:example-syncom-2
+full_name: Example two-member SynCom
+context_type: community
+member_contexts:
+  - bridge_biocontext:pputida-kt2440
+  - bridge_biocontext:ecoli-k12-mg1655
+context_description: >-
+  Defined mixed culture of P. putida KT2440 and E. coli MG1655, used to
+  show how a SynCom inoculum's sample points at one community row whose
+  members are strain rows.

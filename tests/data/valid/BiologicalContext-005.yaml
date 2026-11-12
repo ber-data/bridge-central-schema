@@ -1,0 +1,13 @@
+# A TAIR/ABRC-shaped T-DNA insertion line: mutagen, a genetic background
+# that is itself a BiologicalContext (the Col-0 ecotype), and an allele
+# reference in the flat component hook.
+biological_context_id: "ABRC:SALK_089234C"
+symbol: SALK_089234C
+context_type: line
+taxon: NCBITaxon:3702
+mutagen: T-DNA insertion
+genetic_background: bridge_biocontext:ath-col-0
+material_source_accession_number: SALK_089234C
+material_source_institute_name: Arabidopsis Biological Resource Center
+has_genomic_components:
+  - "TAIR:AT1G14685"

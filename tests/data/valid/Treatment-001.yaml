@@ -1,0 +1,12 @@
+# From ORNL APPL OPAL study 67 samples/experimental_factor.csv: the
+# spike_dose=200 level of the one factor (expeFactorType "Chemical
+# administration", design column spike_dose, levels 0|50|100|200|500|
+# 1000). The export says "unit UNCONFIRMED", so there is a number but
+# deliberately no unit.
+treatment_id: bridge_treatments:appl-67-spike-dose-200
+treatment_label: spike_dose=200
+factor_name: spike_dose
+factor_type: Chemical administration
+treatment_description: APPL design column design_spike; unit UNCONFIRMED
+raw_value: "200"
+numeric_value: 200

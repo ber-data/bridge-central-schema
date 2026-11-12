@@ -1,0 +1,11 @@
+# Pseudomonas putida KT2440, the strain row a pure-culture sample points
+# at: the flask's biology is a population of this strain, so no
+# individual-level microbial record exists ("no one studies a single
+# microbe on its own"). KT2440 has its own strain-level NCBI taxon.
+biological_context_id: bridge_biocontext:pputida-kt2440
+full_name: Pseudomonas putida KT2440
+symbol: KT2440
+context_type: strain
+taxon: NCBITaxon:160488
+secondary_identifiers:
+  - "ATCC:47054"

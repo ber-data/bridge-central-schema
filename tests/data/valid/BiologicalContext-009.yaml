@@ -1,0 +1,8 @@
+# The expected biology of an environmental sample: a community row whose
+# taxon is a metagenome-style NCBI taxon. The measured composition
+# (taxonomic profiles) is data, not catalog metadata, and does not go on
+# this row.
+biological_context_id: bridge_biocontext:soil-community
+full_name: soil microbial community
+context_type: community
+taxon: NCBITaxon:410658

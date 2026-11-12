@@ -1,0 +1,12 @@
+# Shaped like an opalplants opal.treatment row whose Ni dose is known
+# only as bounds (ni_dose_min_mg_per_kg / ni_dose_max_mg_per_kg): the
+# level keeps the source label, and the magnitude is a range in UCUM
+# mg/kg.
+treatment_id: bridge_treatments:example-ni-mid
+treatment_label: Ni_mid
+factor_name: ni_dose
+factor_type: Chemical administration
+raw_value: 100-200 mg Ni per kg soil
+minimum_numeric_value: 100
+maximum_numeric_value: 200
+unit: mg/kg

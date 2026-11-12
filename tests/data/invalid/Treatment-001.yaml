@@ -1,0 +1,5 @@
+# Invalid: neither treatment_label nor factor_name is populated, so the
+# record says neither which level it is nor which factor it levels.
+treatment_id: bridge_treatments:anonymous-dose
+factor_type: Chemical administration
+numeric_value: 200

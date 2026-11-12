@@ -1,0 +1,16 @@
+# Shaped like an opalplants pennycress passport row: a natural accession
+# whose germplasm passport carries the collection-site coordinates.
+# These are the material-source coordinates (where the accession was
+# collected), not where any experiment ran - the study location belongs
+# on Study, and a sample's own coordinates belong on Sample.
+biological_context_id: bridge_biocontext:example-pennycress-accession
+full_name: Example pennycress accession
+context_type: accession
+taxon: NCBITaxon:13288
+genus: Thlaspi
+species: arvense
+material_source_latitude: 55.6761
+material_source_longitude: 12.5683
+material_source_description: >-
+  Winter growth habit; collected in Denmark; supplied to the sequenced
+  panel by the originating study (passport_source).
